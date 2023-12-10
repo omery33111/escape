@@ -1,0 +1,33 @@
+/* GLOBAL RESPONSIVE STYLING */
+body {
+  font-family: "Lucida Console", "Courier New", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.special-container {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+
+
+/* MOBILE RESPONSIVE STYLING */
+@media (max-width: 768px) {
+
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+
+}
+
+
+
+/* LAPTOP RESPONSIVE STYLING */
+@media (min-width: 768px) and (max-width: 1919px) {
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+}

@@ -1,0 +1,53 @@
+/* GLOBAL RESPONSIVE STYLING */
+body {
+  font-family: "Lucida Console", "Courier New", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.footer {
+  flex-shrink: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.autocomplete-input input::placeholder {
+  color: white; /* צבע placeholder */
+}
+
+.autocomplete-input .MuiAutocomplete-inputRoot {
+  color: white; /* צבע autocomplete */
+}
+
+
+/* MOBILE RESPONSIVE STYLING */
+@media (max-width: 768px) {
+
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+
+}
+
+
+
+/* LAPTOP RESPONSIVE STYLING */
+@media (min-width: 768px) and (max-width: 1919px) {
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+}

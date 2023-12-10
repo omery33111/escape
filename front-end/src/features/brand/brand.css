@@ -1,0 +1,76 @@
+/* GLOBAL RESPONSIVE STYLING */
+body {
+  font-family: "Lucida Console", "Courier New", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+/* Adjust the position of the arrow icon */
+.rtl-select .MuiSelect-icon {
+  right: auto;
+}
+
+.rtl-select .MuiSelect-select {
+  padding-left: 40px;
+}
+
+.radio-label {
+  margin-right: 10px;
+}
+
+.black-radio {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 1px solid black;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: 3px;
+}
+
+.black-radio:checked::before {
+  content: '';
+  position: absolute;
+  top: 27.9%;
+  left: 25.5%;
+  width: 7px;
+  height: 7px;
+  background-color: #51414F;
+  border-radius: 50%;
+}
+
+/* Set a fixed number of columns for larger screens */
+.map-items {
+  max-width: 1100px;
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  text-align: center;
+  grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
+}
+
+.sharp-border {
+  border-radius: 0; /* Remove border-radius */
+}
+
+/* MEDIA QUERIES */
+/* Switch to a flexible layout for smaller screens */
+@media (max-width: 1200px) {
+  .map-items {
+    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
+  }
+}
+
+@media (max-width: 900px) {
+  .map-items {
+    grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
+  }
+}
+
+@media (max-width: 600px) {
+  .map-items {
+    grid-template-columns: minmax(200px, 1fr); /* Single column for smaller screens */
+  }
+}

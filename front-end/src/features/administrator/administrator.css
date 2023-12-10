@@ -1,0 +1,87 @@
+/* GLOBAL RESPONSIVE STYLING */
+body {
+    font-family: "Lucida Console", "Courier New", monospace;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+
+
+.admin-menu-center {
+    position: relative;
+    top: 18dvh;
+}
+
+
+
+.admin-panel-pics {
+    padding: 20px;
+    border-radius: 10px;  
+    background-color: #A0784F;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+
+
+.admin-panel-pic {
+    padding: 20px;
+    border-radius: 35px;
+}
+
+
+
+.admin-table {
+  position: relative;
+}
+
+
+
+.pagination-admin {
+  position: relative;
+  transform: translate(0%, 160px);
+  justify-content: left;
+  text-align: center;
+  display: flex;
+}
+
+
+
+.append-admin-button {
+  transform: translateY(-12px) translateX(1050px);
+  gap: 30px;
+  display: flex;
+}
+
+
+
+.post-form {
+  width: 25%;
+  text-align: left;
+  padding: 10px;
+}
+
+
+
+/* MOBILE RESPONSIVE STYLING */
+@media (max-width: 768px) {
+  
+    body {
+      font-family: "Lucida Console", "Courier New", monospace;
+    }
+  
+}
+  
+  
+  
+  /* LAPTOP RESPONSIVE STYLING */
+@media (min-width: 768px) and (max-width: 1919px) {
+    body {
+      font-family: "Lucida Console", "Courier New", monospace;
+    }
+}
