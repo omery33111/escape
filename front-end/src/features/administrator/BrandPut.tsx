@@ -31,7 +31,7 @@ const BrandPut = () => {
   const handleModelInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedModelsArray = [...modelsArray];
     updatedModelsArray[index] = event.target.value;
-    setModelsArray(updatedModelsArray);
+    setModelsArray(updatedModelsArray.filter(model => model.trim() !== ''));
   };
 
 
@@ -94,12 +94,12 @@ const BrandPut = () => {
         <Form onSubmit={handleSubmit} className="post-form">
         <Form.Group>
                 <Form.Label><h5>BRAND</h5></Form.Label>
-                <Form.Control type="textarea" value={name} required onChange={handleNameChange} />
+                <Form.Control type="textarea" value={name} onChange={handleNameChange} />
               </Form.Group>
 
               <Form.Group>
           <Form.Label><h5>DESCRIPTION</h5></Form.Label>
-          <Form.Control as="textarea" value={description} required onChange={handleDescriptionChange} />
+          <Form.Control as="textarea" value={description} onChange={handleDescriptionChange} />
         </Form.Group>
 
         <Form.Group>
@@ -109,7 +109,6 @@ const BrandPut = () => {
   {modelsArray.map((model, index) => (
     <div key={index}>
       <Form.Control
-      required
         type="text"
         value={model}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleModelInputChange(index, e)}

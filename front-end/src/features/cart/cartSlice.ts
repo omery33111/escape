@@ -33,27 +33,27 @@ export const cartSlice = createSlice({
       }
     },
 
-    addProduct: (state, action) =>
-    {
-      const item = action.payload.item
-      const amount = action.payload.amount
-
-      let existingProductInCart = state.cart.find(({id}) => id === item.id)
-
-      if (existingProductInCart)
-      {
-        existingProductInCart.amount = existingProductInCart.amount + amount
+    addProduct: (state, action) => {
+      const { item, selectedSize, amount } = action.payload; // Include selectedSize in the payload
+    
+      const existingProductInCart = state.cart.find(({ id }) => id === item.id);
+    
+      if (existingProductInCart) {
+        existingProductInCart.amount += amount;
+      } else {
+        const productToAdd = {
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          price: item.price,
+          price_before: item.price_before,
+          size: selectedSize,
+          picture: item.images[0],
+          amount: amount,
+        };
+        state.cart.push(productToAdd);
       }
-      else
-      {
-        state.cart.push({id: item.id,
-                        category: item.category,
-                        product_name: item.product_name,
-                        description: item.description,
-                        price: item.price,
-                        picture: item.picture, amount: 1})
-      }
-      localStorage.setItem("cart", JSON.stringify(state.cart))
+      localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     
     deleteProduct: (state, action) => {

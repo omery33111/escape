@@ -150,8 +150,7 @@ const ShoePut = () => {
       setpriceBefore(singleShoe.price_before || 0);
       setPrice(singleShoe.price || 0);
       setBrand(singleShoe.brand || 0);
-      // setBrand(singleShoe.model || '');
-
+      setModel(singleShoe.model || '');
       // Assuming sizes and images are arrays in singleShoe
       setSizesArray(singleShoe.sizes || []);
       setImagesArray(singleShoe.images || []);

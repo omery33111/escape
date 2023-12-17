@@ -1,18 +1,34 @@
-import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap'
+import { Autocomplete, TextField, Theme } from '@mui/material'
+import { makeStyles } from "@mui/styles"
+import { useEffect } from 'react'
+import { Container, Nav, Navbar } from 'react-bootstrap'
 import { FaUserSecret } from 'react-icons/fa'
 import { RiUserFill } from 'react-icons/ri'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { logoutAsync } from '../authentication/authenticationSlice'
-import { getAllShoesAsync, searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from '../shoe/shoeSlice'
-import { GoSearch } from "react-icons/go";
-import { Autocomplete, TextField } from '@mui/material'
-import { useEffect } from 'react'
-import { myServer } from '../../endpoints/endpoints'
 import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { myServer } from '../../endpoints/endpoints'
+import { logoutAsync } from '../authentication/authenticationSlice'
+import { searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from '../shoe/shoeSlice'
+
+
+
+const useStyles = makeStyles((theme: Theme) => ({
+  autocompleteRoot: {
+    '& .MuiInput-underline:after': {
+      borderBottom: '2px solid red',
+    },
+    '& .MuiInputBase-input': {
+      color: 'white', // Change text color to white
+    },
+  },
+}));
 
 
 
 const MyNavbar = () => {
+  const classes = useStyles(); // Apply the defined styles
+
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -45,36 +61,44 @@ const MyNavbar = () => {
 
             </Nav>
 
-            <Nav.Link href = "" style={{ width: '30%', direction: "rtl" }}>
+            <Nav.Link style={{ width: '30%', direction: "rtl" }}>
             
-            <Autocomplete freeSolo options={shoes.map((shoe) => ({ id: shoe.id, name: shoe.name, image: shoe.images[0]}))}
-                getOptionLabel={(shoe: any) => shoe.name}
-                renderOption={(props, shoe) => (
-                  <li {...props}>
-                    <div style = {{display: "flex", direction: "rtl"}} onClick = {() => navigate(`/brand/shoe/${shoe.id}/`)}>
-                      
-                    <img
-                          src={`${myServer}/static/images/${shoe.image}`}
-                          width="20%"
-                          height="auto"
-                        />
-
-                        <p>{shoe.name}</p>
-                      
-                    </div>
-                  </li>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                  placeholder="חיפוש..."
-                  variant="standard"
-                    {...params}
-                    onChange={handleSearchInputChange}
-                    value={searchShoe}
-                    InputLabelProps={{ style: { color: 'white' } }}
-                  />
-                )}
-              />
+            <Autocomplete
+          className={classes.autocompleteRoot} // Apply the defined styles here
+          freeSolo
+          options={shoes.map((shoe) => ({
+            id: shoe.id,
+            name: shoe.name,
+            image: shoe.images[0],
+          }))}
+          getOptionLabel={(shoe: any) => shoe.name}
+          renderOption={(props, shoe) => (
+            <li {...props}>
+              <div
+                style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
+                onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}
+              >
+                <img
+                style = {{transform: "scaleX(-1)"}}
+                  src={`${myServer}/static/images/${shoe.image}`}
+                  width="20%"
+                  height="auto"
+                />
+                <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>{shoe.name}</p>
+              </div>
+            </li>
+          )}
+          renderInput={(params) => (
+            <TextField
+              placeholder="חיפוש..."
+              variant="standard"
+              {...params}
+              onChange={handleSearchInputChange}
+              value={searchShoe}
+              InputLabelProps={{ style: { color: 'white' } }}
+            />
+          )}
+        />
 
             </Nav.Link>
             

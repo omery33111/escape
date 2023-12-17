@@ -8,24 +8,33 @@ body {
 /* Adjust the position of the arrow icon */
 .rtl-select .MuiSelect-icon {
   right: auto;
+  color: white;
 }
 
 .rtl-select .MuiSelect-select {
   padding-left: 40px;
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+
+.rtl-select .Mui-focused {
+  border-bottom: 2px solid red;
 }
 
 .radio-label {
   margin-right: 10px;
 }
 
+
 .black-radio {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   position: relative;
   top: 3px;
 }
@@ -33,27 +42,67 @@ body {
 .black-radio:checked::before {
   content: '';
   position: absolute;
-  top: 27.9%;
-  left: 25.5%;
-  width: 7px;
-  height: 7px;
-  background-color: #51414F;
+  top: 30%;
+  left: 32%;
+  width: 6px;
+  height: 6px;
+  background-color: white;
   border-radius: 50%;
 }
 
 /* Set a fixed number of columns for larger screens */
 .map-items {
-  max-width: 1100px;
+  max-width: 1300px;
   width: 100%;
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   text-align: center;
   grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
 }
 
 .sharp-border {
-  border-radius: 0; /* Remove border-radius */
+  border-radius: 0;
+  border: 1;
+  transition: 0.3s ease-in-out;
 }
+
+.sharp-border:hover {
+  border-radius: 0;
+  border: 1.5px solid black;
+  transition: 0.3s ease-in-out;
+}
+
+
+.image-container {
+  padding: 30px;
+  transition: padding 0.3s ease;
+}
+
+
+.image-container-brand {
+  padding: 30px;
+  transition: padding 0.3s ease;
+}
+
+
+.image-container-brand:hover {
+  padding: 0;
+}
+
+.card-info {
+  position: relative;
+  transition: 0.3s ease;
+  font-size: 0.8rem;
+  top: 3px
+}
+
+.card-info-hover {
+  position: relative;
+  transition: 0.3s ease;
+  font-size: 1rem;
+  top: 0px
+}
+
 
 /* MEDIA QUERIES */
 /* Switch to a flexible layout for smaller screens */

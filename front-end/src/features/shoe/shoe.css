@@ -1,0 +1,141 @@
+/* GLOBAL RESPONSIVE STYLING */
+body {
+  font-family: "Lucida Console", "Courier New", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+
+.shoe-page-images {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+
+.rest-images {
+  width: 20%;
+  border-radius: 100%;
+  position: relative;
+}
+
+.rest-images:hover:not(.main-image) {
+  filter: brightness(75%);
+  border-radius: 100%;
+}
+
+.rest-images:hover {
+  cursor: pointer;
+  border-radius: 100%;
+  transition: 0.2s ease-in;
+  filter: brightness(75%);
+}
+
+
+.vertical-line {
+  border-left: 1px solid rgb(201, 201, 201);
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  position: absolute;
+}
+
+
+.shoe-select .MuiSelect-icon {
+  right: 55px;
+  color: rgb(0, 0, 0);
+}
+
+.shoe-select .MuiSelect-select {
+  padding-left: 40px;
+  color: rgb(0, 0, 0);
+  border-bottom: 2px solid rgb(0, 0, 0);
+}
+
+
+.shoe-select .Mui-focused {
+  border-bottom: 2px solid red;
+}
+
+
+.image-container {
+  width: 100%;
+}
+
+
+.shoe-page-images {
+  transform: translateY(-68dvh);
+  width: 47%;
+}
+
+
+.image-container-brand {
+  padding: 30px;
+  transition: padding 0.3s ease;
+}
+
+
+.image-container-brand:hover {
+  padding: 0;
+}
+
+
+.random-shoes {
+  max-width: 1300px;
+  width: 100%;
+  display: grid;
+  gap: 1.5rem;
+  text-align: center;
+  grid-template-columns: repeat(4, minmax(300px, 1fr));
+}
+
+
+.sharper-border {
+  border-radius: 0;
+  border: 1;
+  transition: 0.3s ease-in-out;
+}
+
+.sharper-border:hover {
+  border-radius: 0;
+  border: 1.5px solid black;
+  transition: 0.3s ease-in-out;
+}
+
+/* MOBILE RESPONSIVE STYLING */
+@media (max-width: 768px) {
+
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+
+  .shoe-page-images {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .rest-images {
+    width: 18%;
+  }
+
+  .vertical-line {
+    display: none;
+  }
+
+  .image-container {
+    width: 100%;
+  }
+}
+
+/* iPad RESPONSIVE STYLING */
+
+
+
+
+/* LAPTOP RESPONSIVE STYLING */
+@media (min-width: 768px) and (max-width: 1919px) {
+  body {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+}

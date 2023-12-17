@@ -13,6 +13,14 @@ export function getAllShoes()
 
 
 
+export function getRandomShoes()
+{
+  return new Promise<{ data: Shoe[] }>((resolve) =>
+    axios.get(`${shoeURL}/get_random_shoes/`).then((res) => resolve({ data: res.data })));
+}
+
+
+
 export function getSingleShoe(id: string) {
   return new Promise<{ data: Shoe }>((resolve) =>
     axios.get(`${shoeURL}/single_shoe/${id}/`).then((res) => resolve({ data: res.data }))

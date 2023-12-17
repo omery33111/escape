@@ -44,6 +44,7 @@ const Cart = () => {
       
         <Container><br/><br/>
         <h2>SHOPPING CART</h2><br/>
+        
 
         {/* {isLogged ? ("") :  */}
         {/* <Alert variant="info" className="d-none d-lg-block" style = {{width: "66.9%"}}>
@@ -67,6 +68,8 @@ const Cart = () => {
         <div style={{ width: "900px" }}>
     {myCart.map((product) =>
     <div key = {product.id}>
+
+
         <Card style = {{width: "95%", height: "220px"}}>
         <Row style = {{display: "flex", alignItems: "center", height: "100%"}}>
         <Col xs={4}>
@@ -74,14 +77,14 @@ const Cart = () => {
           <div style = {{position: "absolute", transform: " translateX(40px) translateY(-84px) "}}>
           
           <Link to={`/single_product/${product.id}`} style={{ textDecoration: "none", color: "black"}}>
-        <Card.Img height = {170} src={myServer + product.picture} />
+        <Card.Img height = {170} src={`${myServer}/static/images/${product.picture}`}/>
         </Link>
         </div>
         </Col>
         <Col xs={2}>
   <Card.Title>
     <Link to={`/single_product/${product.id}`} style={{ textDecoration: "none", color: "black"}}>
-      {product.product_name}
+      {product.name}
     </Link>
   </Card.Title>
   <Card.Text>

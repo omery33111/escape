@@ -3,11 +3,12 @@
 
 export interface Cart {
     id: string,
-    category: number,
-    product_name: string,
-    description: string,
-    price: number,
-    picture: string,
+    name: string;
+    description: string;
+    price: number;
+    price_before: number;
+    size: string;
+    picture: string;
     amount: number,
 }
 
@@ -15,4 +16,4 @@ export interface Cart {
 
 export interface CartState {
     cart: Cart[]
-  };
+};

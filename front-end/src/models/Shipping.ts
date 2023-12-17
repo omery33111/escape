@@ -23,4 +23,7 @@ export interface AddressState {
 
   isLoading: boolean;
   isError: boolean;
+
+  searchCity: string;
+  searchStreet: string;
 };

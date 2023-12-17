@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { ShoeState } from '../../models/Shoe';
-import { getAllShoes, getSingleShoe, postShoeImage, searchShoe } from './shoeAPI';
+import { getAllShoes, getRandomShoes, getSingleShoe, postShoeImage, searchShoe } from './shoeAPI';
 
 
 
@@ -26,6 +26,16 @@ export const getAllShoesAsync = createAsyncThunk(
   'shoe/getAllShoes',
   async () => {
     const response = await getAllShoes();
+    return response.data;
+  }
+);
+
+
+
+export const getRandomShoesAsync = createAsyncThunk(
+  'shoe/getRandomShoes',
+  async () => {
+    const response = await getRandomShoes();
     return response.data;
   }
 );
@@ -73,6 +83,11 @@ export const shoeSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllShoesAsync.fulfilled, (state, action) =>
+      {
+        state.shoes = action.payload
+      })
+
+      .addCase(getRandomShoesAsync.fulfilled, (state, action) =>
       {
         state.shoes = action.payload
       })

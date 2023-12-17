@@ -16,7 +16,10 @@ const initialState: AddressState = {
   israelStreets: [],
 
   isLoading: false,
-  isError: false
+  isError: false,
+
+  searchCity: "",
+  searchStreet: "",
 };
 
 
@@ -119,6 +122,14 @@ export const shippingSlice = createSlice({
           state.guestAddress = temp
         }
       },
+
+      setCitySearch: (state, action) => {
+        state.searchCity = action.payload
+      },
+
+      setStreetSearch: (state, action) => {
+        state.searchStreet = action.payload
+      }
     },
     extraReducers: (builder) => {
         builder
@@ -173,7 +184,10 @@ export const shippingSlice = createSlice({
 
 
 
-export const { deleteGuestAddress, initGuestAddresses } = shippingSlice.actions; 
+export const { deleteGuestAddress, initGuestAddresses, setCitySearch, setStreetSearch } = shippingSlice.actions; 
+
+export const selectSearchCity = (state: RootState) => state.shipping.searchCity;
+export const selectSearchStreet = (state: RootState) => state.shipping.searchStreet;
 
 export const selectUserAddressesIsLoading = (state: RootState) => state.shipping.isLoading;
 export const selectUserAddressesIsError = (state: RootState) => state.shipping.isError;

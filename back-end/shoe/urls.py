@@ -11,4 +11,6 @@ urlpatterns = [
     path('post_shoe_image/', views.post_shoe_image),
     
     path('search_shoe/', views.search_shoe),
+
+    path('get_random_shoes/', views.get_random_shoes),
 ]

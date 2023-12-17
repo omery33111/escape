@@ -26,12 +26,14 @@ body {
 }
 
 .autocomplete-input input::placeholder {
-  color: white; /* צבע placeholder */
+  color: white;
 }
 
 .autocomplete-input .MuiAutocomplete-inputRoot {
-  color: white; /* צבע autocomplete */
+  color: white;
 }
+
+
 
 
 /* MOBILE RESPONSIVE STYLING */

@@ -63,7 +63,6 @@ const Register = () => {
     return (
         <div className="container d-flex justify-content-center">
           <form className="form-group col-md-6" onSubmit={onSubmit}>
-          <div style = {{height: "150px"}} />
             <h1 className="text-center">
               <AiOutlineUser /> Register
             </h1>

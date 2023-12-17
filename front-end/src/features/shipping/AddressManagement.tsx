@@ -18,15 +18,31 @@ const AddressManagement = () => {
   const [houseNumber, setHouseNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
 
-  useEffect(() => {
-    if (searchedCity.length >= 1) {
-      dispatch(getIsraelCitiesAsync(searchedCity));
-    }
+  // useEffect(() => {
+  //   if (searchedCity.length >= 1) {
+  //     dispatch(getIsraelCitiesAsync(searchedCity));
+  //   }
 
-    if (searchedStreet.length >= 1) {
-      dispatch(getIsraelStreetsAsync(searchedStreet));
+  //   if (searchedStreet.length >= 1) {
+  //     dispatch(getIsraelStreetsAsync(searchedStreet));
+  //   }
+  // }, [dispatch, searchedCity, searchedStreet]);
+
+  useEffect(() => {
+    if (searchedCity.trim() !== '') {
+      dispatch(getIsraelCitiesAsync(searchedCity));
+    } else {
+      setSearchedCity('')
     }
-  }, [dispatch, searchedCity, searchedStreet]);
+  }, [dispatch, searchedCity]);
+
+  useEffect(() => {
+    if (searchedStreet.trim() !== '') {
+      dispatch(getIsraelStreetsAsync(searchedStreet));
+    } else {
+      setSearchedStreet('')
+    }
+  }, [dispatch, searchedStreet]);
 
   const israelCities = useAppSelector(selectIsraelCities);
   const israelStreets = useAppSelector(selectIsraelStreets);

@@ -83,7 +83,6 @@ const Login = () => {
     <div className="container d-flex justify-content-center">
       
   <form className="form-group col-md-6" onSubmit={onSubmit}>
-  <div style = {{height: "200px"}} />
   <h1 className="text-center" style = {{color: "black"}}>
       <FaSignInAlt /> Login
     </h1>

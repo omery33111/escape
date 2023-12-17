@@ -2,8 +2,12 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+
 from shoe.serializers import ShoeSerializer, ShoeImageSerializer
 from shoe.models import Shoe
+
+from random import sample
+
 
 
 
@@ -14,6 +18,21 @@ def get_all_shoes(request):
     serializer = ShoeSerializer(shoes, many=True)
     return Response(serializer.data)
 
+
+
+@api_view(["GET"])
+def get_random_shoes(request):
+    try:
+        all_shoes = list(Shoe.objects.all())
+        if len(all_shoes) < 4:
+            return Response([], status=status.HTTP_200_OK)
+
+        random_4_shoes = sample(all_shoes, 4)
+        serializer = ShoeSerializer(random_4_shoes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 
 @api_view(["GET"])
