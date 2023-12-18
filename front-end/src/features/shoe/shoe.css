@@ -87,7 +87,7 @@ body {
   display: grid;
   gap: 1.5rem;
   text-align: center;
-  grid-template-columns: repeat(4, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
 }
 
 
@@ -103,6 +103,62 @@ body {
   transition: 0.3s ease-in-out;
 }
 
+
+.shoe-page-max-height {
+  max-height: 80dvh;
+}
+
+
+.first-part {
+  transform: TranslateY(-36dvh);
+}
+
+.second-part {
+  transform: translateY(0dvh) translateX(-7dvh);
+}
+
+
+.shoe-name {
+  width: 43%;
+}
+
+.group-buttons {
+  max-width: 30%;
+}
+
+.shoe-go-cart-button {
+  width: 27%;
+}
+
+.shoe-safetty-pic {
+  width: 40%;
+}
+
+.shoe-contact-icons {
+  width: 40%;
+}
+
+.shoe-desc {
+  width: 41%;
+}
+
+.bottom-hr {
+  justify-content: center;
+  text-align: center;
+  width: 38.1%;
+}
+
+
+.map-items {
+  max-width: 1300px;
+  width: 100%;
+  display: grid;
+  gap: 1.5rem;
+  text-align: center;
+  grid-template-columns: repeat(4, minmax(300px, 1fr));
+}
+
+
 /* MOBILE RESPONSIVE STYLING */
 @media (max-width: 768px) {
 
@@ -110,25 +166,127 @@ body {
     font-family: "Lucida Console", "Courier New", monospace;
   }
 
+
   .shoe-page-images {
     width: 100%;
     margin-bottom: 10px;
   }
 
+
   .rest-images {
     width: 18%;
   }
+
 
   .vertical-line {
     display: none;
   }
 
+
   .image-container {
     width: 100%;
   }
+
+
+  .first-part {
+    width: 100%;
+    position: relative;
+    transform: translateY(-60dvh);
+  }
+
+
+  .second-part {
+    width: 100%;
+    transform: translateY(97dvh) translateX(0dvh);
+    z-index: 10;
+  }
+
+
+
+
+  .shoe-page-max-height {
+    max-height: 260dvh;
+  }
+
+
+  .shoe-name {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .shoe-price {
+    width: 100%;
+    justify-content: right;
+    text-align: right;
+    margin-bottom: -3rem;
+  }
+
+  .shoe-select {
+    justify-content: right;
+    text-align: right;
+  }
+
+
+  .group-buttons {
+    max-width: 100%;
+  }
+
+  /* .shoe-quantity-button {
+  } */
+
+  .shoe-cart-button {
+    width: 100%;
+  }
+
+  .shoe-go-cart-button {
+    width: 100%;
+  }
+
+  .shoe-safetty-pic {
+    width: 100%;
+  }
+
+  .shoe-contact-icons {
+    width: 100%;
+  }
+
+  .bottom-hr {
+    width: 100%;
+  }
+
+  .shoe-desc {
+    margin-bottom: 70px;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .random-shoes-section {
+    transform: translateY(110dvh);
+  }
+
+  .map-items {
+    max-width: 1000px;
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    text-align: center;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+
+  .image-container-brand {
+    padding: 20px;
+  }
+
+  .image-container-brand:hover {
+    padding: 0;
+  }
+
+ 
 }
 
-/* iPad RESPONSIVE STYLING */
 
 
 

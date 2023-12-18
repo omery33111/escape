@@ -81,23 +81,28 @@ const RandomShoes = () => {
     navigate(`/brand/shoe/${shoeId}`);
   };
 
+  const isMobile = window.innerWidth <= 768;
 
   return (
-    <div>
+    <div className = 'random-shoes-section'>
         
     <div style = {{position: "absolute", transform: "TranslateY(5dvh)"}}>
     
-    <hr/>
+    {isMobile ? ("") : (
+      <hr/>
+    )}
+
+    
 
     <div style = {{height: "0.8rem"}}/>
 
     <div style = {{justifyContent: "center", textAlign: "center", fontSize: "1.5rem"}}><b>מוצרים דומים</b></div>
 
-    <div className="random-shoes" style={{ transform: "TranslateY(3dvh)" }}>
+    <div className="map-items" style={{ transform: "TranslateY(3dvh)" }}>
           {shoes.map((shoe, shoeIndex) => (
-            <Card key={shoe.id} className="random-shoes sharper-border">
+            <Card key={shoe.id} className="map-item sharper-border">
               <Card.Body>
-                <div style={{ padding: "25px" }}>
+                <div style={{ marginRight: "-0.9rem" }}>
                   <img
                     className="image-container-brand"
                     onMouseEnter={() => handleMouseEnter(shoeIndex)}
@@ -105,13 +110,13 @@ const RandomShoes = () => {
                     onClick={() => handleNavigation(String(shoe.id))}
                     style={{ cursor: "pointer" }}
                     src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
-                    width="100%"
-                    height="100%"
+                    width={isMobile ? `150px` : `225px`}
+                    height={isMobile ? `150px` : `225px`}
                   />
                 </div>
 
               <div>
-                <Card.Text style = {{width: "100%", height: "50px"}}>{shoe.name}</Card.Text>
+                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
                 <div >
                 <b>₪{shoe.price}</b>
@@ -148,25 +153,29 @@ const RandomShoes = () => {
 
                 <div style = {{display: "flex", justifyContent: "space-evenly"}}>
                 
-                <div style = {{cursor: "pointer", color: "#3C005A", position: "relative", top: "-2px"}}>
+                <div style = {{cursor: "pointer", color: "#3C005A", position: "relative", top: "-3px"}}>
 
                 {cart.find((item) => String(item.id) === String(shoe.id))
               ? <BiSolidCart style = {{fontSize: "2rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}/>
-              : <BiSolidCartAdd style = {{fontSize: "2rem"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
+              : <BiSolidCartAdd style = {{fontSize: "2rem", position: "relative", top: "1.5px"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
                 
                 </div>
                 
                 <div style = {{cursor: "pointer", color: "#3C005A"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
-                <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
-                <div style = {{position: "absolute", fontSize: "0.8rem", justifyContent: "center", transform: "translateX(-20px) translateY(-2px)"}}>
-                לעמוד הנעל!
+                  {isMobile ? (
+                    <GiConverseShoe style = {{fontSize: "2rem"}}/>
+                  ) : (<GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-1px", top: "0px"}}/>)}
+                
+
+                <div style = {{position: "absolute", fontSize: "0.8rem", justifyContent: "center", transform: "translateX(-30px) translateY(-2px)"}}>
+                !לעמוד הנעל
                 </div>
                 </div>
 
                 <div style = {{cursor: "pointer", color: "#3C005A"}}>
                 {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
-              : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
+              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '2px'}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+              : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '2px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
                 </div>
 
                 </div>
@@ -176,6 +185,8 @@ const RandomShoes = () => {
         ))}
     </div>
     </div>
+
+    <div style = {{height: "5rem"}}/>
     </div>
   )
 }

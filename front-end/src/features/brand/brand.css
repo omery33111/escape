@@ -57,7 +57,7 @@ body {
   display: grid;
   gap: 1.5rem;
   text-align: center;
-  grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
 }
 
 .sharp-border {
@@ -118,8 +118,8 @@ body {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .map-items {
-    grid-template-columns: minmax(200px, 1fr); /* Single column for smaller screens */
+    grid-template-columns: repeat(2, 1fr); /* Single column for smaller screens */
   }
 }

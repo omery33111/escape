@@ -166,19 +166,22 @@ const handleAddToCart = () => {
       setQuantity(quantity + 1);
   };
 
-    return (
-      <div style={{ transform: "translateY(-43dvh)", position: "relative", marginBottom: '-110dvh' }}>
-            <div style={{ direction: "rtl", position: "relative", transform: "translateY(40dvh) translateX(-7dvh)" }}>
+  const isMobile = window.innerWidth <= 768;
 
-                    <h4 style = {{width: "43%"}}>
+    return (
+      <div className = "shoe-page-max-height">
+            <div style={{ direction: "rtl", position: "relative" }} className="second-part">
+
+            {isMobile ? ("") : (<h4 className = 'shoe-name'>
                       <b>
                     {shoe.name}
                     </b>
-                    </h4>
-
+                    </h4>)}
                     
 
-                    <div style={{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+
+                    <div className = "shoe-price" style={{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+                        
                     <h4>₪{shoe.price}</h4>
   
                     {shoe.price_before ? (
@@ -202,9 +205,10 @@ const handleAddToCart = () => {
 
                 <div style = {{height: "40px"}}/>
 
-                <InputLabel htmlFor="size-select" shrink={false} style={{ position: "absolute", color: 'black', top: '143px', right: "13px" }}>
-                    {selectedSize ? ("") : ("מידות")}
-            </InputLabel>
+                {isMobile && (
+                <div style = {{height: "20px"}}/>
+            )}
+               
             <br/>
             <Select
                 value={selectedSize}
@@ -226,9 +230,16 @@ const handleAddToCart = () => {
             <br/>
             <br/>
 
-            <div style={{ cursor: 'pointer', position: 'relative', top: '-2px', maxWidth: "30%", display: "flex" }}>
+            {isMobile && (
+                <div>
+                <br/>
+                <br/>
+                </div>
+            )}
 
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ cursor: 'pointer', position: 'relative', top: '-2px', display: "flex" }} className = "group-buttons">
+
+            <div style={{ textAlign: 'center' }} className = 'shoe-quantity-button'>
     <Button style={{ borderRadius: "6px", display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 15px', backgroundColor: "#E3E3E3", border: "0px solid black", height: "43px" }}>
         <RemoveIcon fontSize="small" onClick={handleDecrease} style={{ cursor: 'pointer', color: "black" }} />
         <span style={{ fontSize: '1rem', margin: '0 20px', color: "black" }}>{quantity}</span>
@@ -238,7 +249,8 @@ const handleAddToCart = () => {
 &nbsp;
 
   {cart.find((item) => String(item.id) === String(shoe.id)) ? (
-    <Button style = {{backgroundColor: "#1A002E", border: "0px solid black"}} onClick={() => dispatch(removeProduct({ item: shoe }))}>
+    
+    <Button className = 'shoe-cart-button' style = {{backgroundColor: "#1A002E", border: "0px solid black"}} onClick={() => dispatch(removeProduct({ item: shoe }))}>
     <div>
       הסרת מוצר&nbsp;&nbsp;
       <BiSolidCart
@@ -246,7 +258,7 @@ const handleAddToCart = () => {
     </div>
     </Button>
   ) : (
-    <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", cursor: "pointer"}} onClick={handleAddToCart}>
+    <Button className = 'shoe-cart-button' style = {{backgroundColor: "#1A002E", border: "0px solid black", cursor: "pointer"}} onClick={handleAddToCart}>
     <div>
       הוספת מוצר&nbsp;
       <BiSolidCartAdd style={{ fontSize: '2rem' }}/>
@@ -269,7 +281,7 @@ const handleAddToCart = () => {
 <div style = {{height: "4px"}}/>
 
 <div>
-<Button style = {{backgroundColor: "black", border: "0px solid black", width: "27%", height: "50px"}}>
+<Button className = "shoe-go-cart-button" style = {{backgroundColor: "black", border: "0px solid black", height: "50px"}}>
       לקנייה מהירה      
     </Button>
 </div>
@@ -286,14 +298,14 @@ const handleAddToCart = () => {
             <div>
             <img src={require('../../images/safety_shoepage.png')}
                   alt = "instagramlogo"
-                  style = {{width: "40%"}}/>
+                  className = "shoe-safetty-pic"/>
             </div>
 
 
     <div style = {{height: "7rem"}}/>
 
-    <div style={{ width: "40%", display: "flex", alignItems: "center", height: "4rem", gap: "35px", justifyContent: "center", borderRadius: "20px", backgroundColor: "#ebe5f5"}}>
-    <div style = {{position: "absolute", marginBottom: "10dvh", fontSize: "1.2rem"}}><b>ליצירת קשר</b></div>
+    <div className = "shoe-contact-icons" style={{ display: "flex", alignItems: "center", height: "4rem", gap: "35px", justifyContent: "center", borderRadius: "20px", backgroundColor: "#ebe5f5"}}>
+    <div style = {{position: "absolute", marginBottom: "6rem", fontSize: "1.2rem"}}><b>ליצירת קשר</b></div>
     
     <IoIosMail style={{color: "#78c1d9", fontSize: "3rem", cursor: "pointer"}}/>
     <FontAwesomeIcon icon={faWhatsapp} style={{color: "#25d366", fontSize: "2.4rem", top: "-1px", cursor: "pointer"}} />
@@ -310,11 +322,13 @@ const handleAddToCart = () => {
 
     <div style = {{height: "4rem"}}/>
 
-    <div style = {{width: "38.1%"}}><hr/></div>
+    <div className = "bottom-hr"><hr/></div>
 
     <br/>
 
-    <div style = {{width: "41%", fontSize: "0.9rem", height: "10rem"}}>
+    
+
+    <div className = "shoe-desc" style = {{fontSize: "0.9rem", height: "10rem"}}>
     {shoe.description}
     </div>
 
@@ -322,16 +336,28 @@ const handleAddToCart = () => {
                 </div>
 
 
+    <div style = {{position: "relative"}} className="first-part">
 
+        {isMobile ? ("") : (
+            <div style = {{textAlign: "center", justifyContent: "center", display: "flex", position: "relative", transform: "TranslateY(-65dvh)"}}>
+            <div className="vertical-line" />
+            </div>
+        )}
 
-<div style = {{textAlign: "center", justifyContent: "center", display: "flex", position: "relative", transform: "TranslateY(-65dvh)"}}>
-        <div className="vertical-line" />
-        </div>
 
 
         
 
             <div className = 'shoe-page-images'>
+
+                
+            {isMobile ? (
+                <h4 className = 'shoe-name'>
+                <b>
+              {shoe.name}
+              </b>
+              </h4>
+            ) : ("")}
                 
             <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className = "image-container">
         <TransformWrapper ref={transformRef}>
@@ -340,7 +366,7 @@ const handleAddToCart = () => {
                 <img
                 width='100%'
                 height='auto'
-                  style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)' }}
+                  style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)'}}
                   src={`${myServer}/static/images/${mainImage}`}
                   alt={`shoeMainImage`}
                   onClick={() => handleMainImageClick(0)}
@@ -365,10 +391,11 @@ const handleAddToCart = () => {
                     {renderRestImages(otherImages)}
                 </div>
                 </div>
-
+    
                 
 
                 <RandomShoes/>
+    </div>
         </div>
                 
         

@@ -138,7 +138,7 @@ const BrandShoes = () => {
       });
     };
 
-
+    const isMobile = window.innerWidth <= 768;
 
 
   return (
@@ -220,7 +220,7 @@ const BrandShoes = () => {
             {shoes.map((shoe, shoeIndex) => (
           <Card key={shoe.id} className="map-item sharp-border">
             <Card.Body>
-                <div style={{ padding: "25px" }}>
+                <div style={{ marginRight: "-0.9rem" }}>
                 <img
                   className="image-container-brand"
                   onMouseEnter={() => handleMouseEnter(shoeIndex)}
@@ -228,13 +228,14 @@ const BrandShoes = () => {
                   onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
                   style={{ cursor: "pointer" }}
                   src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
-                  width="100%"
-                  height="100%"
+                  width={isMobile ? `150px` : `225px`}
+                  height={isMobile ? `150px` : `225px`}
+
                 />
                 </div>
 
               <div>
-                <Card.Text style = {{width: "100%", height: "50px"}}>{shoe.name}</Card.Text>
+                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
                 <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
                 <b>₪{shoe.price}</b>
