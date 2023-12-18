@@ -1,6 +1,6 @@
 import { faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { InputLabel, MenuItem, Select, Theme } from '@mui/material';
+import { ButtonGroup, InputLabel, MenuItem, Select, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -16,21 +16,15 @@ import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import RandomShoes from './RandomShoes';
 import './shoe.css';
 import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe } from './shoeSlice';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 
 
 const useStyles = makeStyles((theme: Theme) => ({
     shoeSelect: {
       '&.MuiInput-underline:after': {
-        borderBottom: '2px solid black',
-      },
-      '& .MuiSelect-root': {
-        color: 'black',
-      },
-    },
-    paginator: {
-      "& .MuiPaginationItem-root": {
-        color: "black", // Change the color to white or any desired color
+        borderBottom: '2px solid red',
       },
     },
   }));
@@ -159,24 +153,39 @@ const handleAddToCart = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
 
+  const [quantity, setQuantity] = useState(1);
+
+  const handleDecrease = () => {
+      if (quantity > 1) {
+          setQuantity(quantity - 1);
+      }
+  };
+
+  const handleIncrease = () => {
+      // You might want to add logic for handling maximum quantity if needed
+      setQuantity(quantity + 1);
+  };
+
     return (
-      <div style={{ transform: "translateY(-10dvh)", position: "relative", marginBottom: '-90dvh' }}>
-            <div style={{ direction: "rtl", position: "relative", transform: "translateY(10dvh) translateX(-7dvh)" }}>
+      <div style={{ transform: "translateY(-43dvh)", position: "relative", marginBottom: '-110dvh' }}>
+            <div style={{ direction: "rtl", position: "relative", transform: "translateY(40dvh) translateX(-7dvh)" }}>
 
                     <h4 style = {{width: "43%"}}>
+                      <b>
                     {shoe.name}
+                    </b>
                     </h4>
 
                     
 
                     <div style={{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
-                    <b>₪{shoe.price}</b>
+                    <h4>₪{shoe.price}</h4>
   
                     {shoe.price_before ? (
                         <div style={{ position: "relative"}}>
-                        <b>
+                        <h4>
                         ₪{shoe.price_before}
-                        </b>
+                        </h4>
                         <span style={{ color: "rgba(255, 0, 0, 0.3)",
                                         position: "absolute",
                                         top: -2,
@@ -191,9 +200,9 @@ const handleAddToCart = () => {
                     ) : ("")}
                     </div>
 
-                
+                <div style = {{height: "40px"}}/>
 
-                <InputLabel htmlFor="size-select" shrink={false} style={{ position: "absolute", color: 'black', top: '90px', right: "13px" }}>
+                <InputLabel htmlFor="size-select" shrink={false} style={{ position: "absolute", color: 'black', top: '143px', right: "13px" }}>
                     {selectedSize ? ("") : ("מידות")}
             </InputLabel>
             <br/>
@@ -217,11 +226,21 @@ const handleAddToCart = () => {
             <br/>
             <br/>
 
-            <div style={{ cursor: 'pointer', color: '#3C005A', position: 'relative', top: '-2px', maxWidth: "30%", display: "flex" }}>
+            <div style={{ cursor: 'pointer', position: 'relative', top: '-2px', maxWidth: "30%", display: "flex" }}>
+
+            <div style={{ textAlign: 'center' }}>
+    <Button style={{ borderRadius: "6px", display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 15px', backgroundColor: "#E3E3E3", border: "0px solid black", height: "43px" }}>
+        <RemoveIcon fontSize="small" onClick={handleDecrease} style={{ cursor: 'pointer', color: "black" }} />
+        <span style={{ fontSize: '1rem', margin: '0 20px', color: "black" }}>{quantity}</span>
+        <AddIcon fontSize="small" onClick={handleIncrease} style={{ cursor: 'pointer', color: "black" }} />
+    </Button>
+</div>
+&nbsp;
+
   {cart.find((item) => String(item.id) === String(shoe.id)) ? (
     <Button style = {{backgroundColor: "#1A002E", border: "0px solid black"}} onClick={() => dispatch(removeProduct({ item: shoe }))}>
     <div>
-      הסר מהעגלה&nbsp;
+      הסרת מוצר&nbsp;&nbsp;
       <BiSolidCart
         style={{ fontSize: '2rem' }}/>
     </div>
@@ -229,13 +248,14 @@ const handleAddToCart = () => {
   ) : (
     <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", cursor: "pointer"}} onClick={handleAddToCart}>
     <div>
-      הוספה לעגלה&nbsp;
+      הוספת מוצר&nbsp;
       <BiSolidCartAdd style={{ fontSize: '2rem' }}/>
     </div>
     </Button>
   )}
 
 
+            
   &nbsp;
 
   {wishlist.find((item) => String(item.id) === String(shoe.id))
@@ -243,7 +263,19 @@ const handleAddToCart = () => {
               : <Button onClick={() => dispatch(addWish({ item: shoe }))} style = {{backgroundColor: "red", border: "0px solid black"}}><FaHeart style = {{margin: 0, fontSize: "1.5rem"}}/></Button>}
 
   
+  
 </div>
+
+<div style = {{height: "4px"}}/>
+
+<div>
+<Button style = {{backgroundColor: "black", border: "0px solid black", width: "27%", height: "50px"}}>
+      לקנייה מהירה      
+    </Button>
+</div>
+
+<br/>
+<br/>
 
 <>
   {errorMessage && ( <p style={{ color: 'red', position: "absolute" }}>{errorMessage}</p> )}
@@ -251,13 +283,16 @@ const handleAddToCart = () => {
             <br/>
             <br/>
     
-    <div style = {{width: "41%", fontSize: "0.9rem", height: "10rem"}}>
-    {shoe.description}
-    </div>
+            <div>
+            <img src={require('../../images/safety_shoepage.png')}
+                  alt = "instagramlogo"
+                  style = {{width: "40%"}}/>
+            </div>
 
-    <div style = {{height: "6rem"}}/>
 
-    <div style={{ width: "38%", display: "flex", alignItems: "center", height: "4rem", gap: "35px", justifyContent: "center", borderRadius: "20px", backgroundColor: "#ebe5f5"}}>
+    <div style = {{height: "7rem"}}/>
+
+    <div style={{ width: "40%", display: "flex", alignItems: "center", height: "4rem", gap: "35px", justifyContent: "center", borderRadius: "20px", backgroundColor: "#ebe5f5"}}>
     <div style = {{position: "absolute", marginBottom: "10dvh", fontSize: "1.2rem"}}><b>ליצירת קשר</b></div>
     
     <IoIosMail style={{color: "#78c1d9", fontSize: "3rem", cursor: "pointer"}}/>
@@ -267,13 +302,21 @@ const handleAddToCart = () => {
                   alt = "instagramlogo"
                   style = {{position: "relative", right: "5px", top: "1px", cursor: "pointer"}}/>
 
+ 
+
     <FontAwesomeIcon icon={faFacebook} style = {{fontSize: "2.2rem", color: "#316ff6", position: "relative", right: "10px", top: "1px", cursor: "pointer"}}/>
     
     </div>
 
-    <div style = {{height: "7rem"}}/>
+    <div style = {{height: "4rem"}}/>
 
     <div style = {{width: "38.1%"}}><hr/></div>
+
+    <br/>
+
+    <div style = {{width: "41%", fontSize: "0.9rem", height: "10rem"}}>
+    {shoe.description}
+    </div>
 
 
                 </div>

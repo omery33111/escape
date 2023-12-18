@@ -3,7 +3,7 @@ import { ShoeImage } from "./ShoeImage";
 
 
 export interface Shoe {
-  id?: number;
+  id: number | undefined;
   name: string;
   description: string;
   price_before: number;

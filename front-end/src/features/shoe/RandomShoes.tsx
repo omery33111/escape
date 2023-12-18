@@ -11,60 +11,76 @@ import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import { getRandomShoesAsync, selectAllShoes } from './shoeSlice';
 
 const RandomShoes = () => {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-    const shoes = useAppSelector(selectAllShoes);
+  const shoes = useAppSelector(selectAllShoes);
+  const cart = useAppSelector(selectCart);
+  const wishlist = useAppSelector(selectWishList);
 
-    const cart = useAppSelector(selectCart);
-    const wishlist = useAppSelector(selectWishList);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [imageIndexes, setImageIndexes] = useState<number[]>([]);
+  const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
+  const transformRef = useRef<any>(null);
+  const intervalIdsRef = useRef<NodeJS.Timeout[]>(new Array(shoes.length).fill(null));
 
-    const [isZoomed, setIsZoomed] = useState(false);
-    const [imageIndexes, setImageIndexes] = useState<number[]>([]);
-    const [hoveredItem, setHoveredItem] = useState<number | null>(null);
+  const handleMouseEnter = (shoeIndex: number) => {
+    setHoveredItem(shoeIndex);
 
-
-    const transformRef = useRef<any>(null);
-    const intervalIdsRef = useRef<NodeJS.Timeout[]>([]);
-
-    const handleMouseEnter = (shoeIndex: number) => {
-        setHoveredItem(shoeIndex);
-  
-        intervalIdsRef.current[shoeIndex] = setTimeout(() => {
-          setImageIndexes((prevIndexes) => {
-            const newIndexes = [...prevIndexes];
-            newIndexes[shoeIndex] = (newIndexes[shoeIndex] + 1) % shoes[shoeIndex].images.length;
-            return newIndexes;
-          });
-          intervalIdsRef.current[shoeIndex] = setInterval(() => {
-            setImageIndexes((prevIndexes) => {
-              const newIndexes = [...prevIndexes];
-              newIndexes[shoeIndex] = (newIndexes[shoeIndex] + 1) % shoes[shoeIndex].images.length;
-              return newIndexes;
-            });
-          }, 600);
-        }, 1200);
-      };
-    
-      const handleMouseLeave = (shoeIndex: number) => {
-        setHoveredItem(null);
-        clearTimeout(intervalIdsRef.current[shoeIndex]); // Clear initial delay timeout
-        clearInterval(intervalIdsRef.current[shoeIndex]); // Clear subsequent interval
+    intervalIdsRef.current[shoeIndex] = setTimeout(() => {
+      setImageIndexes((prevIndexes) => {
+        const newIndexes = [...prevIndexes];
+        newIndexes[shoeIndex] = (newIndexes[shoeIndex] + 1) % shoes[shoeIndex].images.length;
+        return newIndexes;
+      });
+      intervalIdsRef.current[shoeIndex] = setInterval(() => {
         setImageIndexes((prevIndexes) => {
           const newIndexes = [...prevIndexes];
-          newIndexes[shoeIndex] = 0; // Reset to the first image
+          newIndexes[shoeIndex] = (newIndexes[shoeIndex] + 1) % shoes[shoeIndex].images.length;
           return newIndexes;
         });
-      };
+      }, 600);
+    }, 1200);
+  };
 
-    useEffect(() => {
-        dispatch(getRandomShoesAsync())
-      }, [dispatch]);
+  const handleMouseLeave = (shoeIndex: number) => {
+    setHoveredItem(null);
+    clearTimeout(intervalIdsRef.current[shoeIndex]);
+    clearInterval(intervalIdsRef.current[shoeIndex]);
+    setImageIndexes((prevIndexes) => {
+      const newIndexes = [...prevIndexes];
+      newIndexes[shoeIndex] = 0;
+      return newIndexes;
+    });
+  };
 
-    useEffect(() => {
-      setImageIndexes(new Array(shoes.length).fill(0));
-    }, [shoes]);
+  useEffect(() => {
+    dispatch(getRandomShoesAsync());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setImageIndexes(new Array(shoes.length).fill(0));
+    return () => {
+      intervalIdsRef.current.forEach((intervalId) => clearInterval(intervalId));
+    };
+  }, [shoes]);
+
+  useEffect(() => {
+    return () => {
+      if (hoveredItem !== null) {
+        handleMouseLeave(hoveredItem);
+      }
+    };
+  }, [hoveredItem]);
+
+  const handleNavigation = (shoeId: string) => {
+    if (hoveredItem !== null) {
+      handleMouseLeave(hoveredItem);
+    }
+    navigate(`/brand/shoe/${shoeId}`);
+  };
+
 
   return (
     <div>
@@ -77,21 +93,21 @@ const RandomShoes = () => {
 
     <div style = {{justifyContent: "center", textAlign: "center", fontSize: "1.5rem"}}><b>מוצרים דומים</b></div>
 
-    <div className = "random-shoes" style = {{transform: "TranslateY(3dvh)"}}>
-        {shoes.map((shoe, shoeIndex) => (
-          <Card key={shoe.id} className = "random-shoes sharper-border">
-            <Card.Body>
+    <div className="random-shoes" style={{ transform: "TranslateY(3dvh)" }}>
+          {shoes.map((shoe, shoeIndex) => (
+            <Card key={shoe.id} className="random-shoes sharper-border">
+              <Card.Body>
                 <div style={{ padding: "25px" }}>
-                <img
-                  className="image-container-brand"
-                  onMouseEnter={() => handleMouseEnter(shoeIndex)}
-                  onMouseLeave={() => handleMouseLeave(shoeIndex)}
-                  onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
-                  style={{ cursor: "pointer" }}
-                  src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
-                  width="100%"
-                  height="100%"
-                />
+                  <img
+                    className="image-container-brand"
+                    onMouseEnter={() => handleMouseEnter(shoeIndex)}
+                    onMouseLeave={() => handleMouseLeave(shoeIndex)}
+                    onClick={() => handleNavigation(String(shoe.id))}
+                    style={{ cursor: "pointer" }}
+                    src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                    width="100%"
+                    height="100%"
+                  />
                 </div>
 
               <div>

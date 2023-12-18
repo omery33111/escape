@@ -83,16 +83,16 @@ const ShoePut = () => {
     const imagesJson = JSON.stringify(imagesArray); 
     formData.append('images', imagesJson);
   
-    const newSubject: Shoe = {
-      name: name,
-      description: description,
-      price_before: priceBefore,
-      price: price,
-      sizes: sizes,
-      images: images,
-      brand: brand,
-      model: model,
-    };
+    // const newSubject: Shoe = {
+    //   name: name,
+    //   description: description,
+    //   price_before: priceBefore,
+    //   price: price,
+    //   sizes: sizes,
+    //   images: images,
+    //   brand: brand,
+    //   model: model,
+    // };
     
     
   
