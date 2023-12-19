@@ -133,19 +133,16 @@ const [selectedSize, setSelectedSize] = useState('');
 
 const handleSizeChange = (event: any) => {
     setSelectedSize(event.target.value);
-    // Logic to update selected size based on user selection
+    setErrorMessage('');
   };
+
+  useEffect(() => {
+    setSelectedSize('מידות');
+}, []);
 
 const cart = useAppSelector(selectCart);
 
-const handleAddToCart = () => {
-  if (!selectedSize) {
-      setErrorMessage('יש לבחור מידה'); // Set the error message if size is not selected
-  } else {
-      setErrorMessage(''); // Clear the error message if size is selected
-      dispatch(addProduct({ item: shoe, selectedSize, amount: 1 }));
-  }
-};
+
 
   
   const wishlist = useAppSelector(selectWishList);
@@ -153,17 +150,29 @@ const handleAddToCart = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(1); // State to manage quantity
 
+  // Function to decrease quantity
   const handleDecrease = () => {
-      if (quantity > 1) {
-          setQuantity(quantity - 1);
-      }
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
 
   const handleIncrease = () => {
-      // You might want to add logic for handling maximum quantity if needed
-      setQuantity(quantity + 1);
+    setQuantity(quantity + 1);
+  };
+
+  const handleAddToCart = () => {
+    if (selectedSize === 'מידות') {
+    setErrorMessage('יש לבחור מידה');
+    } else if (!selectedSize) {
+      setErrorMessage('יש לבחור מידה');
+    } else {
+      setErrorMessage('');
+
+      dispatch(addProduct({ item: shoe, selectedSize, amount: quantity }));
+    }
   };
 
   const isMobile = window.innerWidth <= 768;
@@ -210,22 +219,34 @@ const handleAddToCart = () => {
             )}
                
             <br/>
+            <div style={{ display: 'flex' }}>
             <Select
-                value={selectedSize}
-                onChange={handleSizeChange}
-                variant="standard"
-                className={`${classes.shoeSelect} shoe-select`}
-                inputProps={{
-                    name: 'size',
-                    id: 'size-select',
-                    style: { color: 'white' }
-                }}>
-                {shoe.sizes.map((size, index) => (
-                    <MenuItem key={index} value={size} style={{ direction: 'rtl' }}>
-                        {size}
-                    </MenuItem>
-                ))}
-            </Select>
+            style = {{width: "120px"}}
+    value={selectedSize}
+    onChange={handleSizeChange}
+    variant="standard"
+    className={`${classes.shoeSelect} shoe-select`}
+    inputProps={{
+        name: 'size',
+        id: 'size-select',
+        style: { color: 'white' }
+    }}
+>
+    {/* Placeholder disabled option */}
+    <MenuItem value="מידות" disabled style={{ direction: 'rtl' }}>
+        מידות
+    </MenuItem>
+
+    {/* Other size options */}
+    {shoe.sizes.map((size, index) => (
+        <MenuItem key={index} value={size} style={{ direction: 'rtl' }}>
+            {size}
+        </MenuItem>
+    ))}
+</Select>
+
+    {errorMessage && <div style={{ color: 'red', position: "relative", top: "5px", marginRight: "13px" }}>{errorMessage}</div>}
+</div>
 
             <br/>
             <br/>
@@ -281,7 +302,7 @@ const handleAddToCart = () => {
 <div style = {{height: "4px"}}/>
 
 <div>
-<Button className = "shoe-go-cart-button" style = {{backgroundColor: "black", border: "0px solid black", height: "50px"}}>
+<Button onClick = {() => navigate('/cart')} className = "shoe-go-cart-button" style = {{backgroundColor: "black", border: "0px solid black", height: "50px"}}>
       לקנייה מהירה      
     </Button>
 </div>
@@ -289,9 +310,6 @@ const handleAddToCart = () => {
 <br/>
 <br/>
 
-<>
-  {errorMessage && ( <p style={{ color: 'red', position: "absolute" }}>{errorMessage}</p> )}
-  </>
             <br/>
             <br/>
     
@@ -303,6 +321,19 @@ const handleAddToCart = () => {
 
 
     <div style = {{height: "7rem"}}/>
+
+    <div className = "shoe-desc" style = {{fontSize: "0.9rem", height: "10rem"}}>
+    {shoe.description}
+    </div>
+
+    
+
+
+    <div className = "bottom-hr"><hr/></div>
+
+    <br/>
+
+    
 
     <div className = "shoe-contact-icons" style={{ display: "flex", alignItems: "center", height: "4rem", gap: "35px", justifyContent: "center", borderRadius: "20px", backgroundColor: "#ebe5f5"}}>
     <div style = {{position: "absolute", marginBottom: "6rem", fontSize: "1.2rem"}}><b>ליצירת קשר</b></div>
@@ -318,18 +349,6 @@ const handleAddToCart = () => {
 
     <FontAwesomeIcon icon={faFacebook} style = {{fontSize: "2.2rem", color: "#316ff6", position: "relative", right: "10px", top: "1px", cursor: "pointer"}}/>
     
-    </div>
-
-    <div style = {{height: "4rem"}}/>
-
-    <div className = "bottom-hr"><hr/></div>
-
-    <br/>
-
-    
-
-    <div className = "shoe-desc" style = {{fontSize: "0.9rem", height: "10rem"}}>
-    {shoe.description}
     </div>
 
 

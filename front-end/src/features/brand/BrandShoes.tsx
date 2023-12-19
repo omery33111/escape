@@ -17,6 +17,9 @@ import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAs
 
 
 
+const isMobile = window.innerWidth <= 768;
+
+
 const useStyles = makeStyles((theme: Theme) => ({
   rtlSelect: {
     '&.MuiInput-underline:after': {
@@ -28,7 +31,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   paginator: {
     "& .MuiPaginationItem-root": {
-      color: "#ffffff", // Change the color to white or any desired color
+      color: "#ffffff",
+      fontSize: isMobile ? "0.7rem" : "1rem",
+    },
+
+    "& .MuiPaginationItem-icon": {
+      fontSize: isMobile ? "0.7rem" : "1rem",
     },
   },
 }));
@@ -59,35 +67,53 @@ const BrandShoes = () => {
 
     const [orderBy, setOrderBy] = useState(1);
 
-    const [selectedModels, setSelectedModels] = useState<string[]>(['0']);
+    const [selectedModels, setSelectedModels] = useState(['בחר דגם']);
 
+    
     const handleModelSelection = (selectedModel: string) => {
-      const index = selectedModels.indexOf(selectedModel);
-      if (index === -1) {
-        setSelectedModels([...selectedModels, selectedModel]);
+      if (selectedModel === 'בחר דגם' && selectedModels.length === 0) {
+        // If "בחר דגם" is selected and no other models are selected, keep it selected
+        setSelectedModels(['בחר דגם']);
       } else {
-        const updatedModels = [...selectedModels];
-        updatedModels.splice(index, 1);
-        setSelectedModels(updatedModels);
+        const index = selectedModels.indexOf(selectedModel);
+        if (index === -1) {
+          setSelectedModels([...selectedModels, selectedModel]);
+        } else {
+          const updatedModels = [...selectedModels];
+          updatedModels.splice(index, 1);
+          setSelectedModels(updatedModels);
+        }
       }
     };
+
+
+    useEffect(() => {
+      if (id !== undefined) {
+        
+        if (selectedModels.length === 1 && selectedModels[0] === 'בחר דגם') {
+          dispatch(getPagedShoesOfBrandAsync({
+            id, page, orderBy,
+            models: "0" 
+          }));
+        } else {
+          dispatch(getPagedShoesOfBrandAsync({ 
+            id, page, orderBy, 
+            models: selectedModels.toString() 
+          }));
+        }
+
+        dispatch(getShoesAmountOfBrandAsync(id));
+        dispatch(getSingleBrandAsync(id));
+      }
+    }, [id, page, orderBy, selectedModels]);
+
+
+    const singleBrand = useAppSelector(selectSingleBrand);
 
     const handleOrderByChange = (event: any) => {
       setOrderBy(event.target.value);
     };
 
-
-    useEffect(() => {
-      if (id !== undefined)
-      {
-        dispatch(getPagedShoesOfBrandAsync({ id, page, orderBy, models: selectedModels.toString() }));
-        dispatch(getShoesAmountOfBrandAsync(id));
-        dispatch(getSingleBrandAsync(id));
-      }
-      
-    }, [id, page, orderBy, selectedModels]);
-
-    const singleBrand = useAppSelector(selectSingleBrand);
 
     const controlProps = (size: string) => ({
       checked: selectedModels.indexOf(size) !== -1,
@@ -138,9 +164,6 @@ const BrandShoes = () => {
       });
     };
 
-    const isMobile = window.innerWidth <= 768;
-
-
   return (
     <div>
         
@@ -170,8 +193,7 @@ const BrandShoes = () => {
             onChange={handleOrderByChange}
             variant="standard"
             className={`${classes.rtlSelect} rtl-select`}
-            style={{ color: "white" }}
-          >
+            style={{ color: "white", fontSize: isMobile ? "0.6rem" : "1rem" }}>
             <MenuItem value={1} style={{ direction: "rtl" }}>
               מיון לפי תאריך
             </MenuItem>
@@ -184,26 +206,54 @@ const BrandShoes = () => {
           </Select>
           </div>
         
-          <div style = {{ flex: "1", display: "flex", textAlign: "center", justifyContent: "center", position: "relative", bottom: -3, fontSize: "0.8rem", color: "white", flexWrap: 'wrap-reverse' }}>
-          {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
-  <div key={model} style={{ width: String(model).length > 10 ? "210px" : "120px" }}>        
-    <label className="radio-label">
-      {model}
-    </label>
-    <input
-      {...controlProps(model)}
-      type="radio"
-      className="black-radio"
-      onClick={() => handleModelSelection(model)}
-    />
-  </div>
-))}
-    </div>
+          {isMobile ? (
+          <div style={{ position: 'absolute', transform: 'translateX(8rem)' }}>
+            <Select
+              multiple
+              value={selectedModels}
+              onChange={(event) => setSelectedModels(event.target.value as string[])}
+              variant="standard"
+              className={`${classes.rtlSelect} rtl-select`}
+              style={{ color: 'white', fontSize: isMobile ? '0.6rem' : '1rem' }}
+              renderValue={(selected) => (
+                <div>
+                  {(selected as string[]).includes('בחר דגם') ? 'בחר דגם' : (selected as string[]).join(', ')}
+                </div>
+              )}
+            >
+              {singleBrand.models &&
+                singleBrand.models.length > 0 &&
+                singleBrand.models.map((model) => (
+                  <MenuItem
+                    key={model}
+                    value={model}
+                    style={{ direction: 'rtl', fontWeight: selectedModels.includes(model) ? 'bold' : 'normal' }}
+                  >
+                    {model}
+                  </MenuItem>
+                ))}
+            </Select>
+          </div>
+        ) : (
+          <div style={{ flex: '1', display: 'flex', textAlign: 'center', justifyContent: 'center', position: 'relative', bottom: -3, fontSize: '0.8rem', color: 'white', flexWrap: 'wrap-reverse' }}>
+            {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
+              <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
+                <label className="radio-label">{model}</label>
+                <input
+                  {...controlProps(model)}
+                  type="radio"
+                  className="black-radio"
+                  onClick={() => handleModelSelection(model)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
 
         <div style = {{color: "white", position: "relative", top: 3}}>
         <Pagination
         classes={{ ul: classes.paginator }} // Apply the classes to Pagination
-        style={{ backgroundColor: "#1A002E" }}
+        style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
         count={totalPages}
         page={page}
         onChange={(event, newPage) => setPage(newPage)}
@@ -236,7 +286,7 @@ const BrandShoes = () => {
 
               <div>
                 <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
                 <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
                 <b>₪{shoe.price}</b>
                 </div>

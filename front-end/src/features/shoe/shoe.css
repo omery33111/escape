@@ -43,7 +43,7 @@ body {
 
 
 .shoe-select .MuiSelect-icon {
-  right: 55px;
+  right: 90px;
   color: rgb(0, 0, 0);
 }
 
@@ -73,6 +73,9 @@ body {
 .image-container-brand {
   padding: 30px;
   transition: padding 0.3s ease;
+  justify-content: center;
+  text-align: center;
+  transform: translateX(-0.3rem);
 }
 
 
@@ -110,7 +113,7 @@ body {
 
 
 .first-part {
-  transform: TranslateY(-36dvh);
+  transform: TranslateY(-32dvh);
 }
 
 .second-part {
@@ -197,7 +200,7 @@ body {
 
   .second-part {
     width: 100%;
-    transform: translateY(97dvh) translateX(0dvh);
+    transform: translateY(85dvh) translateX(0dvh);
     z-index: 10;
   }
 
@@ -281,7 +284,7 @@ body {
   }
 
   .image-container-brand:hover {
-    padding: 0;
+    padding: 5px;
   }
 
  

@@ -9,6 +9,10 @@ import { myServer } from '../../endpoints/endpoints';
 import { addProduct, removeProduct, selectCart } from '../cart/cartSlice';
 import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import { getRandomShoesAsync, selectAllShoes } from './shoeSlice';
+import { Button } from '@mui/material';
+import { IoIosArrowUp } from "react-icons/io";
+
+
 
 const RandomShoes = () => {
   const dispatch = useAppDispatch();
@@ -81,12 +85,17 @@ const RandomShoes = () => {
     navigate(`/brand/shoe/${shoeId}`);
   };
 
+
   const isMobile = window.innerWidth <= 768;
 
+  const handleRamdomShoes = () => {
+    dispatch(getRandomShoesAsync());
+  };
+  
   return (
     <div className = 'random-shoes-section'>
         
-    <div style = {{position: "absolute", transform: "TranslateY(5dvh)"}}>
+    <div style = {{position: "absolute", transform: isMobile ? `TranslateY(10dvh)` : `TranslateY(5dvh)`}}>
     
     {isMobile ? ("") : (
       <hr/>
@@ -96,9 +105,17 @@ const RandomShoes = () => {
 
     <div style = {{height: "0.8rem"}}/>
 
-    <div style = {{justifyContent: "center", textAlign: "center", fontSize: "1.5rem"}}><b>מוצרים דומים</b></div>
+    <div style = {{justifyContent: "center", textAlign: "center", fontSize: "1.5rem"}}>
+      <b>מוצרים דומים</b>
+
+      <br/>
+
+      <IoIosArrowUp onClick = {handleRamdomShoes} style = {{cursor: "pointer", transform: "scaleY(1.5) scaleX(2)", marginBottom: "-2rem"}}/>
+      </div>
 
     <div className="map-items" style={{ transform: "TranslateY(3dvh)" }}>
+
+      
           {shoes.map((shoe, shoeIndex) => (
             <Card key={shoe.id} className="map-item sharper-border">
               <Card.Body>
@@ -117,7 +134,10 @@ const RandomShoes = () => {
 
               <div>
                 <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+
+                
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
+
                 <div >
                 <b>₪{shoe.price}</b>
                 </div>
@@ -186,7 +206,7 @@ const RandomShoes = () => {
     </div>
     </div>
 
-    <div style = {{height: "5rem"}}/>
+    <div style = {{height: "10rem"}}/>
     </div>
   )
 }
