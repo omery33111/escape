@@ -1,6 +1,8 @@
 import { faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ButtonGroup, InputLabel, MenuItem, Select, Theme } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { MenuItem, Select, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -11,14 +13,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
+import { getSingleBrandAsync, selectSingleBrand } from '../brand/brandSlice';
 import { addProduct, removeProduct, selectCart } from '../cart/cartSlice';
 import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import RandomShoes from './RandomShoes';
 import './shoe.css';
 import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe } from './shoeSlice';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { getSingleBrandAsync, selectSingleBrand } from '../brand/brandSlice';
 
 
 

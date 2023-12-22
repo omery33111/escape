@@ -22,6 +22,7 @@ import BrandShoes from './features/brand/BrandShoes';
 import Register from './features/authentication/Register';
 import Profile from './features/profile/Profile';
 import ShoePage from './features/shoe/ShoePage';
+import Shoe from './features/shoe/Shoe';
 
 
 
@@ -66,6 +67,11 @@ root.render(
       <Route path = "/brand/shoes">
         <Route index element = {<BrandShoes />} />
         <Route path = ":id" element = {<BrandShoes />} />
+      </Route>
+
+      <Route path = "/brand/shoepage">
+        <Route index element = {<Shoe />} />
+        <Route path = ":id" element = {<Shoe />} />
       </Route>
 
       <Route path = "/brand/shoe">
