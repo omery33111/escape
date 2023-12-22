@@ -174,7 +174,22 @@ const BrandShoes = () => {
 
         
         <div>
-        <div style = {{direction: "rtl", marginBottom: '4rem', textAlign: "center"}}>
+
+        <div style = {{direction: "rtl", marginBottom: '4rem', textAlign: "right"}}>
+        
+        <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px" }}>
+
+          <div onClick = {() => navigate("/")}>
+          דף הבית
+          </div>
+
+          &nbsp;/&nbsp;
+
+          <div onClick = {() => navigate(`/brand/shoes/${id}/`)}>
+          {singleBrand.name}
+          </div>
+
+        </div>
 
         <b style = {{fontSize: "1.7rem"}}>
           {singleBrand.name}
@@ -266,7 +281,7 @@ const BrandShoes = () => {
 
             <br/>
 
-            <div className="map-items">
+            <div className="brand-map-items">
             {shoes.map((shoe, shoeIndex) => (
           <Card key={shoe.id} className="map-item sharp-border">
             <Card.Body>
@@ -293,23 +308,9 @@ const BrandShoes = () => {
   
   {shoe.price_before ? (
     <div style={{ position: "relative"}}>
-      <b>
+      <b className = "removed-price">
       ₪{shoe.price_before}
       </b>
-      <span
-        style={{
-          color: "rgba(255, 0, 0, 0.3)", // Red color with 50% transparency
-          position: "absolute",
-          top: -2,
-          bottom: 0,
-          right: "1px", // Adjust this value for proper alignment
-          fontSize: "25px",
-          transform: "rotate(90deg) scaleY(4.1) scaleX(1.3)", // Stretching X horizontally
-          display: "inline-block",
-        }}
-      >
-        X
-      </span>
     </div>
   ) : (
     ""

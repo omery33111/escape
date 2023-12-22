@@ -18,6 +18,7 @@ import './shoe.css';
 import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe } from './shoeSlice';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { getSingleBrandAsync, selectSingleBrand } from '../brand/brandSlice';
 
 
 
@@ -40,17 +41,27 @@ const ShoePage = () => {
     const [otherImages, setOtherImages] = useState<string[]>([]);
     const shoe = useAppSelector(selectSingleShoe);
 
+    const singleBrand = useAppSelector(selectSingleBrand);
+
     const { id } = useParams();
 
     useEffect(() => {
-      dispatch(getRandomShoesAsync())
+      dispatch(getRandomShoesAsync()); // Fetch random shoes
+      
+      if (id !== undefined && id !== '0') {
+        dispatch(getSingleShoeAsync(id));
+      }
+      
+    }, [dispatch, id])
+    ;
+    
+    useEffect(() => {
+      if (shoe.brand && String(shoe.brand) !== '0') {
+        dispatch(getSingleBrandAsync(shoe.brand.toString()));
+      }
+    }, [dispatch, shoe.brand]);
+    
 
-        if (id !== undefined) {
-            dispatch(getSingleShoeAsync(id));
-        }
-
-        
-    }, [dispatch, id]);
 
     useEffect(() => {
         if (shoe.images && shoe.images.length > 0) {
@@ -137,7 +148,7 @@ const handleSizeChange = (event: any) => {
   };
 
   useEffect(() => {
-    setSelectedSize('מידות');
+    setSelectedSize('מידה');
 }, []);
 
 const cart = useAppSelector(selectCart);
@@ -164,7 +175,7 @@ const cart = useAppSelector(selectCart);
   };
 
   const handleAddToCart = () => {
-    if (selectedSize === 'מידות') {
+    if (selectedSize === 'מידה') {
     setErrorMessage('יש לבחור מידה');
     } else if (!selectedSize) {
       setErrorMessage('יש לבחור מידה');
@@ -182,9 +193,28 @@ const cart = useAppSelector(selectCart);
             <div style={{ direction: "rtl", position: "relative" }} className="second-part">
 
             {isMobile ? ("") : (<h4 className = 'shoe-name'>
-                      <b>
+                      <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px" }}>
+
+                      <div onClick = {() => navigate("/")}>
+                      דף הבית
+                      </div>
+
+                      &nbsp;/&nbsp;
+
+                      <div onClick = {() => navigate(`/brand/shoes/${singleBrand.id}/`)}>
+                      {singleBrand.name}
+                      </div>
+
+                      &nbsp;/&nbsp;
+
+                      <div onClick = {() => navigate(`/brand/shoe/${id}/`)}>
+                      {shoe.name}
+                      </div>
+
+                      </div>
+
                     {shoe.name}
-                    </b>
+
                     </h4>)}
                     
 
@@ -192,24 +222,16 @@ const cart = useAppSelector(selectCart);
                     <div className = "shoe-price" style={{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
                         
                     <h4>₪{shoe.price}</h4>
-  
+
                     {shoe.price_before ? (
-                        <div style={{ position: "relative"}}>
-                        <h4>
-                        ₪{shoe.price_before}
-                        </h4>
-                        <span style={{ color: "rgba(255, 0, 0, 0.3)",
-                                        position: "absolute",
-                                        top: -2,
-                                        bottom: 0,
-                                        right: "1px",
-                                        fontSize: "25px",
-                                        transform: "rotate(90deg) scaleY(4.1) scaleX(1.3)",
-                                        display: "inline-block"}}>
-                            X
-                        </span>
-                        </div>
-                    ) : ("")}
+    <div style={{ position: "relative"}}>
+      <h4 className = "removed-price">
+      ₪{shoe.price_before}
+      </h4>
+    </div>
+  ) : (
+    ""
+  )}
                     </div>
 
                 <div style = {{height: "40px"}}/>
@@ -233,8 +255,8 @@ const cart = useAppSelector(selectCart);
     }}
 >
     {/* Placeholder disabled option */}
-    <MenuItem value="מידות" disabled style={{ direction: 'rtl' }}>
-        מידות
+    <MenuItem value="מידה" disabled style={{ direction: 'rtl' }}>
+        מידה
     </MenuItem>
 
     {/* Other size options */}
@@ -292,8 +314,8 @@ const cart = useAppSelector(selectCart);
   &nbsp;
 
   {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <Button onClick={() => dispatch(removeWish({ item: shoe }))} style = {{backgroundColor: "white", border: "0px solid black"}}><FaHeart style = {{margin: 0, fontSize: "1.5rem", color: "red"}}/></Button>
-              : <Button onClick={() => dispatch(addWish({ item: shoe }))} style = {{backgroundColor: "red", border: "0px solid black"}}><FaHeart style = {{margin: 0, fontSize: "1.5rem"}}/></Button>}
+              ? <Button variant = "none" onClick={() => dispatch(removeWish({ item: shoe }))} style = {{border: "0px solid black"}}><FaHeart style = {{margin: 0, fontSize: "1.5rem", color: "red", transition: "0.3s"}}/></Button>
+              : <Button variant = "none" onClick={() => dispatch(addWish({ item: shoe }))} style = {{border: "0px solid black"}}><FaHeart style = {{margin: 0, fontSize: "1.5rem", color: "black", transition: "0.3s"}}/></Button>}
 
   
   
@@ -383,8 +405,8 @@ const cart = useAppSelector(selectCart);
               <TransformComponent>
                 <div style = {{cursor: 'zoom-in'}}>
                 <img
-                width='100%'
-                height='auto'
+                width={isMobile ? "340px" : "550"}
+                height={isMobile ? "340px" : "550"}
                   style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)'}}
                   src={`${myServer}/static/images/${mainImage}`}
                   alt={`shoeMainImage`}

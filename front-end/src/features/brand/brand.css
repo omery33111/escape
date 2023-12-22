@@ -1,6 +1,5 @@
 /* GLOBAL RESPONSIVE STYLING */
 body {
-  font-family: "Lucida Console", "Courier New", monospace;
   margin: 0;
   padding: 0;
 }
@@ -51,13 +50,13 @@ body {
 }
 
 /* Set a fixed number of columns for larger screens */
-.map-items {
+.brand-map-items {
   max-width: 1300px;
   width: 100%;
   display: grid;
-  gap: 1.5rem;
+  gap: 0.7rem;
   text-align: center;
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-template-columns: repeat(4, minmax(300px, 1fr));
 }
 
 .sharp-border {
@@ -92,34 +91,34 @@ body {
 .card-info {
   position: relative;
   transition: 0.3s ease;
-  font-size: 0.8rem;
-  top: 3px
+  font-size: 1rem;
 }
 
-.card-info-hover {
-  position: relative;
-  transition: 0.3s ease;
-  font-size: 1rem;
-  top: 0px
+
+.removed-price {
+  text-decoration: line-through;
+  color: grey;
 }
+
+
 
 
 /* MEDIA QUERIES */
 /* Switch to a flexible layout for smaller screens */
 @media (max-width: 1200px) {
-  .map-items {
+  .brand-map-items {
     grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
   }
 }
 
 @media (max-width: 900px) {
-  .map-items {
+  .brand-map-items {
     grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Adjust the number of columns and width as needed */
   }
 }
 
 @media (max-width: 768px) {
-  .map-items {
+  .brand-map-items {
     grid-template-columns: repeat(2, 1fr); /* Single column for smaller screens */
   }
 }

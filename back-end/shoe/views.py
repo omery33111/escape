@@ -8,6 +8,7 @@ from shoe.models import Shoe
 
 from random import sample
 
+from django.db.models import CharField, Case, Value, When
 
 
 
@@ -24,11 +25,11 @@ def get_all_shoes(request):
 def get_random_shoes(request):
     try:
         all_shoes = list(Shoe.objects.all())
-        if len(all_shoes) < 4:
+        if len(all_shoes) < 10:
             return Response([], status=status.HTTP_200_OK)
 
-        random_4_shoes = sample(all_shoes, 4)
-        serializer = ShoeSerializer(random_4_shoes, many=True)
+        random_10_shoes = sample(all_shoes, 10)
+        serializer = ShoeSerializer(random_10_shoes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -62,10 +63,18 @@ def post_shoe_image(request):
 def search_shoe(request):
     name = request.GET.get("name", "").strip()
 
-    if not name:  # If the 'name' parameter is empty or contains only whitespace
+    if not name:
         return Response([], status=status.HTTP_200_OK)
 
-    shoes = Shoe.objects.filter(name__icontains=name)
+    shoes = Shoe.objects.filter(name__icontains=name).annotate(
+        similarity=Case(
+            When(name__iexact=name, then=Value(2)),
+            When(name__istartswith=name, then=Value(1.5)),
+            When(name__icontains=name, then=Value(1)),
+            default=Value(0),
+            output_field=CharField(),
+        )
+    ).order_by('-similarity')
 
     serializer = ShoeSerializer(shoes, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

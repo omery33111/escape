@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Container } from 'react-bootstrap';
 import { BiSolidCart, BiSolidCartAdd } from 'react-icons/bi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { GiConverseShoe } from 'react-icons/gi';
@@ -10,7 +10,7 @@ import { addProduct, removeProduct, selectCart } from '../cart/cartSlice';
 import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import { getRandomShoesAsync, selectAllShoes } from './shoeSlice';
 import { Button } from '@mui/material';
-import { IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
 
 
 
@@ -91,11 +91,61 @@ const RandomShoes = () => {
   const handleRamdomShoes = () => {
     dispatch(getRandomShoesAsync());
   };
+
+
+  const [scrollPosition, setScrollPosition] = useState(0); // State to manage scroll position
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      const newPosition = scrollPosition - 324; // Adjust the scroll amount as needed
+      setScrollPosition(newPosition >= 0 ? newPosition : 0);
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      const newPosition = scrollPosition + 324; // Adjust the scroll amount as needed
+      const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+      setScrollPosition(newPosition <= maxScroll ? newPosition : maxScroll);
+    }
+  };
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    }
+  }, [scrollPosition]);
+
+  const calculateInitialScrollPosition = () => {
+    const containerWidth = scrollRef.current?.clientWidth || 0;
+    const totalContentWidth = scrollRef.current?.scrollWidth || 0;
+  
+    let initialScroll = 0;
+  
+    // Set initial scroll differently based on isMobile
+    if (isMobile) {
+      initialScroll = 165; // Set the initial scroll to 30 for mobile devices
+    }
+  
+    // Calculate the position to center the initial scroll
+    return Math.max(0, initialScroll - containerWidth / 2 + totalContentWidth / 2);
+  };
+
+  useEffect(() => {
+    // Set the scroll position once the component is mounted
+    if (scrollRef.current) {
+      const initialPosition = calculateInitialScrollPosition();
+      scrollRef.current.scrollLeft = initialPosition;
+      setScrollPosition(initialPosition);
+    }
+  }, []);
+  
   
   return (
     <div className = 'random-shoes-section'>
         
-    <div style = {{position: "absolute", transform: isMobile ? `TranslateY(10dvh)` : `TranslateY(5dvh)`}}>
+    <div style = {{position: "absolute", transform: isMobile ? `TranslateY(10dvh)` : `TranslateY(5dvh)`}} className = 'random-shoes-section'>
     
     {isMobile ? ("") : (
       <hr/>
@@ -110,12 +160,12 @@ const RandomShoes = () => {
 
       <br/>
 
-      <IoIosArrowUp onClick = {handleRamdomShoes} style = {{cursor: "pointer", transform: "scaleY(1.5) scaleX(2)", marginBottom: "-2rem"}}/>
+      <IoIosArrowUp className = "arrow-icon" onClick = {handleRamdomShoes}/>
       </div>
 
-    <div className="map-items" style={{ transform: "TranslateY(3dvh)" }}>
-
-      
+      <div className="scroll-wrapper">
+          <IoIosArrowBack className="scroll-arrow scroll-arrow1" onClick={scrollLeft} />
+          <div className="map-items" ref={scrollRef}>
           {shoes.map((shoe, shoeIndex) => (
             <Card key={shoe.id} className="map-item sharper-border">
               <Card.Body>
@@ -137,34 +187,20 @@ const RandomShoes = () => {
 
                 
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
-
-                <div >
-                <b>₪{shoe.price}</b>
-                </div>
   
-  {shoe.price_before ? (
+                {shoe.price_before ? (
     <div style={{ position: "relative"}}>
-      <b>
+      <b className = "removed-price">
       ₪{shoe.price_before}
       </b>
-      <span
-        style={{
-          color: "rgba(255, 0, 0, 0.3)", // Red color with 50% transparency
-          position: "absolute",
-          top: -2,
-          bottom: 0,
-          right: "1px", // Adjust this value for proper alignment
-          fontSize: "25px",
-          transform: "rotate(90deg) scaleY(4.1) scaleX(1.3)", // Stretching X horizontally
-          display: "inline-block",
-        }}
-      >
-        X
-      </span>
     </div>
   ) : (
     ""
   )}
+
+<div>
+                <b>₪{shoe.price}</b>
+                </div>
 </div>
                 </div>
                 
@@ -204,9 +240,13 @@ const RandomShoes = () => {
           </Card>
         ))}
     </div>
+    <IoIosArrowForward className="scroll-arrow scroll-arrow2" onClick={scrollRight} />
+        </div>
+    
     </div>
 
     <div style = {{height: "10rem"}}/>
+
     </div>
   )
 }

@@ -61,10 +61,10 @@ const MyNavbar = () => {
 
             </Nav>
 
-            <Nav.Link style={{ width: '30%', direction: "rtl" }}>
+            <div style={{ width: '30%', direction: "rtl" }}>
             
             <Autocomplete
-          className={classes.autocompleteRoot} // Apply the defined styles here
+          className={classes.autocompleteRoot}
           freeSolo
           options={shoes.map((shoe) => ({
             id: shoe.id,
@@ -100,7 +100,7 @@ const MyNavbar = () => {
           )}
         />
 
-            </Nav.Link>
+            </div>
             
 
             <Nav style = {{gap: "30px"}}>

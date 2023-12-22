@@ -65,6 +65,45 @@ const ShoePost = () => {
     }
   };
 
+
+  const nikeSizes = [
+    '36', '36.5', '37', '37.5', '38', '38.5', '39', '39.5', '40',
+    '40.5', '41', '41.5', '42', '42.5', '43', '43.5', '44', '44.5',
+    '45', '45.5', '46', '46.5', '47', '47.5'
+  ];
+  
+
+  const [includeNikeSizes, setIncludeNikeSizes] = useState(false);
+
+  const handleNikeSizesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIncludeNikeSizes(e.target.checked);
+
+    if (e.target.checked) {
+      setSizesArray([...nikeSizes]);
+    } else {
+      setSizesArray(['']); // Reset to an empty array or default value when unchecked
+    }
+  };
+
+
+  const adidasSizes = [
+    '36', '36 2/3', '37 1/3', '38', '38 2/3', '39 1/3', '40',
+    '40 2/3', '41 1/3', '42', '42 2/3', '43 1/3', '44', '44 2/3',
+    '45 1/3', '46', '46 2/3', '47 1/3', '48'
+  ];
+
+  const [includeAdidasSizes, setIncludeAdidasSizes] = useState(false);
+
+  const handleAdidasSizesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIncludeAdidasSizes(e.target.checked);
+
+    if (e.target.checked) {
+      setSizesArray([...adidasSizes]);
+    } else {
+      setSizesArray(['']); // Reset to an empty array or default value when unchecked
+    }
+  };
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
   
@@ -244,6 +283,25 @@ const ShoePost = () => {
             </Form.Label>
             <Form.Control type="number" required value={price} min = {0} onChange={handlePriceChange} />
           </Form.Group>
+            
+
+          <Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="Include Nike Sizes"
+              checked={includeNikeSizes}
+              onChange={handleNikeSizesChange}
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="Include Adidas Sizes"
+              checked={includeAdidasSizes}
+              onChange={handleAdidasSizesChange}
+            />
+          </Form.Group>
 
           <Form.Group>
   <Form.Label>
@@ -252,7 +310,6 @@ const ShoePost = () => {
   {sizesArray.map((size, index) => (
     <div key={index}>
       <Form.Control
-      required
         type="text"
         value={size}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSizeInputChange(index, e)}
