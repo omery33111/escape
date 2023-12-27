@@ -4,6 +4,7 @@ import { myServer } from '../../endpoints/endpoints';
 import { selectAddress } from '../shipping/shippingSlice';
 import { getProfileAsync, selectMyProfile } from './profileSlice';
 import AddressManagement from '../shipping/AddressManagement';
+import { logoutAsync } from '../authentication/authenticationSlice';
 
 
 
@@ -28,8 +29,11 @@ const Profile = () => {
         const minutes = date.getMinutes().toString().padStart(2, "0");
         return `${year}-${month}-${day}, ${hours}:${minutes}`;
       }
-
       
+
+    const handleLogout = () => {
+        dispatch(logoutAsync())
+    };
 
   return (
     <div>
@@ -47,6 +51,7 @@ const Profile = () => {
 
           <AddressManagement />
       
+          <button onClick={handleLogout}>Logout</button>
     </div>
   )
 }

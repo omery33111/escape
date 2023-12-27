@@ -7,5 +7,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('', views.index),
     path('register/', views.register),
+    path('logout/', views.logout),
     path('login/', views.MyTokenObtainPairView.as_view(), name = 'token_obtain_pair'),
 ]

@@ -61,7 +61,7 @@ def brands_amount(request):
 
 
 
-@permission_classes([IsStaff])
+@permission_classes([IsStaff, IsAuthenticated])
 @api_view(["DELETE"])
 def delete_brand(request, pk = -1):
     if request.method == "DELETE":

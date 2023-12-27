@@ -267,7 +267,7 @@ const ShoePost = () => {
             <Form.Label>
               <h5>Description</h5>
             </Form.Label>
-            <Form.Control type="text" required value={description} onChange={handleDescriptionChange} />
+            <Form.Control as="textarea" required value={description} onChange={handleDescriptionChange} />
           </Form.Group>
 
           <Form.Group>

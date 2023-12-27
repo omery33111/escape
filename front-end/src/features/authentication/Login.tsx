@@ -68,6 +68,9 @@ const Login = () => {
       password,
     };
 
+    const submitTime = new Date().toISOString();
+    localStorage.setItem('loginTime', submitTime);
+
     dispatch(loginAsync(userData));
   };
 

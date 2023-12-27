@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { Card, Container } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { BiSolidCart, BiSolidCartAdd } from 'react-icons/bi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { GiConverseShoe } from 'react-icons/gi';
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
 import { addProduct, removeProduct, selectCart } from '../cart/cartSlice';
 import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
-import { getRandomShoesAsync, selectAllShoes } from './shoeSlice';
-import { Button } from '@mui/material';
-import { IoIosArrowBack, IoIosArrowForward, IoIosArrowUp } from "react-icons/io";
+import './shoe.css';
+import { selectAllShoes } from './shoeSlice';
 
 
 
@@ -59,9 +59,6 @@ const RandomShoes = () => {
     });
   };
 
-  useEffect(() => {
-    dispatch(getRandomShoesAsync());
-  }, [dispatch]);
 
   useEffect(() => {
     setImageIndexes(new Array(shoes.length).fill(0));
@@ -88,24 +85,20 @@ const RandomShoes = () => {
 
   const isMobile = window.innerWidth <= 768;
 
-  const handleRamdomShoes = () => {
-    dispatch(getRandomShoesAsync());
-  };
-
 
   const [scrollPosition, setScrollPosition] = useState(0); // State to manage scroll position
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      const newPosition = scrollPosition - 324; // Adjust the scroll amount as needed
+      const newPosition = scrollPosition - 310; // Adjust the scroll amount as needed
       setScrollPosition(newPosition >= 0 ? newPosition : 0);
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      const newPosition = scrollPosition + 324; // Adjust the scroll amount as needed
+      const newPosition = scrollPosition + 310; // Adjust the scroll amount as needed
       const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
       setScrollPosition(newPosition <= maxScroll ? newPosition : maxScroll);
     }
@@ -123,14 +116,13 @@ const RandomShoes = () => {
   
     let initialScroll = 0;
   
-    // Set initial scroll differently based on isMobile
-    if (isMobile) {
-      initialScroll = 165; // Set the initial scroll to 30 for mobile devices
-    }
-  
-    // Calculate the position to center the initial scroll
-    return Math.max(0, initialScroll - containerWidth / 2 + totalContentWidth / 2);
+    // Calculate the position to start from the leftmost side of the content
+    return Math.min(Math.max(0, initialScroll), totalContentWidth - containerWidth);
   };
+  
+
+
+
 
   useEffect(() => {
     // Set the scroll position once the component is mounted
@@ -142,54 +134,50 @@ const RandomShoes = () => {
   }, []);
   
   
+  const [isHovered, setIsHovered] = useState<number | null>(null);
+
+  const isTablet = window.innerWidth <= 0 || window.innerWidth <= 1024;
+
   return (
-    <div className = 'random-shoes-section'>
-        
-    <div style = {{position: "absolute", transform: isMobile ? `TranslateY(10dvh)` : `TranslateY(5dvh)`}} className = 'random-shoes-section'>
-    
-    {isMobile ? ("") : (
-      <hr/>
-    )}
+    <div>
 
-    
-
-    <div style = {{height: "0.8rem"}}/>
-
-    <div style = {{justifyContent: "center", textAlign: "center", fontSize: "1.5rem"}}>
+    <div style = {{fontSize: "1.5rem", margin: "1rem", justifyContent: "center", textAlign: "center"}}>
       <b>מוצרים דומים</b>
 
       <br/>
 
-      <IoIosArrowUp className = "arrow-icon" onClick = {handleRamdomShoes}/>
       </div>
 
-      <div className="scroll-wrapper">
+      <div className="scroll-wrapper" style = {{backgroundColor: "#E3E3E3", borderRadius: "10px", padding: isMobile ? "0px" : "5px", boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.4)"}}>
           <IoIosArrowBack className="scroll-arrow scroll-arrow1" onClick={scrollLeft} />
-          <div className="map-items" ref={scrollRef}>
-          {shoes.map((shoe, shoeIndex) => (
-            <Card key={shoe.id} className="map-item sharper-border">
+          <div className="random-map-items" ref={scrollRef}>
+
+            {isMobile || isTablet ? (
+              <>
+                                        {shoes.map((shoe, shoeIndex) => (
+            <Card key={shoe.id} className="sharp-border" onClick={() => handleNavigation(String(shoe.id))}>
               <Card.Body>
-                <div style={{ marginRight: "-0.9rem" }}>
+                <div>
                   <img
-                    className="image-container-brand"
+                    className="image-container-random"
                     onMouseEnter={() => handleMouseEnter(shoeIndex)}
                     onMouseLeave={() => handleMouseLeave(shoeIndex)}
-                    onClick={() => handleNavigation(String(shoe.id))}
                     style={{ cursor: "pointer" }}
                     src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
-                    width={isMobile ? `150px` : `225px`}
-                    height={isMobile ? `150px` : `225px`}
+                    width={isMobile || isTablet ? `130px` : `225px`}
+                    height={isMobile || isTablet ? `130px` : `225px`}
                   />
                 </div>
 
               <div>
-                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+                <Card.Text style = {{width: "110%", position: "relative", right: "4px", height: "90px", cursor: "pointer", fontSize: "0.8rem"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
 
                 
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
-  
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile || isTablet ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
+                <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
+                
                 {shoe.price_before ? (
-    <div style={{ position: "relative"}}>
+    <div style={{ fontSize: "0.8rem"}}>
       <b className = "removed-price">
       ₪{shoe.price_before}
       </b>
@@ -198,40 +186,87 @@ const RandomShoes = () => {
     ""
   )}
 
-<div>
-                <b>₪{shoe.price}</b>
                 </div>
+                <b style = {{fontSize: "0.8rem"}}>₪{shoe.price}</b>
+  
+ 
 </div>
                 </div>
                 
-                
-                <hr />
 
+              
+            </Card.Body>
+          </Card>
+        ))}
+              </>
+            ) : (
+              <>
+                          {shoes.map((shoe, shoeIndex) => (
+            <Card key={shoe.id} className="sharp-border">
+              <Card.Body>
+                <div>
+                  <img
+                    className="image-container-brand"
+                    onMouseEnter={() => handleMouseEnter(shoeIndex)}
+                    onMouseLeave={() => handleMouseLeave(shoeIndex)}
+                    onClick={() => handleNavigation(String(shoe.id))}
+                    style={{ cursor: "pointer"}}
+                    src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                    width={isMobile || isTablet ? `150px` : `225px`}
+                    height={isMobile || isTablet ? `150px` : `225px`}
+                  />
+                </div>
+
+              <div>
+                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+
+                
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile || isTablet ? "1dvh" : "2.5dvh"}` : '0dvh'}`}}>
+                <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
+                
+                {shoe.price_before ? (
+    <div style={{ position: "relative", top: "1px"}}>
+      <b className = "removed-price">
+      ₪{shoe.price_before}
+      </b>
+    </div>
+  ) : (
+    ""
+  )}
+
+                </div>
+                <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
+ 
+</div>
+                </div>
+                <hr />
                 <div style = {{display: "flex", justifyContent: "space-evenly"}}>
                 
-                <div style = {{cursor: "pointer", color: "#3C005A", position: "relative", top: "-3px"}}>
+                <div style = {{cursor: "pointer", color: "black", position: "relative", top: "-2px"}}>
 
+                <div style = {{cursor: "pointer", color: "black"}}>
+                {wishlist.find((item) => String(item.id) === String(shoe.id))
+              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#3C005A"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+              : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
+                </div>
+                
+                </div>
+                
+                <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
+                <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
+                {isHovered === shoeIndex && (
+    <div style={{ position: "absolute", fontSize: "0.8rem", marginTop: "-5px", transform: "translateX(-10px)" }}>
+      לעמוד הנעל
+    </div>
+  )}
+                </div>
+
+                <div style = {{cursor: "pointer", color: "black", position: "relative", top: "-3px"}}>
+                
                 {cart.find((item) => String(item.id) === String(shoe.id))
               ? <BiSolidCart style = {{fontSize: "2rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}/>
-              : <BiSolidCartAdd style = {{fontSize: "2rem", position: "relative", top: "1.5px"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
+              : <BiSolidCartAdd style = {{fontSize: "2rem"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
                 
-                </div>
-                
-                <div style = {{cursor: "pointer", color: "#3C005A"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
-                  {isMobile ? (
-                    <GiConverseShoe style = {{fontSize: "2rem"}}/>
-                  ) : (<GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-1px", top: "0px"}}/>)}
-                
-
-                <div style = {{position: "absolute", fontSize: "0.8rem", justifyContent: "center", transform: "translateX(-30px) translateY(-2px)"}}>
-                !לעמוד הנעל
-                </div>
-                </div>
-
-                <div style = {{cursor: "pointer", color: "#3C005A"}}>
-                {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '2px'}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
-              : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '2px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
                 </div>
 
                 </div>
@@ -239,14 +274,13 @@ const RandomShoes = () => {
             </Card.Body>
           </Card>
         ))}
+        </>
+            )}
+
     </div>
     <IoIosArrowForward className="scroll-arrow scroll-arrow2" onClick={scrollRight} />
         </div>
     
-    </div>
-
-    <div style = {{height: "10rem"}}/>
-
     </div>
   )
 }

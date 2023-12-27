@@ -164,6 +164,10 @@ const BrandShoes = () => {
       });
     };
 
+
+    const [isHovered, setIsHovered] = useState<number | null>(null);
+
+
   return (
     <div>
         
@@ -191,9 +195,9 @@ const BrandShoes = () => {
 
         </div>
 
-        <b style = {{fontSize: "1.7rem"}}>
+        <div style = {{fontSize: "2.3rem"}}>
           {singleBrand.name}
-          </b><br/>
+          </div><br/>
 
         <small>
         {singleBrand.description}
@@ -303,11 +307,13 @@ const BrandShoes = () => {
                 <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
                 <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
-                <b>₪{shoe.price}</b>
+                
+                <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
+
                 </div>
   
   {shoe.price_before ? (
-    <div style={{ position: "relative"}}>
+    <div style={{ position: "relative", top: "1px"}}>
       <b className = "removed-price">
       ₪{shoe.price_before}
       </b>
@@ -320,7 +326,7 @@ const BrandShoes = () => {
                 <hr />
                 <div style = {{display: "flex", justifyContent: "space-evenly"}}>
                 
-                <div style = {{cursor: "pointer", color: "#3C005A", position: "relative", top: "-2px"}}>
+                <div style = {{cursor: "pointer", color: "black", position: "relative", top: "-2px"}}>
 
                 {cart.find((item) => String(item.id) === String(shoe.id))
               ? <BiSolidCart style = {{fontSize: "2rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}/>
@@ -328,16 +334,18 @@ const BrandShoes = () => {
                 
                 </div>
                 
-                <div style = {{cursor: "pointer", color: "#3C005A"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
+                <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
                 <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
-                <div style = {{position: "absolute", fontSize: "0.8rem", marginRight: "-30px", marginTop: "-5px"}}>
-                לעמוד הנעל!
-                </div>
+                {isHovered === shoeIndex && (
+    <div style={{ position: "absolute", fontSize: "0.8rem", marginRight: "-18px", marginTop: "-5px" }}>
+      לעמוד הנעל
+    </div>
+  )}
                 </div>
 
-                <div style = {{cursor: "pointer", color: "#3C005A"}}>
+                <div style = {{cursor: "pointer", color: "black"}}>
                 {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#3C005A"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
               : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
                 </div>
 

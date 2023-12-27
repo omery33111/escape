@@ -10,7 +10,6 @@ import HomePage from './features/base/HomePage';
 import Cart from './features/cart/Cart';
 import Orders from './features/order/Orders';
 import Login from './features/authentication/Login';
-import Shoes from './features/shoe/Shoes';
 import AdminMenu from './features/administrator/AdminMenu';
 import ShoesPanel from './features/administrator/ShoesPanel';
 import BrandPanel from './features/administrator/BrandPanel';
@@ -21,7 +20,6 @@ import ShoePut from './features/administrator/ShoePut';
 import BrandShoes from './features/brand/BrandShoes';
 import Register from './features/authentication/Register';
 import Profile from './features/profile/Profile';
-import ShoePage from './features/shoe/ShoePage';
 import Shoe from './features/shoe/Shoe';
 
 
@@ -62,21 +60,15 @@ root.render(
         <Route path = ":id" element = {<BrandPut />} />
       </Route>
 
-      <Route path = "/shoes" element={<Shoes />} />
-
       <Route path = "/brand/shoes">
         <Route index element = {<BrandShoes />} />
         <Route path = ":id" element = {<BrandShoes />} />
       </Route>
 
-      <Route path = "/brand/shoepage">
-        <Route index element = {<Shoe />} />
-        <Route path = ":id" element = {<Shoe />} />
-      </Route>
 
       <Route path = "/brand/shoe">
-        <Route index element = {<ShoePage />} />
-        <Route path = ":id" element = {<ShoePage />} />
+        <Route index element = {<Shoe />} />
+        <Route path = ":id" element = {<Shoe />} />
       </Route>
 
 

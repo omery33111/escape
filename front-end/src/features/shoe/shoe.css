@@ -1,7 +1,6 @@
 /* GLOBAL RESPONSIVE STYLING */
-body {
-  margin: 0;
-  padding: 0;
+.shoe-page-height {
+  max-height: 130dvh;
 }
 
 
@@ -9,11 +8,6 @@ body {
   direction: rtl;
 }
 
-
-.shoe-page-images {
-  width: 100%;
-  margin-bottom: 10px;
-}
 
 
 .rest-images {
@@ -47,7 +41,7 @@ body {
 
 .vertical-line {
   border-left: 1px solid rgb(201, 201, 201);
-  height: 110dvh;
+  height: 105dvh;
   position: absolute;
   transform: translateX(-1.5rem) translateY(0.7rem);
 }
@@ -70,98 +64,18 @@ body {
 }
 
 
-.image-container {
+
+
+.random-map-items {
   width: 100%;
-}
-
-
-.shoe-page-images {
-  transform: translateY(-68dvh);
-  width: 47%;
-}
-
-.random-shoes-section {
-  max-width: 1300px;
-}
-
-
-.image-container-brand:hover {
-  padding: 0;
-}
-
-
-.random-shoes {
-  max-width: 1300px;
-  width: 100%;
+  overflow-x: hidden;
   display: grid;
-  gap: 1.5rem;
-  text-align: center;
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
-}
-
-
-.sharper-border {
-  border-radius: 0;
-  border: 1;
-  transition: 0.3s ease-in-out;
-}
-
-.sharper-border:hover {
-  border-radius: 0;
-  border: 1.5px solid black;
-  transition: 0.3s ease-in-out;
-}
-
-
-.shoe-page-max-height {
-  max-height: 80dvh;
-}
-
-
-.first-part {
-  transform: TranslateY(-35dvh);
-}
-
-.second-part {
-  transform: translateY(0dvh) translateX(-5dvh);
-}
-
-
-.group-buttons {
-  max-width: 30%;
-}
-
-.shoe-go-cart-button {
-  width: 27%;
-}
-
-.shoe-safetty-pic {
-  width: 40%;
-}
-
-.shoe-contact-icons {
-  width: 40%;
-}
-
-/* .shoe-desc {
-  width: 41%;
-} */
-
-.bottom-hr {
+  grid-template-columns: repeat(10, minmax(300px, 1fr));
+  flex-wrap: nowrap;
+  padding: 2rem 0;
+  gap: 0.6rem;
   justify-content: center;
   text-align: center;
-  width: 38.1%;
-}
-
-
-.map-items {
-  width: 100%;
-  overflow-y: hidden;
-  max-width: 1272px;
-  display: grid;
-  gap: 1.5rem;
-  text-align: center;
-  grid-template-columns: repeat(10, minmax(300px, 1fr));
 }
 
 .scroll-wrapper {
@@ -169,109 +83,60 @@ body {
   align-items: center;
   overflow: hidden;
   position: relative;
-  max-width: 100%;
 }
 
-.map-items {
-  gap: 1.5rem;
-  text-align: center;
-  flex-wrap: nowrap;
-  padding: 1rem 0;
-  transform: translateY(3dvh);
-}
 
 .scroll-arrow {
   cursor: pointer;
   font-size: 2rem;
-  margin: 0 1rem;
-  color: #000; /* Adjust arrow color */
-  /* Other necessary styles */
+  margin: -5px;
 }
 
-.arrow-icon {
+.scroll-arrow1 {
   cursor: pointer;
-  transform: scaleY(1.5) scaleX(2);
-  transition: transform 0.3s ease;
-  margin-bottom: -2rem;
-  font-size: 1rem;
+  font-size: 2rem;
+  margin-right: 5px;
 }
 
-.arrow-icon:hover {
-  transform: scaleY(2.25) scaleX(3);
-}
-
-
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
+.scroll-arrow2 {
   cursor: pointer;
+  font-size: 2rem;
+  margin-left: 5px;
 }
 
-.card-front,
-.card-back {
-  position: absolute;
+
+.sharp-border {
+  border-radius: 0;
+  border: 1;
+  transition: 0.3s ease-in-out;
+}
+
+.sharp-border:hover {
+  border-radius: 0;
+  border: 1.5px solid black;
+  transition: 0.3s ease-in-out;
+}
+
+
+.buttons-group {
   width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-}
-
-.card-front {
-  z-index: 2;
-}
-
-.card-back {
-  transform: rotateY(180deg);
-  z-index: 1;
-}
-
-.is-flipped .card-inner {
-  transform: rotateY(180deg);
 }
 
 
-.shoe-container {
-  display: flex; /* Flexbox for easy layout */
-  flex-direction: column; /* Arrange elements vertically */
-}
-
-.split {
-  flex: 1; /* Occupy remaining space after bottom content */
-  display: flex; /* Split into two halves */
-}
-
-.shoe-left,
-.shoe-right {
-  flex: 1; /* Equal width for both halves */
-  padding: 1rem; /* Optional padding */
-}
-
-.shoe-bottom {
-  background-color: lightgray; /* Optional styling */
-  padding: 1rem;
+.image-container-random {
+  transform: translateX(-0.74rem);
+  padding: 30px;
+  transition: padding 0.3s ease;
 }
 
 
-/* MOBILE RESPONSIVE STYLING */
-@media (max-width: 768px) {
-
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
-  }
+.image-container-random:hover {
+  padding: 0;
+}
 
 
-  .shoe-page-images {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-
-  /* .rest-images {
-    width: 18%;
-  } */
-
+/* MOBILE AND TABLET RESPONSIVE STYLING */
+@media (min-width: 0px) and (max-width: 1024px) {
 
 
   .vertical-line {
@@ -279,303 +144,56 @@ body {
   }
 
 
-  .image-container {
-    width: 100%;
-    padding: 0;
+  .random-map-items {
+    padding: 2rem 2px;
+    grid-template-columns: repeat(10, minmax(140px, 1fr));
   }
-
-
-  .first-part {
-    width: 100%;
-    position: relative;
-    transform: translateY(-60dvh);
-  }
-
-
-  .second-part {
-    width: 100%;
-    transform: translateY(85dvh) translateX(0dvh);
-    z-index: 10;
-  }
-
-
-
-
-  .shoe-page-max-height {
-    max-height: 260dvh;
-  }
-
-
-  .shoe-name {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .shoe-price {
-    width: 100%;
-    justify-content: right;
-    text-align: right;
-    margin-bottom: -3rem;
-  }
-
-  .shoe-select {
-    justify-content: right;
-    text-align: right;
-  }
-
-
-  .group-buttons {
-    max-width: 100%;
-  }
-
-  /* .shoe-quantity-button {
-  } */
-
-  .shoe-cart-button {
-    width: 100%;
-  }
-
-  .shoe-go-cart-button {
-    width: 100%;
-  }
-
-  .shoe-safetty-pic {
-    width: 100%;
-  }
-
-  .shoe-contact-icons {
-    width: 100%;
-  }
-
-  .bottom-hr {
-    width: 100%;
-  }
-
-  .shoe-desc {
-    margin-bottom: 70px;
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .random-shoes-section {
-    transform: translateY(110dvh);
-  }
-
-  .map-items {
-    max-width: 1000px;
-    height: 420px;
-    width: 100%;
-    display: grid;
-    gap: 1rem;
-    text-align: center;
-    grid-template-columns: repeat(10, minmax(300px, 1fr));
-    transform: translateY(1.7dvh);
-  }
-
+  
+  
   .scroll-wrapper {
     display: flex;
     align-items: center;
     overflow: hidden;
     position: relative;
-    max-width: 100%;
   }
   
   
-  .scroll-arrow1 {
+  .scroll-arrow {
     cursor: pointer;
     font-size: 2rem;
-    color: #000000;
-    margin-top: -25rem;
-    transform: translateX(0rem);
-    position: absolute;
-  }
-  
-  .scroll-arrow2 {
-    cursor: pointer;
-    font-size: 2rem;
-    color: #000000;
-    margin-top: -25rem;
-    transform: translateX(18rem);
-    position: absolute;
-
   }
 
 
-  .image-container-brand {
-    padding: 20px;
+  .shoe-page-height {
+    max-height: 100%;
   }
-
-  .image-container-brand:hover {
-    padding: 5px;
-  }
-
- 
 }
-
-
 
 
 
 /* TABLET RESPONSIVE STYLING */
-@media (min-width: 768px) and (max-width: 1024px) {
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
+@media (max-width: 768px) {
+  .first-half {
+    width: 20%;
   }
 
+  .image-container-random {
+    transform: translateX(-0.74rem);
+    padding: 20px;
+    transition: padding 0.3s ease;
+  }
   
-
-  .shoe-page-images {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-
-  .rest-images {
-    width: 18%;
-  }
-
-
-  .vertical-line {
-    display: none;
-  }
-
-
-  .image-container {
-    width: 100%;
+  
+  .image-container-random:hover {
     padding: 0;
   }
+  
+}
 
 
-  .first-part {
-    width: 100%;
-    position: relative;
-    transform: translateY(0dvh);
-  }
-
-
-  .second-part {
-    width: 100%;
-    transform: translateY(85dvh) translateX(0dvh);
-    z-index: 10;
-  }
-
-
-
-
-  .shoe-page-max-height {
-    max-height: 200dvh;
-  }
-
-
-  .shoe-name {
-    width: 100%;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .shoe-price {
-    width: 100%;
-    justify-content: right;
-    text-align: right;
-    margin-bottom: -3rem;
-  }
-
-  .shoe-select {
-    justify-content: right;
-    text-align: right;
-  }
-
-
-  .group-buttons {
-    max-width: 100%;
-  }
-
-  /* .shoe-quantity-button {
+/* Laptop */
+@media (min-width: 1024px) and (max-width: 1440px) {
+  /* .vertical-line {
+    display: none;
   } */
-
-  .shoe-cart-button {
-    width: 100%;
-  }
-
-  .shoe-go-cart-button {
-    width: 100%;
-  }
-
-  .shoe-safetty-pic {
-    width: 100%;
-  }
-
-  .shoe-contact-icons {
-    width: 100%;
-  }
-
-  .bottom-hr {
-    width: 100%;
-  }
-
-  .shoe-desc {
-    margin-bottom: 70px;
-    text-align: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .random-shoes-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    height: 130vh;
-  }
-
-  .map-items {
-    max-width: 820px;
-    height: 520px;
-    width: 85%;
-    display: grid;
-    gap: 1rem;
-    text-align: center;
-    grid-template-columns: repeat(10, minmax(300px, 1fr));
-    transform: translateY(1.2dvh);
-  }
-
-  .scroll-wrapper {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    position: relative;
-    max-width: 100%;
-  }
-  
-  
-  .scroll-arrow1 {
-    z-index: 1;
-    cursor: pointer;
-    font-size: 2rem;
-    color: #000000;
-    margin-top: -30rem;
-    transform: translateX(0rem) translateY(-0.8dvh);
-    position: absolute;
-  }
-  
-  .scroll-arrow2 {
-    cursor: pointer;
-    font-size: 2rem;
-    color: #000000;
-    margin-top: -30rem;
-    transform: translateX(40rem) translateY(-0.8dvh);
-    position: absolute;
-  }
-
-
-  .image-container-brand {
-    padding: 0px;
-  }
-
-  .image-container-brand:hover {
-    padding: 5px;
-  }
-
-
 }

@@ -61,6 +61,7 @@ export const logoutAsync = createAsyncThunk('auth/logout',
  })
 
 
+
 export const authenticationSlice = createSlice({
     name: "authentication",
     initialState,
@@ -136,21 +137,40 @@ export const authenticationSlice = createSlice({
             state.isError = true;
         })
 
-        .addCase(logoutAsync.fulfilled, (state) =>
-        {
-            state.userName = ""
-            state.isLogged = false
-            state.access = ""
-            // const previousPath = localStorage.getItem('previousPath');
-            // if (previousPath) {
-            // window.location.pathname = previousPath;
-            // localStorage.removeItem('previousPath')}
+        // .addCase(logoutAsync.fulfilled, (state) =>
+        // {
+        //     state.userName = ""
+        //     state.isLogged = false
+        //     state.access = ""
+        // });
+
+        .addCase(logoutAsync.pending, (state) => {
+            state.isLoading = true;
+        })
+        .addCase(logoutAsync.fulfilled, (state) => {
+            state.isLoading = false;
+            state.isLogged = false;
+            state.userName = "";
+            state.access = "";
+            state.isError = false;
+            state.isSuccess = false;
+
+            localStorage.removeItem('loginTime');
+            localStorage.removeItem('token');
+
+            window.location.href = "/"
+        })
+        .addCase(logoutAsync.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+            state.message = action.payload as string;
         });
     }
 
 })
 
 
+export const selectAccess = (state: RootState) => state.authentication.access;
 export const selectUser = (state: RootState) => state.authentication.userName;
 export const selectIsLogged = (state: RootState) => state.authentication.isLogged;
 export const selectIsLoading = (state: RootState) => state.authentication.isLoading;

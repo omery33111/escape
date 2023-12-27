@@ -223,7 +223,7 @@ const ShoePut = () => {
             <Form.Label>
               <h5>Description</h5>
             </Form.Label>
-            <Form.Control type="text" value={description} onChange={handleDescriptionChange} />
+            <Form.Control as="textarea" value={description} onChange={handleDescriptionChange} />
           </Form.Group>
 
           <Form.Group>

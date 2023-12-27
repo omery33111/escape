@@ -58,3 +58,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+# ------------- LOGOUT:
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def logout(request):
+    refresh_token = request.data.get("refresh_token")
+
+    if not refresh_token:
+        return Response({"error": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response({"success": "User has been logged out."})
+    except Exception as e:
+        return Response({"error": "Invalid refresh token."}, status=status.HTTP_400_BAD_REQUEST)

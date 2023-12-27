@@ -1,132 +1,90 @@
-import { Autocomplete, TextField, Theme } from '@mui/material'
-import { makeStyles } from "@mui/styles"
-import { useEffect } from 'react'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
+import LocalMallIcon from '@mui/icons-material/LocalMall'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { Container, Nav, Navbar } from 'react-bootstrap'
-import { FaUserSecret } from 'react-icons/fa'
-import { RiUserFill } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { myServer } from '../../endpoints/endpoints'
-import { logoutAsync } from '../authentication/authenticationSlice'
-import { searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from '../shoe/shoeSlice'
-
-
-
-const useStyles = makeStyles((theme: Theme) => ({
-  autocompleteRoot: {
-    '& .MuiInput-underline:after': {
-      borderBottom: '2px solid red',
-    },
-    '& .MuiInputBase-input': {
-      color: 'white', // Change text color to white
-    },
-  },
-}));
+import { selectCart } from '../cart/cartSlice'
+import { selectWishList } from '../wishlist/wishListSlice'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 
 const MyNavbar = () => {
-  const classes = useStyles(); // Apply the defined styles
 
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const shoes = useAppSelector(selectAllShoes);
-  const searchShoe = useAppSelector(selectSearchShoe);
-  const isLoading = useAppSelector(selectSingleShoeLoading);
-  
 
-  const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setShoeSearch(event.target.value));
-  };
+  const cart = useAppSelector(selectCart);
+  const wishList = useAppSelector(selectWishList);
 
-  useEffect(() => {
-    if (searchShoe.trim() !== '') {
-      dispatch(searchShoeAsync({ searchQuery: searchShoe }));
-    } else {
-      dispatch(setShoeSearch(''));
-    }
-  }, [dispatch, searchShoe]);
+  const isToken = JSON.parse(localStorage.getItem('token') as string);
 
   return (
     <div>
-        <Navbar bg="dark" data-bs-theme="dark">
+        <Navbar style={{ backgroundColor: "white" }}>
 
             <Container>
 
-            <Nav>
+              <Nav style = {{gap: "30px"}}>
+              
+              <Nav.Link href = "/cart">
 
-            <Navbar.Brand href = "/">Navbar</Navbar.Brand>
+              {cart.length > 0 && (
+                <span className="counter">{cart.length}</span>
+              )}
+              <LocalMallIcon style = {{color: "black"}}/>
 
-            </Nav>
-
-            <div style={{ width: '30%', direction: "rtl" }}>
-            
-            <Autocomplete
-          className={classes.autocompleteRoot}
-          freeSolo
-          options={shoes.map((shoe) => ({
-            id: shoe.id,
-            name: shoe.name,
-            image: shoe.images[0],
-          }))}
-          getOptionLabel={(shoe: any) => shoe.name}
-          renderOption={(props, shoe) => (
-            <li {...props}>
-              <div
-                style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
-                onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}
-              >
-                <img
-                style = {{transform: "scaleX(-1)"}}
-                  src={`${myServer}/static/images/${shoe.image}`}
-                  width="20%"
-                  height="auto"
-                />
-                <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>{shoe.name}</p>
-              </div>
-            </li>
-          )}
-          renderInput={(params) => (
-            <TextField
-              placeholder="חיפוש..."
-              variant="standard"
-              {...params}
-              onChange={handleSearchInputChange}
-              value={searchShoe}
-              InputLabelProps={{ style: { color: 'white' } }}
-            />
-          )}
-        />
-
-            </div>
-            
-
-            <Nav style = {{gap: "30px"}}>
-            
-            
-            <Nav.Link href = "/shoes">Shoes</Nav.Link>
-            
-            <Nav.Link href = "/cart">Cart</Nav.Link>
-
-            <Nav.Link onClick = {() => dispatch(logoutAsync())}>Logout</Nav.Link>
-
-            <Nav.Link href = "/authentication/login">
-                Login
               </Nav.Link>
+              
 
+
+              <Nav.Link href = "/wishlist">
+
+              {wishList.length > 0 && (
+                <span className="counter">{wishList.length}</span>
+              )}
+                <FavoriteOutlinedIcon style = {{color: "black"}}/>
+
+              </Nav.Link>
+                
+
+              </Nav>
+              
+
+            
+            
+            <Navbar.Brand href = "/" style = {{justifyContent: "center", textAlign: "center", position: "relative", right: "30px", top: "1px"}}>
+            <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
+                 width = "250"
+                 height = "45" />
+            </Navbar.Brand>
+
+            <Nav>
+            
+
+
+            {isToken ? (
+                <Nav.Link href = "/profile">
+                  <AccountCircleIcon style = {{color: "black"}}/>
+                </Nav.Link>
+                ) : (
+                <Nav.Link href = "/authentication/login">
+                  <PersonAddIcon style = {{color: "black"}}/>
+                </Nav.Link>
+                )}
+
+
+{/*             
             <Nav.Link href = "/administrator/menu">
-                <h3 style = {{color: "white"}}>
+                <h3 style = {{color: "black"}}>
                   <FaUserSecret />
                 </h3>
-              </Nav.Link>
+              </Nav.Link> */}
 
-              <Nav.Link href = "/profile">
-                <h3 style = {{color: "white"}}>
-                <RiUserFill />
-                </h3>
-              </Nav.Link>
 
             </Nav>
 

@@ -1,6 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { MenuItem, Select, Theme } from '@mui/material';
+import { Chip, MenuItem, Select, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
@@ -18,6 +18,7 @@ import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe } from './sho
 import { IoIosMail } from 'react-icons/io';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import RandomShoes from './RandomShoes';
 
 
 
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     shoeSelect: {
       '&.MuiInput-underline:after': {
         borderBottom: '2px solid red',
+        height: "500px"
       },
     },
   }));
@@ -88,8 +90,8 @@ const Shoe = () => {
                 <img
                 style={{borderRadius: "100%"}}
                     src={`${myServer}/static/images/${image}`}
-                    width={isMobile ? `70px` : `110px`}
-                    height={isMobile ? `70px` : `110px`}
+                    width={isTablet || isLaptop ? `70px` : `110px`}
+                    height={isTablet || isLaptop ? `70px` : `110px`}
                     alt={`shoe${index + 1}`}
                 />
             </div>
@@ -102,8 +104,8 @@ const renderExtraImages = (images: string[]) => {
             <img
             style={{borderRadius: "100%"}}
                 src={`${myServer}/static/images/${image}`}
-                width={isMobile ? `70px` : `110px`}
-                height={isMobile ? `70px` : `110px`}
+                width={isTablet || isLaptop ? `70px` : `110px`}
+                height={isTablet || isLaptop ? `70px` : `110px`}
                 alt={`shoe${index + 6}`}
             />
         </div>
@@ -116,8 +118,8 @@ const renderRestImages = (images: string[]) => {
             <img
             style={{borderRadius: "100%"}}
                 src={`${myServer}/static/images/${image}`}
-                width={isMobile ? `70px` : `110px`}
-                height={isMobile ? `70px` : `110px`}
+                width={isTablet || isLaptop ? `70px` : `110px`}
+                height={isTablet || isLaptop ? `70px` : `110px`}
                 alt={`shoe${index + 6}`}
             />
         </div>
@@ -131,6 +133,7 @@ const transformRef = useRef<any>(null);
 
 const handleMouseEnter = () => {
   setIsZoomed(true);
+  setIsChipVisible(false)
 };
 
 const handleMouseLeave = () => {
@@ -186,25 +189,96 @@ const cart = useAppSelector(selectCart);
     }
   };
 
+
   const isMobile = window.innerWidth <= 768;
+
+  const isTablet = window.innerWidth <= 0 || window.innerWidth <= 1024;
+
+  const isLaptop = window.innerWidth >= 1024 && window.innerWidth <= 1440;
+
+
+    const [isChipVisible, setIsChipVisible] = useState(true);
+
+  const handleZoomGesture = () => {
+    setIsChipVisible(false);
+  };
   
   return (
-    <Container fluid>
+    <Container fluid className = "shoe-page-height">
       <Row>
         <Col md={6}>
+
+        {isMobile && (
+                        <div style = {{direction: "rtl"}}>
+                        <div style = {{color: "#700000", fontSize: "0.5rem", display: "flex", cursor: "pointer", margin: "7px 0px", width: "110%", zIndex: 10 }}>
+  
+                              <div onClick = {() => navigate("/")}>
+                              דף הבית
+                              </div>
+  
+                              &nbsp;/&nbsp;
+  
+                              <div onClick = {() => navigate(`/brand/shoes/${singleBrand.id}/`)}>
+                              {singleBrand.name}
+                              </div>
+  
+                              &nbsp;/&nbsp;
+  
+                              <div onClick = {() => navigate(`/brand/shoe/${id}/`)}>
+                              {shoe.name}
+                              </div>
+  
+                        </div>
+                  
+                  <div>
+                      <h4>
+                      {shoe.name}
+                      </h4>
+  
+                      <div style = {{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+                      
+  
+                      {shoe.price_before ? (
+    <div style={{ position: "relative", top: "2px"}}>
+      <b className = "removed-price">
+      ₪{shoe.price_before}
+      </b>
+    </div>
+  ) : (
+    ""
+  )}
+
+          <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
+
+  
+                      </div>
+                  </div>
+  
+              </div>
+            )}
+
           <div className="first-half">
 
-            <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className = "image-container">
+            
+
+            <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <TransformWrapper ref={transformRef}>
                 <TransformComponent>
                     <div style = {{cursor: 'zoom-in'}}>
                     <img
-                        width={isMobile ? "340px" : "550"}
-                        height={isMobile ? "340px" : "550"}
-                        style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)', border: "1px solid black"}}
+                        width={isTablet || isLaptop ? "340px" : "550"}
+                        height={isTablet || isLaptop ? "340px" : "550"}
+                        style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)'}}
                         src={`${myServer}/static/images/${mainImage}`}
                         alt={`shoeMainImage`}
                         onClick={() => handleMainImageClick(0)}/>
+
+                        {isTablet && isChipVisible && (
+                          <Chip label="Double tap or pinch to zoom" style={{position: 'absolute',
+                                                                            top: '87%',
+                                                                            left: '50%',
+                                                                            transform: 'translate(-50%, -50%)'}}/>
+                        )}
                     </div>
                 </TransformComponent>
                 </TransformWrapper>
@@ -226,13 +300,15 @@ const cart = useAppSelector(selectCart);
     
         </Col>
         <Col md={6}>
-        <div className="vertical-line"></div>
+
+          
+        <div className="vertical-line" />
 
           <div className="second-half">
             
           {isMobile ? ("") : (
-          <div>
-                      <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px" }}>
+                      <div>
+                      <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "7px 0px", width: "120%", zIndex: 10 }}>
 
                             <div onClick = {() => navigate("/")}>
                             דף הבית
@@ -258,47 +334,28 @@ const cart = useAppSelector(selectCart);
                     </h4>
 
                     <div style = {{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
-                    <h5>₪{shoe.price}</h5>
 
-                    {shoe.price_before && (
+                <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
 
-                        <h5 className = "removed-price">
-                        ₪{shoe.price_before}
-                        </h5>
-
-                    )}
+                {shoe.price_before ? (
+    <div style={{ position: "relative", top: "1px"}}>
+      <b className = "removed-price">
+      ₪{shoe.price_before}
+      </b>
+    </div>
+  ) : (
+    ""
+  )}
 
                     </div>
                 </div>
 
             </div>
-            )}
-            
+          )}
 
-            <div style = {{height: "60px"}}/>
+        
 
-            {isMobile && (
-                <div>
-                <h4>
-                {shoe.name}
-                </h4>
-
-                <div style = {{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
-                <h5>₪{shoe.price}</h5>
-
-                {shoe.price_before && (
-
-                    <h5 className = "removed-price">
-                    ₪{shoe.price_before}
-                    </h5>
-
-                )}
-
-                </div>
-            </div>
-            )}
-            
-            {isMobile && (<div style = {{height: "60px"}}/>)}
+            {isMobile ? (<div style = {{height: "20px"}}/>) : (<div style = {{height: "60px"}}/>)}
 
             <div style={{ display: 'flex' }}>
             <Select
@@ -311,7 +368,16 @@ const cart = useAppSelector(selectCart);
                     name: 'size',
                     id: 'size-select',
                     style: { color: 'white' }
-                }}>
+                }}
+                MenuProps={{
+                  PaperProps: {
+                      style: {
+                          maxHeight: 316, // Maximum height for the dropdown
+                          width: 120, // You can adjust this width as needed
+                      },
+                  },
+              }}>
+                  
                     <MenuItem value="מידה" disabled style={{ direction: 'rtl' }}>
                         מידה
                     </MenuItem>
@@ -323,6 +389,7 @@ const cart = useAppSelector(selectCart);
                     ))}
             </Select>
 
+
                 {errorMessage && <div style={{ color: 'red', position: "relative", top: "5px", marginRight: "13px" }}>{errorMessage}</div>}
             </div>
 
@@ -333,7 +400,7 @@ const cart = useAppSelector(selectCart);
             <div style={{ cursor: 'pointer', position: 'relative', display: "flex", width: isMobile ? "100%" : "55%" }}>
 
                 <div style={{ textAlign: 'center' }}>
-                    <Button style={{ borderRadius: "6px", display: 'flex', alignItems: 'center', backgroundColor: "#E3E3E3", border: "0px solid black", height: "3rem" }}>
+                    <Button style={{ borderRadius: "0px", display: 'flex', alignItems: 'center', backgroundColor: "#E3E3E3", border: "0px solid black", height: "3rem" }}>
                         <RemoveIcon fontSize="small" onClick={handleDecrease} style={{ cursor: 'pointer', color: "black" }} />
                             <span style={{ fontSize: '1rem', margin: '0 20px', color: "black" }}>{quantity}</span>
                         <AddIcon fontSize="small" onClick={handleIncrease} style={{ cursor: 'pointer', color: "black" }} />
@@ -345,23 +412,24 @@ const cart = useAppSelector(selectCart);
                 <div>
                     {cart.find((item) => String(item.id) === String(shoe.id)) ? (
 
-                        <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", height: "3rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}>
-                        <div>
-                        הסרת מוצר&nbsp;&nbsp;
+                        <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", height: "3rem", borderRadius: "0px" }} onClick={() => dispatch(removeProduct({ item: shoe }))}>
+                        <b style = {{fontSize: isTablet ? "0.5rem" : "0.8rem"}}>
+                        הסרה מהעגלה&nbsp;&nbsp;
 
-                        {isMobile ? ("") : (<BiSolidCart
+                        {isTablet || isLaptop ? ("") : (<BiSolidCart
                         style={{ fontSize: '2rem' }}/>)}
                         
-                        </div>
+                        </b>
                         </Button>
                     ) : (
-                        <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", height: "3rem"}} onClick={handleAddToCart}>
-                        <div>
-                        הוספת מוצר&nbsp;
+                        <Button style = {{backgroundColor: "#1A002E", border: "0px solid black", height: "3rem", borderRadius: "0px"}} onClick={handleAddToCart}>
+                        <b style = {{fontSize: isTablet ? "0.5rem" : "0.9rem", position: "relative", top: isMobile ? -3 : 0}}>
+                        הוספה לעגלה&nbsp;
 
-                        {isMobile ? ("") : (<BiSolidCartAdd style={{ fontSize: '2rem' }}/>)}
+                        {isTablet || isLaptop ? ("") : (<BiSolidCartAdd style={{ fontSize: '2rem' }}/>)}
                         
-                        </div>
+                        
+                        </b>
                         </Button>
                     )}
                 </div>
@@ -381,8 +449,10 @@ const cart = useAppSelector(selectCart);
             <div style = {{height: "4px"}}/>
 
             <div style = {{width: isMobile ? "100%" : "55%"}}>
-            <Button onClick = {() => navigate('/cart')} style = {{backgroundColor: "black", border: "0px solid black", height: "3rem", width: "100%"}}>
+            <Button onClick = {() => navigate('/cart')} style = {{backgroundColor: "black", border: "0px solid black", height: "3rem", width: "100%", borderRadius: "0px"}}>
+              <b>
             לקנייה מהירה      
+            </b>
             </Button>
             </div>
 
@@ -392,14 +462,13 @@ const cart = useAppSelector(selectCart);
             
             <div style = {{width: "100%", justifyContent: "center", textAlign: "center"}}>
             <img src={require('../../images/safety_shoepage.png')} alt = "instagramlogo"
-                 width = {isMobile ? "330px" : "530px"}
-                 height = {isMobile ? "80px" : "130px"}
-            />
+                 width = {isTablet ? "330px" : "550px"}
+                 height = {isTablet ? "80px" : "130px"} />
             </div>
 
             <div style = {{height: "7rem"}}/>
 
-            <div className = "shoe-desc" style = {{fontSize: "0.9rem", height: "10rem"}}>
+            <div className = "shoe-desc" style = {{fontSize: "1rem", height: "10rem"}}>
                 {shoe.description}
             </div>
 
@@ -439,8 +508,9 @@ const cart = useAppSelector(selectCart);
       <Row>
         <Col>
           <div className="underneath-layout">
-            <h2>Underneath Layout</h2>
-            <p>This is the content for the layout underneath the sliced layout.</p>
+
+          <RandomShoes/>
+          
           </div>
         </Col>
       </Row>

@@ -17,6 +17,8 @@ export const loginURL = `${myServer}/authentication/login/`;
 
 export const registerURL = `${myServer}/authentication/register/`;
 
+export const logoutURL = `${myServer}/authentication/logout/`;
+
 
 
 

@@ -1,11 +1,4 @@
 /* GLOBAL RESPONSIVE STYLING */
-body {
-  font-family: "Lucida Console", "Courier New", monospace;
-  margin: 0;
-  padding: 0;
-}
-
-
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -19,7 +12,7 @@ body {
 .footer {
   flex-shrink: 0;
   width: 100%;
-  background-color: black;
+  background-color: #1A002E;
   color: white;
   text-align: center;
   padding: 20px 0;
@@ -35,21 +28,33 @@ body {
 
 
 
+.counter {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  top: 16px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  transform: translateX(16px)
+}
+
+
 
 /* MOBILE RESPONSIVE STYLING */
 @media (max-width: 768px) {
 
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
-  }
-
+  
 }
 
 
 
 /* LAPTOP RESPONSIVE STYLING */
 @media (min-width: 768px) and (max-width: 1919px) {
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
-  }
+
 }

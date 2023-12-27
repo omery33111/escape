@@ -1,15 +1,4 @@
 /* GLOBAL RESPONSIVE STYLING */
-body {
-    font-family: "Lucida Console", "Courier New", monospace;
-    margin: 0;
-    padding: 0;
-}
-
-
-
-  
-
-
 .rtl-autocomplete .MuiAutocomplete-popupIndicator {
   direction: rtl;
   left: 0;
@@ -19,10 +8,7 @@ body {
   
   /* MOBILE RESPONSIVE STYLING */
   @media (max-width: 768px) {
-  
-    body {
-      font-family: "Lucida Console", "Courier New", monospace;
-    }
+
   
   }
   
@@ -30,7 +16,5 @@ body {
   
   /* LAPTOP RESPONSIVE STYLING */
   @media (min-width: 768px) and (max-width: 1919px) {
-    body {
-      font-family: "Lucida Console", "Courier New", monospace;
-    }
+
   }

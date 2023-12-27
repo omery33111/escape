@@ -1,9 +1,80 @@
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Regular'), local('OpenSansHebrew-Regular'),
+    url('/public/fonts/OpenSansHebrew-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Light'), local('OpenSansHebrew-Light'),
+    url('/public/fonts/OpenSansHebrew-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Italic'), local('OpenSansHebrew-Italic'),
+    url('/public/fonts/OpenSansHebrew-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Light Italic'), local('OpenSansHebrew-LightItalic'),
+    url('/public/fonts/OpenSansHebrew-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Bold'), local('OpenSansHebrew-Bold'),
+    url('/public/fonts/OpenSansHebrew-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew Bold Italic'), local('OpenSansHebrew-BoldItalic'),
+    url('/public/fonts/OpenSansHebrew-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew ExtraBold'), local('OpenSansHebrew-ExtraBold'),
+    url('/public/fonts/OpenSansHebrew-ExtraBold.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans Hebrew';
+  src: local('Open Sans Hebrew ExtraBold Italic'), local('OpenSansHebrew-ExtraBoldItalic'),
+    url('/public/fonts/OpenSansHebrew-ExtraBoldItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+
+
+
+
+
 /* GLOBAL RESPONSIVE STYLING */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans Hebrew';
   margin: 0;
   padding: 0;
 }
+
+
 
 
 
@@ -17,17 +88,11 @@ body {
 /* MOBILE RESPONSIVE STYLING */
 @media (max-width: 768px) {
 
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
-  }
-
 }
 
 
 
 /* LAPTOP RESPONSIVE STYLING */
 @media (min-width: 768px) and (max-width: 1919px) {
-  body {
-    font-family: "Lucida Console", "Courier New", monospace;
-  }
+
 }
