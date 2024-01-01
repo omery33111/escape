@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from "axios";
-import $ from 'jquery';
 import { shippingURL } from "../../endpoints/endpoints";
 import { Address } from "../../models/Shipping";
 
@@ -106,30 +105,22 @@ export const getIsraelStreets = async (query: string) => {
 
 
 export const getIsraelCities = async (query: string) => {
-  const resourceID = '5c78e9fa-c2e2-4771-93ff-7f400a12f7ba'; // Resource ID for Israeli cities data
-  const allCities: any[] = [];
-  let offset = 0;
-  const limit = 1268; // Set a higher limit to fetch more cities
+  const resourceID = '5c78e9fa-c2e2-4771-93ff-7f400a12f7ba';
 
   try {
-    while (true) {
-      const url = `https://data.gov.il/api/3/action/datastore_search?resource_id=${resourceID}&q=${query}&limit=${limit}&offset=${offset}`;
-      const response = await fetch(url);
-      const data = await response.json();
+    const url = `https://data.gov.il/api/3/action/datastore_search?resource_id=${resourceID}&q=${query}:*&limit=1268`; 
+    const response = await fetch(url);
+    const data = await response.json();
+    
+  
+      return data.result.records.filter((city: any) => 
+        city.שם_ישוב.includes(query)
+      );
 
-      if (data.result && data.result.records && data.result.records.length > 0) {
-        allCities.push(...data.result.records);
-        offset += limit;
-      } else {
-        break;
-      }
-    }
-
-    return allCities;
   } catch (error) {
     console.error('Error fetching data:', error);
-    throw error;
+    throw error; 
   }
-};
+}
 
 

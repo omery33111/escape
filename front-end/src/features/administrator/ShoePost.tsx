@@ -34,8 +34,10 @@ const ShoePost = () => {
     setName(e.target.value);
   };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Replace <br> or <br/> with newline characters \n before updating the state
+    const updatedDescription = e.target.value.replace(/<br\s*\/?>/g, '\n');
+    setDescription(updatedDescription);
   };
 
   const handlePriceBeforeChange = (e: any) => {

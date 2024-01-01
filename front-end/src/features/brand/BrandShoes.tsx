@@ -14,6 +14,7 @@ import { addProduct, removeProduct, selectCart } from "../cart/cartSlice";
 import { addWish, removeWish, selectWishList } from "../wishlist/wishListSlice";
 import './brand.css';
 import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
+import { BsFillSuitHeartFill } from "react-icons/bs";
 
 
 
@@ -174,7 +175,6 @@ const BrandShoes = () => {
 
         
         
-        
 
         
         <div>
@@ -199,9 +199,9 @@ const BrandShoes = () => {
           {singleBrand.name}
           </div><br/>
 
-        <small>
+        <pre>
         {singleBrand.description}
-        </small>
+        </pre>
         
         </div>
 
@@ -305,16 +305,17 @@ const BrandShoes = () => {
 
               <div>
                 <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before != 0 ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
                 <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
                 
                 <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
 
                 </div>
   
-  {shoe.price_before ? (
+  {shoe.price_before != 0 ? (
     <div style={{ position: "relative", top: "1px"}}>
       <b className = "removed-price">
+
       ₪{shoe.price_before}
       </b>
     </div>
@@ -345,7 +346,7 @@ const BrandShoes = () => {
 
                 <div style = {{cursor: "pointer", color: "black"}}>
                 {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#3C005A"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#1A002E"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
               : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
                 </div>
 

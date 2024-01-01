@@ -235,10 +235,10 @@ const cart = useAppSelector(selectCart);
                       {shoe.name}
                       </h4>
   
-                      <div style = {{display: "flex", gap: `${shoe.price_before ? '2.5dvh' : '0dvh'}` }}>
+                      <div style = {{display: "flex", gap: `${shoe.price_before > 0 ? '2.5dvh' : '0dvh'}` }}>
                       
   
-                      {shoe.price_before ? (
+                      {shoe.price_before > 0 ? (
     <div style={{ position: "relative", top: "2px"}}>
       <b className = "removed-price">
       ₪{shoe.price_before}
@@ -469,7 +469,9 @@ const cart = useAppSelector(selectCart);
             <div style = {{height: "7rem"}}/>
 
             <div className = "shoe-desc" style = {{fontSize: "1rem", height: "10rem"}}>
+              <pre>
                 {shoe.description}
+              </pre>
             </div>
 
             <hr/>

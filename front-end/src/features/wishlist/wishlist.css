@@ -1,0 +1,28 @@
+.wishlist-map-items {
+    max-width: 1300px;
+    width: 100%;
+    display: grid;
+    gap: 1.3rem;
+    text-align: center;
+    grid-template-columns: repeat(4, minmax(300px, 1fr));
+}
+
+
+.image-container-random {
+    transform: translateX(-0.74rem);
+    padding: 30px;
+    transition: padding 0.3s ease;
+}
+
+
+.sharp-border {
+  border-radius: 0;
+  border: 1;
+  transition: 0.3s ease-in-out;
+}
+
+.sharp-border:hover {
+  border-radius: 0;
+  border: 1.5px solid black;
+  transition: 0.3s ease-in-out;
+}

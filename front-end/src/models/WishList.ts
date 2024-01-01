@@ -3,11 +3,10 @@
 
 export interface wishList {
     id: string,
-    category: string,
-    product_name: string,
-    description: string,
-    price: number,
-    picture: string,
+    name: string;
+    price: number;
+    price_before: number;
+    images: string[];
 }
 
 

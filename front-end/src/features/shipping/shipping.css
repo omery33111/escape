@@ -5,6 +5,26 @@
 }
 
 
+
+
+.rtl-select-shipping .MuiSelect-icon {
+  right: auto;
+  color: white;
+  position: relative;
+}
+
+.rtl-select-shipping .MuiSelect-select {
+  padding-left: 35px;
+  color: black;
+  border-bottom: 2px solid white;
+}
+
+
+.rtl-select-shipping .Mui-focused {
+  border-bottom: 2px solid #663399;
+}
+
+
   
   /* MOBILE RESPONSIVE STYLING */
   @media (max-width: 768px) {

@@ -173,10 +173,10 @@ const RandomShoes = () => {
                 <Card.Text style = {{width: "110%", position: "relative", right: "4px", height: "90px", cursor: "pointer", fontSize: "0.8rem"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
 
                 
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile || isTablet ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
+                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before > 0 ? `${isMobile || isTablet ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
                 <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
                 
-                {shoe.price_before ? (
+                {shoe.price_before > 0 ? (
     <div style={{ fontSize: "0.8rem"}}>
       <b className = "removed-price">
       ₪{shoe.price_before}
@@ -246,7 +246,7 @@ const RandomShoes = () => {
 
                 <div style = {{cursor: "pointer", color: "black"}}>
                 {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#3C005A"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#1A002E"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
               : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
                 </div>
                 

@@ -21,6 +21,7 @@ import BrandShoes from './features/brand/BrandShoes';
 import Register from './features/authentication/Register';
 import Profile from './features/profile/Profile';
 import Shoe from './features/shoe/Shoe';
+import WishList from './features/wishlist/WishList';
 
 
 
@@ -73,6 +74,8 @@ root.render(
 
 
       <Route path = "/cart" element={<Cart />} />
+
+      <Route path = "/wishlist" element={<WishList />} />
 
       <Route path = "/order/order_post" element={<Orders />} />
 

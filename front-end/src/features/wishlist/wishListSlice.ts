@@ -36,11 +36,11 @@ export const wishListSlice = createSlice({
       else
       {
         state.wishList.push({id: item.id,
-                        category: item.category,
-                        product_name: item.product_name,
-                        description: item.description,
+                        name: item.name,
                         price: item.price,
-                        picture: item.picture})
+                        price_before: item.price_before,
+                        images: item.images,
+                      })
       }
       localStorage.setItem("wishList", JSON.stringify(state.wishList))
     },

@@ -45,6 +45,48 @@
 }
 
 
+.counter-offcanva {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  position: absolute;
+  transform: translateX(8px) translateY(-5px);
+}
+
+
+.customHr {
+  transform: translateY(-2.6rem);
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.brand-arrow1 {
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: white;
+  position: absolute;
+  transform: translateY(0.65rem) translateX(-2.2rem);
+}
+
+.brand-arrow2 {
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: white;
+  position: absolute;
+  right: 0;
+  transform: translateY(0.65rem) translateX(1rem);
+}
+
+
 
 /* MOBILE RESPONSIVE STYLING */
 @media (max-width: 768px) {

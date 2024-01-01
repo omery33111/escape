@@ -64,6 +64,10 @@
 
 
 
+pre {
+  font-family: inherit; /* Inherit font from parent element */
+  /* Other styling as needed (e.g., font-size, color, etc.) */
+}
 
 
 
@@ -80,7 +84,7 @@ body {
 
 .special-container {
   margin-top: 110px;
-  margin-bottom: 130px;
+  margin-bottom: 110px;
 }
 
 

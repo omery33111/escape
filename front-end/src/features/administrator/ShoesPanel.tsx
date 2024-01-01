@@ -102,7 +102,7 @@ const ShoesPanel = () => {
                   </td>
                 <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.name}</td>
                 <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.model}</td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.description}</td>
+                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}><pre>{shoe.description}</pre></td>
                 <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.price}</td>
                 <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>
                   <Button

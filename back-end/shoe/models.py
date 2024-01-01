@@ -5,7 +5,7 @@ from brand.models import Brand
 
 class Shoe(models.Model):
     name = models.CharField(max_length = 100)
-    description = models.TextField(max_length = 255)
+    description = models.TextField(max_length = 400)
     price_before = models.DecimalField(max_digits = 6, decimal_places = 2, null = True, blank = True)
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
     sizes = models.JSONField()

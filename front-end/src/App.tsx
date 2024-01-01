@@ -60,10 +60,14 @@ function App() {
     if (storedloginTime && lastClickTime) {
       const submitTime = new Date(storedloginTime);
       const clickTime = new Date(lastClickTime);
+      
+      // Calculate the time difference in milliseconds
       const timeDifference = clickTime.getTime() - submitTime.getTime();
-      const timeDifferenceInMinutes = timeDifference / (1000 * 60 * 60 * 24);
-
-      if (timeDifferenceInMinutes > 1440) {
+      
+      // Convert 24 hours to milliseconds
+      const twentyFourHoursInMillis = 24 * 60 * 60 * 1000;
+  
+      if (timeDifference > twentyFourHoursInMillis) {
         handleLogout();
       }
     }
