@@ -15,6 +15,7 @@ urlpatterns = [
     path('brand/', include('brand.urls')),
     path('authentication/', include('authentication.urls')),
     path('profile/', include('profile_user.urls')),
+    path('instarec/', include('insta_rec.urls')),
 ]
 
 

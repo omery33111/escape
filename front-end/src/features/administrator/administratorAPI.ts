@@ -2,6 +2,8 @@ import axios from 'axios';
 import { Shoe } from '../../models/Shoe';
 import { administratorURL, brandURL } from '../../endpoints/endpoints';
 import { Brand } from '../../models/Brand';
+import { InstaRec } from '../../models/InstaRec';
+import { Order } from '../../models/Order';
 
 
 
@@ -15,6 +17,34 @@ export function getPagedShoes(page: number) {
       axios.get(`${administratorURL}/get_paged_shoes/${page}/`, config).then((res) => resolve({ data: res.data })
       )
     );
+}
+
+
+
+export function getPagedInstaRecs(page: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: InstaRec[] }>((resolve) =>
+      axios.get(`${administratorURL}/get_paged_insta_recs/${page}/`, config).then((res) => resolve({ data: res.data })
+      )
+    );
+}
+  
+  
+  
+export function getInstaRecAmount() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: number }>((resolve =>
+        axios.get(`${administratorURL}/instarec_amount/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
 }
   
   
@@ -41,6 +71,19 @@ export function deleteShoe(id: number) {
     }
     return new Promise<{ data: Shoe }>((resolve) =>
       axios.delete(`${administratorURL}/delete_shoe/${id}/`, config).then((res) => resolve({ data: res.data }))
+    );
+}
+
+
+
+export function deleteInstaRec(id: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: InstaRec }>((resolve) =>
+      axios.delete(`${administratorURL}/delete_instarec/${id}/`, config).then((res) => resolve({ data: res.data }))
     );
 }
 
@@ -86,6 +129,34 @@ export function getPagedBrands(page: number) {
 
 
 
+export function getRecentOrders() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+  return new Promise<{ data: Order[] }>((resolve) =>
+    axios.get(`${administratorURL}/recent_orders/`, config).then((res) => resolve({ data: res.data })
+    )
+  );
+}
+
+
+
+export function getPagedOrders(page: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+  return new Promise<{ data: Order[] }>((resolve) =>
+    axios.get(`${administratorURL}/get_paged_orders/${page}/`, config).then((res) => resolve({ data: res.data })
+    )
+  );
+}
+
+
+
 export function getBrandsAmount() {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
   const accessToken = myToken ? myToken.access : "";
@@ -94,6 +165,20 @@ export function getBrandsAmount() {
     }
   return new Promise<{ data: number }>((resolve =>
       axios.get(`${administratorURL}/brands_amount/`, config).then(res => resolve({ data: res.data })
+      )
+  ))
+}
+
+
+
+export function getOrdersAmount() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+  return new Promise<{ data: number }>((resolve =>
+      axios.get(`${administratorURL}/orders_amount/`, config).then(res => resolve({ data: res.data })
       )
   ))
 }
@@ -121,6 +206,19 @@ export function postBrand(brandData: Brand) {
       }
   return new Promise<{ data: Brand }>((resolve) =>
     axios.post(`${administratorURL}/post_brand/`, brandData, config).then((res) => resolve({ data: res.data }))
+  );
+}
+
+
+
+export function postInstaRec(recData: InstaRec) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+    const accessToken = myToken ? myToken.access : "";
+    let config = {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      }
+  return new Promise<{ data: InstaRec }>((resolve) =>
+    axios.post(`${administratorURL}/post_insta_rec/`, recData, config).then((res) => resolve({ data: res.data }))
   );
 }
 

@@ -18,6 +18,7 @@ import { getAllBrandsAsync, getPagedShoesOfBrandAsync, selectAllBrands } from '.
 import ListGroup from 'react-bootstrap/ListGroup';
 import HamburgerIcon from 'hamburger-react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 
 
@@ -53,7 +54,11 @@ const Hamburger = () => {
     };
   
     const handleOffcanvasShow = () => {
-      setShowOffcanvas(true);
+
+      setTimeout(() => {
+        setShowOffcanvas(true);
+      }, 100);
+      
       setIsHamburgerActive(false); // Switch to X icon when offcanvas is shown
     };
 
@@ -108,6 +113,7 @@ const Hamburger = () => {
     navigate(`/brand/shoes/${brandId}/`);
   };
 
+  const isStaff = JSON.parse(localStorage.getItem('is_staff') as string);
   
       
   return (
@@ -126,6 +132,14 @@ const Hamburger = () => {
         </Offcanvas.Header><br/>
         <Offcanvas.Header style = {{justifyContent: "space-evenly", textAlign: "center", display: "flex", transform: "translateY(-1.5rem)"}}>
             
+      <>
+              {isStaff && (
+                 <Nav.Link href = "/administrator/menu">
+                    <AdminPanelSettingsIcon style = {{color: "black", fontSize: "2.3rem"}}/>
+                  </Nav.Link>
+                  )}
+      </>
+
             <div>
             <Nav.Link href = "/profile">
                   
@@ -234,13 +248,7 @@ const Hamburger = () => {
   {brands.map((brand: any) => (
     <ListGroup key={brand.id} className="borderless">
       <div onClick={() => setSelectedBrand(selectedBrand === brand.id ? null : brand.id)}>
-        <ListGroup.Item
-          style={{
-            borderBottom: '0px solid white',
-            borderRight: '0px solid white',
-            borderLeft: '0px solid white',
-          }}
-        >
+        <ListGroup.Item style={{ borderBottom: '0px solid white', borderRight: '0px solid white', borderLeft: '0px solid white'}}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <b style={{ margin: 3 }}>{brand.name}</b>
             <>

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'shipping',
     'order',
     'profile_user',
+    'insta_rec',
 ]
 
 

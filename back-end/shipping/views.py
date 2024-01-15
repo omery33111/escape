@@ -26,14 +26,13 @@ def addresses_amount(request):
     return Response({addresses_amount}, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_shipping(request):
-    if request.method == "GET":
-        user = request.user
-        shipping_addresses = user.shipping_set.all()
-        serializer = ShippingSerializer(shipping_addresses, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+    shipping = Shipping.objects.filter(user_id = request.user.id)
+    serializer = ShippingSerializer(shipping, many = True, context = {'request': request})
+    return Response(serializer.data)
+
 
 
 @api_view(["DELETE"])
@@ -47,14 +46,6 @@ def shipping_delete(request, pk = -1):
         except Shipping.DoesNotExist:
             return Response(status = status.HTTP_404_NOT_FOUND)
 
-
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def shipping_get(request, pk = -1):
-    if request.method == "GET":
-        shipping_address = Shipping.objects.get(pk = pk)
-        serializer = ShippingSerializer(shipping_address)
-        return Response(serializer.data, status = status.HTTP_200_OK)
         
 
 @api_view(["PUT"])

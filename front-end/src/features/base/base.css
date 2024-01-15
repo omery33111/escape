@@ -1,0 +1,96 @@
+.brands-car {
+    position: relative;
+    transition: transform 2s ease-in-out;
+    display: flex;
+    gap: 5rem;
+}
+
+div[ref="swiperRef"] {
+  transition: transform 2s ease-in-out;
+  transform: translateX(100px); /* Increase distance */
+}
+
+
+.brands-car-hir {
+    justify-content: center;
+    text-align: center;
+    direction: rtl;
+}
+
+
+.sharp-border-base {
+  border-radius: 0;
+  transition: 0.3s ease-in-out;
+}
+
+.sharp-border-base:hover {
+  border-radius: 0;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 0 7px 6px rgba(0, 0, 0, 0.45);
+}
+
+
+.image-container-chosen {
+  padding: 30px;
+  transition: padding 0.3s ease;
+}
+
+
+.image-container-chosen:hover {
+  padding: 0;
+}
+
+
+.home-map-items {
+  max-width: 1300px;
+  width: 100%;
+  display: grid;
+  gap: 2.5rem;
+  text-align: center;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+}
+
+
+.wall-hir {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+
+
+@media (min-width: 0px) and (max-width: 1024px) {
+  
+  .home-map-items {
+    gap: 0.8rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .wall-hir {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    border-left: 0px solid;
+    border-right: 0px solid;
+    border-bottom: 0px solid;
+    padding: 0rem 0px 0px 0px;
+  }
+  
+}
+
+@media (min-width: 1000px) and (max-width: 1400px) {
+  .home-map-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .home-map-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -73,16 +73,26 @@ function App() {
     }
   }, [lastClickTime]);
 
+  const { pathname } = useLocation();
+  const isHomepage = pathname === '/';
+
   return (
     <div className="App">
       <ToastContainer />
       <MyNavbar />
       <BrandNavbar />
 
-      <Container className="special-container">
-        <ScrollToTop />
-        <Outlet />
-      </Container>
+      {isHomepage ? (
+        <>
+          <ScrollToTop />
+          <Outlet />
+        </>
+      ) : (
+        <Container className="special-container">
+          <ScrollToTop />
+          <Outlet />
+        </Container>
+      )}
 
       <MyFooter />
     </div>

@@ -1,24 +1,48 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { ShoeState } from '../../models/Shoe';
-import { getAllShoes, getRandomShoes, getSingleShoe, postShoeImage, searchShoe } from './shoeAPI';
+import { getAllShoes, getChosenShoes, getRandomShoes, getSingleShoe, getWallShoes, postShoeImage, searchShoe } from './shoeAPI';
 
 
 
 const initialState: ShoeState = {
   shoes: [],
-  
-  singleShoe: { id: 0, name: '', description: '', price_before: 0, model: '', price: 0, sizes: [], images: [''], time: '', brand: 0 },
+
+  chosenShoes: [],
+
+  singleShoe: { id: 0, name: '', description: '', price_before: 0, model: '', price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false },
 
   shoesAmount: 0,
 
   shoeImages: [],
-    
+
   isLoading: false,
   isError: false,
 
-  searchShoe: ""
+  searchShoe: "",
+  chosenIsLoading: false,
+  wallIsLoading: false
 };
+
+
+
+export const getWallShoesAsync = createAsyncThunk(
+  'shoe/getWallShoes',
+  async () => {
+    const response = await getWallShoes();
+    return response.data;
+  }
+);
+
+
+
+export const getChosenShoesAsync = createAsyncThunk(
+  'shoe/getChosenShoes',
+  async () => {
+    const response = await getChosenShoes();
+    return response.data;
+  }
+);
 
 
 
@@ -82,6 +106,30 @@ export const shoeSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getChosenShoesAsync.fulfilled, (state, action) =>
+      {
+        state.chosenShoes = action.payload
+        state.chosenIsLoading = false;
+      })
+      .addCase(getChosenShoesAsync.pending, (state) => {
+        state.chosenIsLoading = true;
+      })
+      .addCase(getChosenShoesAsync.rejected, (state) => {
+        state.isError = true;
+      })
+      
+      .addCase(getWallShoesAsync.fulfilled, (state, action) =>
+      {
+        state.shoes = action.payload
+        state.wallIsLoading = false;
+      })
+      .addCase(getWallShoesAsync.pending, (state) => {
+        state.wallIsLoading = true;
+      })
+      .addCase(getWallShoesAsync.rejected, (state) => {
+        state.isError = true;
+      })
+
       .addCase(getAllShoesAsync.fulfilled, (state, action) =>
       {
         state.shoes = action.payload
@@ -128,7 +176,12 @@ export const { setShoeSearch } = shoeSlice.actions;
 
 
 
+export const selectChosenShoes = (state: RootState) => state.shoe.chosenShoes;
+
 export const selectSearchShoe = (state: RootState) => state.shoe.searchShoe;
+
+export const selectChosenLoading = (state: RootState) => state.shoe.chosenIsLoading;
+export const selectWallLoading = (state: RootState) => state.shoe.wallIsLoading;
 
 export const selectSingleShoeLoading = (state: RootState) => state.shoe.isLoading;
 export const selectSingleShoeError = (state: RootState) => state.shoe.isError;

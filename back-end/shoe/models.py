@@ -5,7 +5,7 @@ from brand.models import Brand
 
 class Shoe(models.Model):
     name = models.CharField(max_length = 100)
-    description = models.TextField(max_length = 400)
+    description = models.TextField(max_length = 650)
     price_before = models.DecimalField(max_digits = 6, decimal_places = 2, null = True, blank = True)
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
     sizes = models.JSONField()
@@ -13,6 +13,8 @@ class Shoe(models.Model):
     model = models.CharField(max_length = 100)
     time = models.DateTimeField(auto_now_add = True)
     brand = models.ForeignKey(Brand, on_delete = models.CASCADE, related_name = "shoes")
+    wall = models.BooleanField(default = False)
+    chosen = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name

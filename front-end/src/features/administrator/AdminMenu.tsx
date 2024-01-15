@@ -16,7 +16,7 @@ const AdminMenu = () => {
               <div>
                 <img
                   className="admin-panel-pic"
-                  src={require('../../images/jordan.jpg')}
+                  src={require('../../images/adminmenu1.png')}
                   alt="portalpic1"
                   height="auto"
                   width="100%"
@@ -26,21 +26,24 @@ const AdminMenu = () => {
           </div>
 
           <div>
-            <img
-              className="admin-panel-pic"
-              src={require('../../images/jordan.jpg')}
-              alt="portalpic2"
-              height="auto"
-              width="100%"
-              style={{ cursor: 'pointer' }}
-            />
+          <Link to="/administrator/orders/recent_orders">
+              <div>
+                <img
+                  className="admin-panel-pic"
+                  src={require('../../images/adminmenu2.png')}
+                  alt="portalpic1"
+                  height="auto"
+                  width="100%"
+                />
+              </div>
+            </Link>
           </div>
 
           <div>
             <Link to="/administrator/community">
               <img
                 className="admin-panel-pic"
-                src={require('../../images/jordan.jpg')}
+                src={require('../../images/adminmenu1.png')}
                 alt="portalpic3"
                 height="auto"
                 width="100%"
@@ -49,10 +52,10 @@ const AdminMenu = () => {
           </div>
 
           <div>
-            <Link to="/administrator/callback">
+            <Link to="/administrator/instagram_recs">
               <img
                 className="admin-panel-pic"
-                src={require('../../images/jordan.jpg')}
+                src={require('../../images/adminmenu4.png')}
                 alt="portalpic3"
                 height="auto"
                 width="100%"

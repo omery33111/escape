@@ -1,27 +1,33 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
-import App from './App';
-import './index.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.css';
-import HomePage from './features/base/HomePage';
-import Cart from './features/cart/Cart';
-import Orders from './features/order/Orders';
-import Login from './features/authentication/Login';
+import App from './App';
+import { store } from './app/store';
 import AdminMenu from './features/administrator/AdminMenu';
-import ShoesPanel from './features/administrator/ShoesPanel';
 import BrandPanel from './features/administrator/BrandPanel';
 import BrandPost from './features/administrator/BrandPost';
-import ShoePost from './features/administrator/ShoePost';
 import BrandPut from './features/administrator/BrandPut';
+import ShoePost from './features/administrator/ShoePost';
 import ShoePut from './features/administrator/ShoePut';
-import BrandShoes from './features/brand/BrandShoes';
+import ShoesPanel from './features/administrator/ShoesPanel';
+import Login from './features/authentication/Login';
 import Register from './features/authentication/Register';
+import HomePage from './features/base/HomePage';
+import BrandShoes from './features/brand/BrandShoes';
+import Cart from './features/cart/Cart';
 import Profile from './features/profile/Profile';
 import Shoe from './features/shoe/Shoe';
 import WishList from './features/wishlist/WishList';
+import './index.css';
+import InstaRecPost from './features/administrator/InstaRecPost';
+import InstaRecommendationsPanel from './features/administrator/InstaRecommendationsPanel';
+import InstaRecommendation from './features/instarec/InstaRecommendation';
+import Order from './features/order/Order';
+import UserOrders from './features/order/UserOrders';
+import OrderPanel from './features/administrator/OrderPanel';
+import RecentOrdersPanel from './features/administrator/RecentOrdersPanel';
 
 
 
@@ -40,6 +46,8 @@ root.render(
 
       <Route path = "/" element={<HomePage />} />
 
+      <Route path = "/test" element={<InstaRecommendation />} />
+
       <Route path = "/profile" element={<Profile />} />
 
       <Route path = "/authentication/login" element={<Login />} />
@@ -48,6 +56,10 @@ root.render(
 
       <Route path = "/administrator/menu" element={<AdminMenu />} />
       <Route path = "/administrator/shoes" element={<ShoesPanel />} />
+      <Route path = "/administrator/orders" element={<OrderPanel />} />
+      <Route path = "/administrator/orders/recent_orders" element={<RecentOrdersPanel />} />
+      <Route path = "/administrator/instagram_recs" element={<InstaRecommendationsPanel />} />
+      <Route path = "/administrator/post_instagram_rec" element={<InstaRecPost />} />
       <Route path = "/administrator/post_shoe" element={<ShoePost />} />
       <Route path = "/administrator/put_shoe">
         <Route index element = {<ShoePut />} />
@@ -73,11 +85,14 @@ root.render(
       </Route>
 
 
+
       <Route path = "/cart" element={<Cart />} />
 
       <Route path = "/wishlist" element={<WishList />} />
 
-      <Route path = "/order/order_post" element={<Orders />} />
+      <Route path = "/order" element={<Order />} />
+
+      <Route path = "/profile/orders" element={<UserOrders />} />
 
       </Route>
 

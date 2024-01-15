@@ -34,7 +34,7 @@ export const cartSlice = createSlice({
     },
 
     addProduct: (state, action) => {
-      const { item, selectedSize, amount } = action.payload; // Include selectedSize in the payload
+      const { item, selectedSize, amount = 1 } = action.payload; // Set default value for amount if not provided
     
       const existingProductInCart = state.cart.find(({ id }) => id === item.id);
     
@@ -44,17 +44,17 @@ export const cartSlice = createSlice({
         const productToAdd = {
           id: item.id,
           name: item.name,
-          description: item.description,
           price: item.price,
           price_before: item.price_before,
           size: selectedSize,
-          picture: item.images[0],
+          images: item.images,
           amount: amount,
         };
         state.cart.push(productToAdd);
       }
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+    
     
     deleteProduct: (state, action) => {
       const item = action.payload.item

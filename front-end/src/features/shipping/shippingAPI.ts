@@ -47,17 +47,6 @@ export function patchAddress(shippingData: any, id: number) {
 }
 
 
-export function deleteAddress(id: number) {
-  const myToken = JSON.parse(localStorage.getItem("token") as string)
-    const accessToken = myToken ? myToken.access : "";
-    let config = {
-        headers: { 'Authorization': `Bearer ${accessToken}` }
-      }
-  return new Promise<{ data: Address }>((resolve) =>
-    axios.delete(`${shippingURL}/shipping_delete/${id}/`, config).then((res) => resolve({ data: res.data }))
-  );
-}
-
 
 export function postAddress(shippingData: Address) {
   const myToken = JSON.parse(localStorage.getItem("token") as string);

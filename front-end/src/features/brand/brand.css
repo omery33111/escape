@@ -56,19 +56,18 @@ body {
   display: grid;
   gap: 1.3rem;
   text-align: center;
-  grid-template-columns: repeat(4, minmax(300px, 1fr));
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
 }
 
-.sharp-border {
+.sharp-border-brand {
   border-radius: 0;
-  border: 1;
   transition: 0.3s ease-in-out;
 }
 
-.sharp-border:hover {
+.sharp-border-brand:hover {
   border-radius: 0;
-  border: 1.5px solid black;
-  transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 0 7px 6px rgba(0, 0, 0, 0.45);
 }
 
 
@@ -86,12 +85,6 @@ body {
 
 .image-container-brand:hover {
   padding: 0;
-}
-
-.card-info {
-  position: relative;
-  transition: 0.3s ease;
-  font-size: 1rem;
 }
 
 
@@ -113,9 +106,9 @@ body {
   
 }
 
-@media (max-width: 1200px) {
+@media (min-width: 1000px) and (max-width: 1400px) {
   .brand-map-items {
-    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -125,18 +118,3 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-
-
-/* Laptop */
-@media (min-width: 1024px) and (max-width: 1440px) {
-  .brand-map-items {
-    max-width: 1300px;
-    width: 100%;
-    display: grid;
-    gap: 1.3rem;
-    text-align: center;
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-

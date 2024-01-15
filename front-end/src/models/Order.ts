@@ -3,11 +3,12 @@ export interface Order {
     price: number;
     amount: number;
     user: number;
-    product: { id: string;
-              picture: string;
-              product_name: string;
+    shoe: { id: string;
+              images: string[];
+              name: string;
               description: string; };
-    shipping_address: { first_name: string; last_name: string; address: string; city: string; state: string; postal_code: number; country: string };
+    shipping_address: { first_name: string; last_name: string; address: string; city: string; house_number: number; phone_number: number; postal_code: number };
+    time: string;
     }
   
   

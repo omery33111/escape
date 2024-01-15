@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { Address, AddressState } from "../../models/Shipping";
-import { deleteAddress, getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, getSingleAddress, patchAddress, postAddress } from "./shippingAPI";
+import { getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, getSingleAddress, patchAddress, postAddress } from "./shippingAPI";
 
 
 
@@ -81,14 +81,6 @@ export const getSingleAddressAsync = createAsyncThunk(
 );
 
 
-  export const deleteAddressAsync = createAsyncThunk(
-    'shipping/deleteAddress',
-    async (id: number) => {
-    await deleteAddress(id);
-    return { id };
-    }
-  );
-
   
   export const patchAddressAsync = createAsyncThunk(
     'shipping/patchAddress',
@@ -107,16 +99,16 @@ export const shippingSlice = createSlice({
       
       state.guestAddress = state.guestAddress.filter(({id}) => id !== item.id)
       
-      localStorage.setItem("guestAddress", JSON.stringify(state.guestAddress))
+      localStorage.setItem("addresses", JSON.stringify(state.guestAddress))
 
       if (state.guestAddress.length === 0) {
-        localStorage.removeItem("guestAddress");
+        localStorage.removeItem("addresses");
       }
       },
 
       initGuestAddresses: (state) =>
       {
-        const temp = JSON.parse(localStorage.getItem("guestAddress") as string)
+        const temp = JSON.parse(localStorage.getItem("addresses") as string)
         if (temp)
         {
           state.guestAddress = temp
@@ -150,9 +142,7 @@ export const shippingSlice = createSlice({
         .addCase(patchAddressAsync.fulfilled, (state, action) => {
           state.single_address = { ...state.single_address, ...action.payload }
         })
-        .addCase(deleteAddressAsync.fulfilled, (state, action) => {
-          state.addresses = state.addresses.filter(address => address.id !== action.payload.id)
-        })
+        
         .addCase(postAddressAsync.fulfilled, (state, action) => {
           state.addresses = [...state.addresses, action.payload];
         })

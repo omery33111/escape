@@ -5,6 +5,22 @@ import { ShoeImage } from "../../models/ShoeImage";
 
 
 
+export function getWallShoes()
+{
+  return new Promise<{ data: Shoe[] }>((resolve) =>
+    axios.get(`${shoeURL}/get_wall_shoes/`).then((res) => resolve({ data: res.data })));
+}
+
+
+
+export function getChosenShoes()
+{
+  return new Promise<{ data: Shoe[] }>((resolve) =>
+    axios.get(`${shoeURL}/get_chosen_shoes/`).then((res) => resolve({ data: res.data })));
+}
+
+
+
 export function getAllShoes()
 {
   return new Promise<{ data: Shoe[] }>((resolve) =>

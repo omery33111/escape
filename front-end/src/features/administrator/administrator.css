@@ -67,6 +67,17 @@ body {
 
 
 
+.admin-insta-recs-map {
+  max-width: 1300px;
+  width: 100%;
+  display: grid;
+  gap: 1.3rem;
+  text-align: center;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+}
+
+
+
 /* MOBILE RESPONSIVE STYLING */
 @media (max-width: 768px) {
 

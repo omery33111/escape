@@ -13,8 +13,7 @@ import { myServer } from "../../endpoints/endpoints";
 import { addProduct, removeProduct, selectCart } from "../cart/cartSlice";
 import { addWish, removeWish, selectWishList } from "../wishlist/wishListSlice";
 import './brand.css';
-import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
-import { BsFillSuitHeartFill } from "react-icons/bs";
+import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandLoading, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
 
 
 
@@ -61,6 +60,8 @@ const BrandShoes = () => {
 
 
     const brandsAmount = useAppSelector(selectshoesOfBrandAmount);
+
+    const isLoading = useAppSelector(selectBrandLoading);
 
     const itemsPerPage = 20;
 
@@ -287,72 +288,79 @@ const BrandShoes = () => {
 
             <div className="brand-map-items">
             {shoes.map((shoe, shoeIndex) => (
-          <Card key={shoe.id} className="map-item sharp-border">
-            <Card.Body>
-                <div style={{ marginRight: "-0.9rem" }}>
-                <img
-                  className="image-container-brand"
-                  onMouseEnter={() => handleMouseEnter(shoeIndex)}
-                  onMouseLeave={() => handleMouseLeave(shoeIndex)}
-                  onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
-                  style={{ cursor: "pointer" }}
-                  src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
-                  width={isMobile ? `150px` : `225px`}
-                  height={isMobile ? `150px` : `225px`}
+          <Card key={shoe.id} className="sharp-border-brand">
+            {isLoading ? (
+                      <div style = {{height: "35dvh", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                      <div className="loader" />
+                    </div>
+            ) : (
+              <Card.Body>
+              <div style={{ marginRight: "-0.9rem" }}>
+              <img
+                className="image-container-brand"
+                onMouseEnter={() => handleMouseEnter(shoeIndex)}
+                onMouseLeave={() => handleMouseLeave(shoeIndex)}
+                onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
+                style={{ cursor: "pointer" }}
+                src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                width={isMobile ? `150px` : `225px`}
+                height={isMobile ? `150px` : `225px`}
 
-                />
-                </div>
+              />
+              </div>
 
+            <div>
+              <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+              <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before != 0 ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
               <div>
-                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
-                <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before != 0 ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
-                <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
-                
-                <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
-
-                </div>
-  
-  {shoe.price_before != 0 ? (
-    <div style={{ position: "relative", top: "1px"}}>
-      <b className = "removed-price">
-
-      ₪{shoe.price_before}
-      </b>
-    </div>
-  ) : (
-    ""
-  )}
-</div>
-                </div>
-                <hr />
-                <div style = {{display: "flex", justifyContent: "space-evenly"}}>
-                
-                <div style = {{cursor: "pointer", color: "black", position: "relative", top: "-2px"}}>
-
-                {cart.find((item) => String(item.id) === String(shoe.id))
-              ? <BiSolidCart style = {{fontSize: "2rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}/>
-              : <BiSolidCartAdd style = {{fontSize: "2rem"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
-                
-                </div>
-                
-                <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
-                <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
-                {isHovered === shoeIndex && (
-    <div style={{ position: "absolute", fontSize: "0.8rem", marginRight: "-18px", marginTop: "-5px" }}>
-      לעמוד הנעל
-    </div>
-  )}
-                </div>
-
-                <div style = {{cursor: "pointer", color: "black"}}>
-                {wishlist.find((item) => String(item.id) === String(shoe.id))
-              ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#1A002E"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
-              : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
-                </div>
-
-                </div>
               
-            </Card.Body>
+              <b style = {{fontSize: "1.1rem"}}>₪{shoe.price}</b>
+
+              </div>
+
+{shoe.price_before != 0 ? (
+  <div style={{ position: "relative", top: "1px"}}>
+    <b className = "removed-price">
+
+    ₪{shoe.price_before}
+    </b>
+  </div>
+) : (
+  ""
+)}
+</div>
+              </div>
+              <hr />
+              <div style = {{display: "flex", justifyContent: "space-evenly"}}>
+              
+              <div style = {{cursor: "pointer", color: "black", position: "relative", top: "-2px"}}>
+
+              {cart.find((item) => String(item.id) === String(shoe.id))
+            ? <BiSolidCart style = {{fontSize: "2rem"}} onClick={() => dispatch(removeProduct({ item: shoe }))}/>
+            : <BiSolidCartAdd style = {{fontSize: "2rem"}} onClick={() => dispatch(addProduct({ item: shoe }))}/>}
+              
+              </div>
+              
+              <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
+              <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
+              {isHovered === shoeIndex && (
+  <div style={{ position: "absolute", fontSize: "0.8rem", marginRight: "-18px", marginTop: "-5px" }}>
+    לעמוד הנעל
+  </div>
+)}
+              </div>
+
+              <div style = {{cursor: "pointer", color: "black"}}>
+              {wishlist.find((item) => String(item.id) === String(shoe.id))
+            ? <FaHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px', color: "#1A002E"}} onClick={() => dispatch(removeWish({ item: shoe }))}/>
+            : <FaRegHeart style = {{fontSize: "1.6rem", position: "relative", top: '3px'}} onClick={() => dispatch(addWish({ item: shoe }))}/>}
+              </div>
+
+              </div>
+            
+          </Card.Body>
+            )}
+
           </Card>
         ))}
       </div>

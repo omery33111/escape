@@ -13,10 +13,14 @@ export interface Shoe {
   time?: string;
   brand: number;
   model: string;
+  wall: boolean;
+  chosen: boolean;
 }
 
   export interface ShoeState {
     shoes: Shoe[];
+    
+    chosenShoes: Shoe[];
 
     singleShoe: Shoe;
 
@@ -24,6 +28,8 @@ export interface Shoe {
 
     shoeImages: ShoeImage[];
 
+    chosenIsLoading: boolean;
+    wallIsLoading: boolean;
     isLoading: boolean;
     isError: boolean;
 

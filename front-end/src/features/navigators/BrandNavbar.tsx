@@ -1,19 +1,19 @@
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, TextField, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import React, { useEffect, useRef, useState } from "react";
 import { Container, Dropdown, Nav, Navbar } from "react-bootstrap";
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { myServer } from "../../endpoints/endpoints";
-import { getAllBrandsAsync, getPagedShoesOfBrandAsync, selectAllBrands } from "../brand/brandSlice";
-import { searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from "../shoe/shoeSlice";
-import './navigators.css';
+import { getAllBrandsAsync, getPagedShoesOfBrandAsync, selectAllBrands, selectBrandsLoading } from "../brand/brandSlice";
 import { selectCart } from '../cart/cartSlice';
+import { searchShoeAsync, selectAllShoes, selectSearchShoe, setShoeSearch } from "../shoe/shoeSlice";
 import { selectWishList } from '../wishlist/wishListSlice';
-import LocalMallIcon from '@mui/icons-material/LocalMall'
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import './navigators.css';
 
 
 
@@ -84,7 +84,7 @@ const BrandNavbar = () => {
   const shoes = useAppSelector(selectAllShoes);
 
   const searchShoe = useAppSelector(selectSearchShoe);
-  const isLoading = useAppSelector(selectSingleShoeLoading);
+  const isLoading = useAppSelector(selectBrandsLoading);
   
 
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +168,9 @@ const BrandNavbar = () => {
       <div ref={navbarRef}>
       <Navbar data-bs-theme="dark" style={{ backgroundColor: "black", padding: '15px 0', width: "100%", position: isNavbarFixed ? "fixed" : "relative", top: isNavbarFixed ? 0 : "unset", zIndex: 1000}} >
 
-        
+      {showLeftScroll && isTablet && (
+          <IoIosArrowBack className="brand-arrow1" onClick={scrollLeft} />
+        )}
         
         <Container>
           
@@ -211,23 +213,26 @@ const BrandNavbar = () => {
               </Nav>
            
         
-          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "20px", left: showAutocomplete ? "165px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-3.43rem)"}` : "translateX(0px)" }}>
+          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "20px", left: showAutocomplete ? "140px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-3.43rem)"}` : "translateX(0px)" }}>
 
           {isTablet ? (
             
             <div style={{ display: "flex" }}>
 
-                    {showLeftScroll && (
-          <IoIosArrowBack className="brand-arrow1" onClick={scrollLeft} />
-        )}
-        
-              {brands.slice(startIndex, startIndex + brandsToShow).map((brand) => (
+                  {isLoading ? (
+                                          <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                          <div className="loader" style = {{width: "40px"}}/>
+                                        </div>
+                  ) : (
+                    <>
+                                    {brands.slice(startIndex, startIndex + brandsToShow).map((brand) => (
                 <Dropdown
                   key={brand.id}
                   show={selectedBrand === brand.id}
                   onMouseEnter={() => handleDropdownEnter(brand.id)}
                   onMouseLeave={handleDropdownLeave}
                 >
+
                   <Dropdown.Toggle as={Nav.Link} style={{ color: "black" }}>
                     <Link to={`/brand/shoes/${brand.id}/`} style={{ textDecoration: 'none', color: 'white' }}>
                       <b style={{ fontSize: "0.9rem" }}>{brand.name}</b>
@@ -249,16 +254,25 @@ const BrandNavbar = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               ))}
-                    {showRightScroll && (
-          <IoIosArrowForward className="brand-arrow2" onClick={scrollRight} />
-        )}
+                    </>
+                  )}
+        
+
+
           </div>
 
           ) : (
             
+            
             <>
-
-                       {brands.map((brand) => (
+            
+                  {isLoading ? (
+                                          <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                                          <div className="loader" style = {{width: "40px"}}/>
+                                        </div>
+                  ) : (
+                    <>
+                                               {brands.map((brand) => (
             <Dropdown
               key={brand.id}
               show={selectedBrand === brand.id}
@@ -290,6 +304,9 @@ const BrandNavbar = () => {
               </Dropdown.Menu>
             </Dropdown>
           ))}
+                    </>)}
+
+
             </>
 
           )}
@@ -309,7 +326,7 @@ const BrandNavbar = () => {
             <div style = {{direction: "rtl"}}>
             
             <Autocomplete
-            style = {{width: "300px"}}
+            style = {{width: "250px"}}
           className={classes.autocompleteRoot}
           freeSolo
           options={shoes.map((shoe) => ({
@@ -358,6 +375,10 @@ const BrandNavbar = () => {
           </Nav>
 
         </Container>
+
+        {showRightScroll && isTablet && (
+          <IoIosArrowForward className="brand-arrow2" onClick={scrollRight} />
+        )}
         
         </Navbar>
         {isNavbarFixed && <div style={{ height: navbarHeight }} />}

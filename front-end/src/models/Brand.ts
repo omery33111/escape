@@ -21,6 +21,7 @@ export interface Brand {
 
     shoesOfBrandAmount: number;
 
+    brandsIsLoading: boolean;
     isLoading: boolean;
     isError: boolean;
   }

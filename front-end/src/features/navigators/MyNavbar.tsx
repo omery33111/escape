@@ -35,6 +35,7 @@ const MyNavbar = () => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const handleOffcanvasClose = () => setShowOffcanvas(false);
+  
   const handleOffcanvasShow = () => setShowOffcanvas(true);
 
   const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
@@ -87,7 +88,7 @@ const MyNavbar = () => {
             
             
                       <div>
-                        {!isMobile && isStaff && (
+                        {!isTablet && isStaff && (
                           <Nav.Link href = "/administrator/menu">
                             <AdminPanelSettingsIcon style = {{color: "black"}}/>
                           </Nav.Link>

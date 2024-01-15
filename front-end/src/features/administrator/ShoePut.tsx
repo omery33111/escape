@@ -26,6 +26,10 @@ const ShoePut = () => {
   const [images, setImages] = useState<any>(null);
   const [brand, setBrand] = useState(0);
   const [model, setModel] = useState('');
+  const [wall, setWall] = useState(false);
+  const [chosen, setChosen] = useState(false);
+
+
 
   const [sizesArray, setSizesArray] = useState<string[]>(['']);
   const [imagesArray, setImagesArray] = useState<string[]>(['']);
@@ -40,11 +44,13 @@ const ShoePut = () => {
   };
 
   const handlePriceBeforeChange = (e: any) => {
-    setpriceBefore(e.target.value);
+    const inputPrice = parseFloat(e.target.value);
+    setpriceBefore(isNaN(inputPrice) ? 0 : inputPrice);
   };
 
-  const handlePriceChange = (e: any) => {
-    setPrice(e.target.value);
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPrice = parseFloat(e.target.value);
+    setPrice(isNaN(inputPrice) ? 0 : inputPrice);
   };
 
 
@@ -76,6 +82,9 @@ const ShoePut = () => {
     formData.append('price', price);
     formData.append('brand', brand);
     formData.append('model', model);
+    formData.append('wall', wall);
+    formData.append('chosen', chosen);
+
 
     const sizesJson = JSON.stringify(sizesArray); 
     formData.append('sizes', sizesJson);
@@ -237,7 +246,7 @@ const ShoePut = () => {
             <Form.Label>
               <h5>Price</h5>
             </Form.Label>
-            <Form.Control type="number" value={price} min = {0} onChange={handlePriceChange} />
+            <Form.Control type="text" value={price} onChange={handlePriceChange} />
           </Form.Group>
 
           <Form.Group>
@@ -277,6 +286,22 @@ const ShoePut = () => {
     Add Image
   </Button>
 </Form.Group><br/>
+
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Wall"
+    onChange={(e) => setWall(e.target.checked)}
+  />
+</Form.Group>
+<br/>
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Chosen"
+    onChange={(e) => setChosen(e.target.checked)}
+  />
+</Form.Group>
 </div>
 
           

@@ -25,6 +25,9 @@ const ShoePost = () => {
   const [images, setImages] = useState<any>(null);
   const [brand, setBrand] = useState(0);
   const [model, setModel] = useState('');
+  const [wall, setWall] = useState(false);
+  const [chosen, setChosen] = useState(false);
+
 
   const [sizesArray, setSizesArray] = useState<string[]>(['']);
   const [imagesArray, setImagesArray] = useState<string[]>(['']);
@@ -41,11 +44,13 @@ const ShoePost = () => {
   };
 
   const handlePriceBeforeChange = (e: any) => {
-    setpriceBefore(e.target.value);
+    const inputPrice = parseFloat(e.target.value);
+    setpriceBefore(isNaN(inputPrice) ? 0 : inputPrice);
   };
 
-  const handlePriceChange = (e: any) => {
-    setPrice(e.target.value);
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPrice = parseFloat(e.target.value);
+    setPrice(isNaN(inputPrice) ? 0 : inputPrice);
   };
 
 
@@ -116,6 +121,9 @@ const ShoePost = () => {
     formData.append('price', price);
     formData.append('brand', brand);
     formData.append('model', model);
+    formData.append('wall', wall);
+    formData.append('chosen', chosen);
+
 
     const sizesJson = JSON.stringify(sizesArray); 
     formData.append('sizes', sizesJson);
@@ -341,6 +349,22 @@ const ShoePost = () => {
     Add Image
   </Button>
 </Form.Group><br/>
+
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Wall"
+    onChange={(e) => setWall(e.target.checked)}
+  />
+</Form.Group>
+<br/>
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Chosen"
+    onChange={(e) => setChosen(e.target.checked)}
+  />
+</Form.Group>
 </div>
 
           

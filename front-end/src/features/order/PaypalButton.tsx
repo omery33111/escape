@@ -24,7 +24,7 @@ const PaypalButton = () => {
           return accumulator + item.amount * item.price;
         }, 0);
         const orderDetails = cart.map((item) => ({
-          product: Number(item.id),
+          shoe: Number(item.id),
           amount: item.amount,
           price: Number(item.price * item.amount),
         }));

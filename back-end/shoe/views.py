@@ -14,6 +14,22 @@ from django.db.models import CharField, Case, Value, When
 
 # ------------------------- SHOE START ------------------------- #
 @api_view(["GET"])
+def get_chosen_shoes(request):
+    chosen_shoes = Shoe.objects.filter(chosen=True)
+    serializer = ShoeSerializer(chosen_shoes, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(["GET"])
+def get_wall_shoes(request):
+    wall_shoes = Shoe.objects.filter(wall=True)
+    serializer = ShoeSerializer(wall_shoes, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(["GET"])
 def get_all_shoes(request):
     shoes = Shoe.objects.all()
     serializer = ShoeSerializer(shoes, many=True)

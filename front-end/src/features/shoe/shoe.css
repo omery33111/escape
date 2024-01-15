@@ -1,6 +1,7 @@
 /* GLOBAL RESPONSIVE STYLING */
 .shoe-page-height {
-  max-height: 130dvh;
+  max-height: 145dvh;
+  width: 100%;
 }
 
 
@@ -105,16 +106,15 @@
 }
 
 
-.sharp-border {
+.sharp-border-random {
   border-radius: 0;
-  border: 1;
   transition: 0.3s ease-in-out;
 }
 
-.sharp-border:hover {
+.sharp-border-random:hover {
   border-radius: 0;
-  border: 1.5px solid black;
-  transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 0 7px 6px rgba(0, 0, 0, 0.45);
 }
 
 
@@ -173,6 +173,12 @@
 
 /* TABLET RESPONSIVE STYLING */
 @media (max-width: 768px) {
+
+  .shoe-page-height {
+    max-height: 180dvh;
+  }
+
+
   .first-half {
     width: 20%;
   }
@@ -192,8 +198,8 @@
 
 
 /* Laptop */
-@media (min-width: 1024px) and (max-width: 1440px) {
-  /* .vertical-line {
-    display: none;
-  } */
+@media (min-width: 1000px) and (max-width: 1400px) {
+  .shoe-page-height {
+    max-height: 197dvh;
+  }
 }

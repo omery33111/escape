@@ -155,6 +155,7 @@ export const authenticationSlice = createSlice({
             state.isError = false;
             state.isSuccess = false;
 
+            localStorage.removeItem('is_staff');
             localStorage.removeItem('loginTime');
             localStorage.removeItem('token');
 

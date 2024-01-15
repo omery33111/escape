@@ -8,6 +8,8 @@ from .serializers import GetOrderSerializer, PostOrderSerializer
 
 from .models import Order
 
+from datetime import datetime, timedelta
+
 
 
 class IsStaff(BasePermission):
@@ -35,17 +37,39 @@ def order(request):
 
 
 
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def orders_peruser(request):
+def user_lastmonth_orders(request):
+    last_month_start = datetime.now() - timedelta(days=30)
+
+    orders = Order.objects.filter(
+        user_id=request.user.id,
+        time__gte=last_month_start
+    )
+
+    serializer = GetOrderSerializer(orders, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_orders(request):
     orders = Order.objects.filter(user_id = request.user.id)
     serializer = GetOrderSerializer(orders, many = True, context = {'request': request})
     return Response(serializer.data)
 
+@api_view(["DELETE"])
+def delete_order(request, pk = -1):
+    if request.method == "DELETE":
+        try:
+            instarec = Order.objects.get(pk = pk)
+            instarec.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Order.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
 
-@permission_classes([IsAuthenticated, IsStaff])
-@api_view(["GET"])
-def get_orders(request):
-    orders = Order.objects.all()
-    serializer = GetOrderSerializer(orders, many=True)
-    return Response(serializer.data)
+
+

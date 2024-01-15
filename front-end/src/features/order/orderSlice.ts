@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { Order, OrderState } from '../../models/Order';
-import { getOrders, getOrdersUser, postOrder } from './orderAPI';
+import { getLastMonthOrders, getOrdersUser, getUserOrders, postOrder } from './orderAPI';
 
 
 
@@ -11,14 +11,16 @@ const initialState: OrderState = {
                                                             last_name: '', 
                                                             address: "",
                                                             city: "",
-                                                            state: "",
                                                             postal_code: 0,
-                                                            country: "" },
-                                                          product:
+                                                            phone_number: 0,
+                                                            house_number: 0 },
+                                                            shoe:
                                                           { id: "",
-                                                            picture: "",
-                                                            product_name: "",
-                                                            description: "" }},
+                                                          images: [],
+                                                          name: "",
+                                                            description: "" },
+                                                            time: "",},
+                                                            
     orders: [],
     orders_user: [],
     saveAddress: 0,
@@ -32,7 +34,7 @@ const initialState: OrderState = {
 
 export const postOrderAsync = createAsyncThunk(
   'order/postOrder',
-  async (data: { orderData: any, orderDetails: { product: number, amount: number, price: number }[] }) => {
+  async (data: { orderData: any, orderDetails: { shoe: number, amount: number, price: number }[] }) => {
     const response = await postOrder(data.orderData, data.orderDetails);
     return response.data;
   }
@@ -46,26 +48,22 @@ export const getOrdersUserAsync = createAsyncThunk(
   }
 )
 
-// export const getOrdersUserAsync = createAsyncThunk(
-//   'order/getOrdersUser',
-//   async () => {
-//       const response = await getOrdersUser();
-//       const orders = response.data.map((order: Order) => {
-//         const picture = order.product.picture;
-//         const product_name = order.product.product_name;
-//         const description = order.product.description;
-//         const single_order = {...order, picture, product_name, description };
-//         return single_order;
-//       });
-//       return orders;
-//   }
-// )
 
 
-export const getOrdersAsync = createAsyncThunk(
-  'order/getOrders',
+export const getLastMonthOrdersAsync = createAsyncThunk(
+  'order/getLastMonthOrders',
   async () => {
-      const response = await getOrders();
+      const response = await getLastMonthOrders();
+      return response.data;
+  }
+)
+
+
+
+export const getUserOrdersAsync = createAsyncThunk(
+  'order/getUserOrders',
+  async () => {
+      const response = await getUserOrders();
       return response.data;
   }
 )
@@ -99,8 +97,19 @@ export const orderSlice = createSlice({
         state.isError = true;
       })
 
-      .addCase(getOrdersAsync.fulfilled, (state, action) => {
-        state.orders = action.payload
+      .addCase(getLastMonthOrdersAsync.fulfilled, (state, action) => {
+        state.orders_user = action.payload
+        state.isLoading = false;
+      })
+      .addCase(getLastMonthOrdersAsync.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getLastMonthOrdersAsync.rejected, (state) => {
+        state.isError = true;
+      })
+
+      .addCase(getUserOrdersAsync.fulfilled, (state, action) => {
+        state.orders_user = action.payload
       })
   },
 });

@@ -4,11 +4,10 @@
 export interface Cart {
     id: string,
     name: string;
-    description: string;
     price: number;
     price_before: number;
     size: string;
-    picture: string;
+    images: string[];
     amount: number,
 }
 

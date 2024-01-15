@@ -16,6 +16,8 @@ const initialState: BrandState = {
 
   shoesOfBrandAmount: 0,
 
+  brandsIsLoading: false,
+
   isLoading: false,
   isError: false
 };
@@ -83,6 +85,13 @@ export const brandSlice = createSlice({
     builder
       .addCase(getAllBrandsAsync.fulfilled, (state, action) => {
         state.brands = action.payload.data;
+        state.brandsIsLoading = false;
+      })
+      .addCase(getAllBrandsAsync.pending, (state) => {
+        state.brandsIsLoading = true;
+      })
+      .addCase(getAllBrandsAsync.rejected, (state) => {
+        state.isError = true;
       })
 
       .addCase(getPagedShoesOfBrandAsync.fulfilled, (state, action) => {
@@ -115,6 +124,7 @@ export const brandSlice = createSlice({
 
 
 
+export const selectBrandsLoading = (state: RootState) => state.brand.brandsIsLoading;
 export const selectBrandLoading = (state: RootState) => state.brand.isLoading;
 export const selectBrandError = (state: RootState) => state.brand.isError;
 

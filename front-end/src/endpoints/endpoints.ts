@@ -60,3 +60,10 @@ export const administratorURL = `${myServer}/administrator`;
 
 // ------------------------- PROFILE ENDPOINTS:
 export const profileURL = `${myServer}/profile`;
+
+
+
+
+
+// ------------------------- PROFILE ENDPOINTS:
+export const instaRecURL = `${myServer}/instarec`;

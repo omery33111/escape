@@ -1,15 +1,21 @@
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.utils import timezone
 
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
+from insta_rec.serializers import InstaRecSerializer
 from brand.serializers import BrandSerializer
 from shoe.serializers import ShoeSerializer
+from insta_rec.serializers import InstaRecSerializer
+from order.serializers import GetOrderSerializer
 
+from order.models import Order
 from shoe.models import Shoe
 from brand.models import Brand
+from insta_rec.models import InstaRec
 
 
 
@@ -22,6 +28,35 @@ class IsStaff(BasePermission):
 # ------------------------- BRAND START ------------------------- #
 @permission_classes([IsStaff])
 @api_view(["POST"])
+def post_insta_rec(request):
+    if request.method == "POST":
+        serializer = InstaRecSerializer(data = request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def instarec_amount(request):
+    insta_amount = InstaRec.objects.count()
+    return Response({insta_amount}, status=status.HTTP_200_OK)
+    
+@permission_classes([IsStaff])
+@api_view(["DELETE"])
+def delete_instarec(request, pk = -1):
+    if request.method == "DELETE":
+        try:
+            instarec = InstaRec.objects.get(pk = pk)
+            instarec.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except InstaRec.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+@permission_classes([IsStaff])
+@api_view(["POST"])
 def post_brand(request):
     if request.method == "POST":
         serializer = BrandSerializer(data = request.data)
@@ -31,6 +66,26 @@ def post_brand(request):
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def get_paged_insta_recs(request, page):
+    items_per_page = 12
+
+    recs = InstaRec.objects.order_by('id')
+
+    paginator = Paginator(recs, items_per_page)
+
+    try:
+        recs = paginator.page(page)
+    except PageNotAnInteger:
+        return Response({"error": "Invalid page number."}, status=400)
+
+    serializer = InstaRecSerializer(recs, many=True)
+
+    return Response(serializer.data)
+
 
 
 @permission_classes([IsStaff])
@@ -154,3 +209,43 @@ def update_shoe(request, pk = -1):
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
 # ------------------------- SHOE END ------------------------- #
+
+# ------------------------- ORDER START ------------------------- #
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def get_paged_orders(request, page):
+    items_per_page = 10
+
+    items = Order.objects.order_by('time')
+
+    paginator = Paginator(items, items_per_page)
+
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        return Response({"error": "Invalid page number."}, status=400)
+
+    serializer = GetOrderSerializer(items, many=True)
+
+    return Response(serializer.data)
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def orders_amount(request):
+    orders_amount = Order.objects.count()
+    return Response({orders_amount}, status=status.HTTP_200_OK)
+
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def recent_orders(request):
+    twenty_four_hours_ago = timezone.now() - timezone.timedelta(hours=24)
+
+    # Filter orders created in the last 24 hours
+    orders = Order.objects.filter(time__gte=twenty_four_hours_ago)
+
+    serializer = GetOrderSerializer(orders, many=True)
+    return Response(serializer.data)
+# ------------------------- ORDER END ------------------------- #

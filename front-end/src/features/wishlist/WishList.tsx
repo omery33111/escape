@@ -71,7 +71,7 @@ const WishList = () => {
     <h1 style = {{display: 'flex', justifyContent: 'center'}}><BsFillSuitHeartFill/><br/></h1>
     <h1 style = {{display: 'flex', justifyContent: 'center'}}>הרשימה שלי</h1><br/><br/><br/>
 
-    <div style = {{width: isMobile ? "100%" : "100%"}}>
+    <div>
     {wishList.length === 0 && (
                 <Alert variant="dark" style = {{direction: "rtl"}}>
                 <Alert.Heading>אין מוצרים ברשימה</Alert.Heading>

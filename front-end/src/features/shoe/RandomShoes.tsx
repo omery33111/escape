@@ -155,7 +155,7 @@ const RandomShoes = () => {
             {isMobile || isTablet ? (
               <>
                                         {shoes.map((shoe, shoeIndex) => (
-            <Card key={shoe.id} className="sharp-border" onClick={() => handleNavigation(String(shoe.id))}>
+            <Card key={shoe.id} className="sharp-border-random" onClick={() => handleNavigation(String(shoe.id))}>
               <Card.Body>
                 <div>
                   <img
@@ -202,7 +202,7 @@ const RandomShoes = () => {
             ) : (
               <>
                           {shoes.map((shoe, shoeIndex) => (
-            <Card key={shoe.id} className="sharp-border">
+            <Card key={shoe.id} className="sharp-border-random">
               <Card.Body>
                 <div>
                   <img

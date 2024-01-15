@@ -1,0 +1,28 @@
+/* GLOBAL RESPONSIVE STYLING */
+
+  
+.image-container-order {
+    padding: 10px;
+    transition: padding 0.3s ease;
+  }
+  
+  
+.image-container-order:hover {
+    padding: 0;
+}
+
+
+  /* MOBILE AND TABLET RESPONSIVE STYLING */
+  @media (min-width: 0px) and (max-width: 1024px) {
+  
+  
+  }
+  
+  
+  
+  /* TABLET RESPONSIVE STYLING */
+  @media (max-width: 768px) {
+  
+  
+  }
+  

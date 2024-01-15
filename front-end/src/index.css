@@ -64,6 +64,19 @@
 
 
 
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #514b82;
+  -webkit-mask: radial-gradient(circle closest-side at 50% 40%,#0000 94%, #000);
+  transform-origin: 50% 40%;
+  animation: l25 1s infinite linear;
+}
+@keyframes l25 {
+  100% {transform: rotate(1turn)}
+}
+
 pre {
   font-family: inherit; /* Inherit font from parent element */
   /* Other styling as needed (e.g., font-size, color, etc.) */
@@ -89,9 +102,17 @@ body {
 
 
 
-/* MOBILE RESPONSIVE STYLING */
-@media (max-width: 768px) {
+.divider {
+  flex: 1;
+  border-bottom: 1px solid black;
+}
 
+
+/* MOBILE AND TABLET RESPONSIVE STYLING */
+@media (min-width: 0px) and (max-width: 1024px) {
+  .special-container {
+    width: 100%;
+  }
 }
 
 
