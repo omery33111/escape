@@ -32,7 +32,7 @@ const PaypalButton = () => {
           shipping_address: savedAddress,
         };
 
-        dispatch(postOrderAsync({ orderData, orderDetails }));
+        // dispatch(postOrderAsync({ orderData, orderDetails }));
         navigate("/")
       })
         

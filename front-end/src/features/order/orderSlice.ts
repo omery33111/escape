@@ -6,7 +6,7 @@ import { getLastMonthOrders, getOrdersUser, getUserOrders, postOrder } from './o
 
 
 const initialState: OrderState = {
-    single_order: { id: 0, user: 0, price: 0, amount: 0, shipping_address:
+    single_order: { id: 0, user: 0, price: 0, amount: 0, note: "", coupon: "", shipping_address:
                                                           { first_name: '', 
                                                             last_name: '', 
                                                             address: "",
@@ -34,7 +34,7 @@ const initialState: OrderState = {
 
 export const postOrderAsync = createAsyncThunk(
   'order/postOrder',
-  async (data: { orderData: any, orderDetails: { shoe: number, amount: number, price: number }[] }) => {
+  async (data: { orderData: any, orderDetails: { shoe: number, amount: number, price: number, note: string, coupon: string }[] }) => {
     const response = await postOrder(data.orderData, data.orderDetails);
     return response.data;
   }

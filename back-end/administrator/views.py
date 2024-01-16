@@ -216,7 +216,7 @@ def update_shoe(request, pk = -1):
 def get_paged_orders(request, page):
     items_per_page = 10
 
-    items = Order.objects.order_by('time')
+    items = Order.objects.order_by('-time')
 
     paginator = Paginator(items, items_per_page)
 

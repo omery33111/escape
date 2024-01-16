@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'order',
     'profile_user',
     'insta_rec',
+    'coupon',
 ]
 
 

@@ -1,6 +1,8 @@
 export interface Order {
     id: number;
     price: number;
+    note: string;
+    coupon: string;
     amount: number;
     user: number;
     shoe: { id: string;

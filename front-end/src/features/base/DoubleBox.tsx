@@ -5,10 +5,15 @@ import { myServer } from '../../endpoints/endpoints'
 const DoubleBox = () => {
     const isMobile = window.innerWidth <= 768;
 
-    const isLaptop = window.innerWidth <= 1000 || window.innerWidth <= 1400;
-  return (
+    const isTablet = window.innerWidth <= 0 || window.innerWidth <= 1024;
+
+    const isLaptop = window.innerWidth >= 1000 && window.innerWidth <= 1400;
+    
+    return (
     <div>
             {isLaptop && (<div style = {{height: "7.5rem"}}/>)}
+
+            {isTablet && (<br/>)}
 
         <Container>
             <Row>

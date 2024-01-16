@@ -1,6 +1,6 @@
 import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { useEffect } from 'react';
-import { Alert, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { Alert, Card, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { logoutAsync } from '../authentication/authenticationSlice';
 import AddressManagement from '../shipping/AddressManagement';
@@ -59,6 +59,12 @@ const Profile = () => {
       return `${year}-${month}-${day}, ${hours}:${minutes}`;
     }
 
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowModal = () => {
+      setShowModal(true);
+    };
+
   return (
     <div style = {{border: "1px solid black", padding: "2rem", borderTop: "none", transform: "translateY(-80px)"}}>
               
@@ -103,8 +109,16 @@ const Profile = () => {
             {orders.slice().reverse().map((order) =>
             <div key = {order.id}>
             <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0}}>
+            
+            <div style = {{position: "absolute", right: 5, top: 5, color: "purple", cursor: "pointer"}} onClick={handleShowModal}>
+              {order.note && ("הערות הזמנה")}
+            </div>
+
+            
+
+
+
               <Row>
-        
                 <Col className="d-flex align-items-center">
                 <ListGroup style = {{direction: "rtl", maxWidth: "170px", minWidth: "120px"}}>
                   <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0, fontSize: "0.7rem", width: "140px"}}>
@@ -161,8 +175,18 @@ const Profile = () => {
               </div>
         
             </Card>
+            <Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
+        <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
+          <b>הערות הזמנה</b>
+        </Modal.Header>
+        <div>
+                  {order.note}
+        </div>
+      </Modal>
+            
             </div>
             )}
+        
         
           </div>
         )}

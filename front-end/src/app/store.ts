@@ -9,6 +9,7 @@ import brandReducer from '../features/brand/brandSlice';
 import profileReducer from '../features/profile/profileSlice';
 import wishListReducer from '../features/wishlist/wishListSlice';
 import instarecReducer from '../features/instarec/instarecSlice';
+import couponReducer from '../features/coupon/couponSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     profile: profileReducer,
     wishlist: wishListReducer,
     instarec: instarecReducer,
+    coupon: couponReducer
   },
 });
 

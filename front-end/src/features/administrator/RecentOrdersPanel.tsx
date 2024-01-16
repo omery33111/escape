@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Alert, Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
 import { myServer } from '../../endpoints/endpoints';
 import { getOrdersAmountAsync, getPagedOrdersAsync, getRecentOrdersAsync, selectOrdersAmount, selectPagedOrders } from './administratorSlice';
 import { Pagination } from '@mui/material';
@@ -30,6 +30,11 @@ const RecentOrdersPanel = () => {
 
     const isMobile = window.innerWidth <= 768;
 
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowModal = () => {
+      setShowModal(true);
+    };
     
   return (
     <div>
@@ -56,6 +61,11 @@ const RecentOrdersPanel = () => {
                   <div key = {order.id}>
                   <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0,
                                   boxShadow: "0 0 6px 3px rgba(0, 0, 0, 0.1)"}}>
+
+            <div style = {{position: "absolute", right: 5, top: 5, color: "purple", cursor: "pointer"}} onClick={handleShowModal}>
+              {order.note && ("הערות הזמנה")}
+            </div>
+                                    
                     <Row style = {{gap: isTablet ? "0px" : "130px"}}>
 
                     <Col className="d-flex align-items-center" style = {{width: "250px"}}>
@@ -125,7 +135,14 @@ const RecentOrdersPanel = () => {
                                           </div>
                       )}
 
-
+<Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
+        <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
+          <b>הערות הזמנה</b>
+        </Modal.Header>
+        <div>
+                  {order.note}
+        </div>
+      </Modal>
                   </Card>
                   <div style = {{height: "3.5rem"}}/>
                   </div>

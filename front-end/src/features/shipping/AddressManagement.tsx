@@ -127,13 +127,7 @@ const AddressManagement = () => {
     formData.append('phone_number', phoneNumberWithPrefix);
   
     
-    if (!address) {
-    dispatch(postAddressAsync(formData));
-    }
 
-    else {
-      dispatch(patchAddressAsync({ shippingData: formData, id: Number(address[0].id) }));
-    }
   
     // Save the address to local storage
     const newAddress: Address = {
@@ -153,8 +147,20 @@ const AddressManagement = () => {
     const updatedAddresses = [...existingAddresses, newAddress];
   
     // Save the updated addresses to local storage
+
+    if (storedIsLogged) {
+      if (!address) {
+      dispatch(postAddressAsync(formData));
+      }
+
+      else {
+        dispatch(patchAddressAsync({ shippingData: formData, id: Number(address[0].id) }));
+      }
+    }
+
     if (!storedIsLogged) {
-    localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
+      localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
+      dispatch(postAddressAsync(formData));
     }
   
     // Clear the form fields

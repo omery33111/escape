@@ -5,7 +5,7 @@ import { Order } from "../../models/Order";
 
 
 
-export function postOrder(orderData: any, orderDetails: { shoe: number, amount: number, price: number }[]) {
+export function postOrder(orderData: any, orderDetails: { shoe: number, amount: number, price: number, note: string, coupon: string }[]) {
 
   const myToken = JSON.parse(localStorage.getItem("token") as string);
   const accessToken = myToken ? myToken.access : "";

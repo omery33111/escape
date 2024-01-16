@@ -67,3 +67,10 @@ export const profileURL = `${myServer}/profile`;
 
 // ------------------------- PROFILE ENDPOINTS:
 export const instaRecURL = `${myServer}/instarec`;
+
+
+
+
+
+// ------------------------- COUPON ENDPOINTS:
+export const couponURL = `${myServer}/coupon`;

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Alert, Button, Card, Col, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -9,6 +9,9 @@ import './order.css';
 import AddressManagement from '../shipping/AddressManagement';
 import { postOrderAsync } from './orderSlice';
 import { getAddressesAsync, initGuestAddresses, selectAddress, selectSingleAddress } from '../shipping/shippingSlice';
+import EditIcon from '@mui/icons-material/Edit';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import { checkCouponAsync, selectCouponCheck } from '../coupon/couponSlice';
 
 
 
@@ -80,34 +83,67 @@ const Order = () => {
 
 
   const address = useAppSelector(selectAddress);
+  const couponCheck = useAppSelector(selectCouponCheck);
+
+  const [coupon, setCoupon] = useState<any>(undefined);
 
   useEffect(() => {
-    if (storedIsLogged === true)
-    {
+    if (storedIsLogged === true) {
       dispatch(getAddressesAsync());
     }
-  }, [dispatch]);
+
+  }, [dispatch, storedIsLogged]);
+  
+
+  const [showModal, setShowModal] = useState(false);
+  const [note, setNote] = useState('');
+  
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
+  const handleNoteChange = (e: any) => setNote(e.target.value);
+
+  // COUPON
+  const [showModal2, setShowModal2] = useState(false);
+  
+  const handleOpenModal2 = () => setShowModal2(true);
+  const handleCloseModal2 = () => setShowModal2(false);
+
+  const handleCouponChange = (e: any) => setCoupon(e.target.value);
 
   const handleOrderSubmit = async (event: any) => {
     event.preventDefault();
-
+  
     const tempTotal = myCart.reduce((accumulator: any, item: any) => {
       return accumulator + item.amount * item.price;
     }, 0);
-
+  
     const orderDetails = myCart.map((item: any) => ({
       shoe: Number(item.id),
       amount: item.amount,
       price: Number(item.price * item.amount),
+      note: note,
+      coupon: coupon,
     }));
-
+  
     const orderData = {
       shipping_address: address[0].id,
     };
 
-
     dispatch(postOrderAsync({ orderData, orderDetails }));
+  };
+  
+  const [couponApplied, setCouponApplied] = useState(false);
+
+  const handleApplyCoupon = () => {
+    if (coupon !== undefined && coupon.trim() !== '') {
+      const currentCoupon = coupon.trim();
+      dispatch(checkCouponAsync(currentCoupon));
+      setCouponApplied(true); // Set the flag indicating the coupon has been applied
     }
+  };
+
+  const discountedTotal = total - (total * (couponCheck.discount / 100));
 
 
   return (
@@ -121,7 +157,7 @@ const Order = () => {
         
         <div style = {{direction: "rtl", textAlign: "right", marginBottom: '0rem', marginRight: "4rem"}}>
         
-        <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px" }}>
+        <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px", maxWidth: "250px" }}>
 
           <div onClick = {() => navigate("/")}>
           דף הבית
@@ -156,6 +192,19 @@ const Order = () => {
                             <b style = {{fontSize: "1.3rem"}}>
                         סיכום הזמנה
                         </b>
+
+                        <div style={{ borderRadius: 0, position: "absolute", top: 10, right: 15, cursor: "pointer" }}
+                              onClick={handleOpenModal}>
+                          <EditIcon /><br/>
+                          <p style = {{fontSize: "0.9rem"}}>הערות</p>
+                        </div>
+
+                        <div style={{ borderRadius: 0, position: "absolute", top: 10, right: 75, cursor: "pointer" }}
+                              onClick={handleOpenModal2}>
+                          <CardGiftcardIcon /><br/>
+                          <p style = {{fontSize: "0.9rem"}}>קופון</p>
+                        </div>
+
                         <hr/>
                         {myCart.map((shoe, shoeIndex) =>
               <ListGroup key = {shoe.id} style = {{direction: "rtl"}}>
@@ -237,31 +286,121 @@ const Order = () => {
                     {isTablet ? (
                     <Col style = {{justifyContent: "left", textAlign: "left"}}>
                     <b>
-                        ₪ {total}
+                      {total}₪
                     </b>
                     </Col>
                     ) : (
                         <Col style = {{justifyContent: "left", textAlign: "center"}} md = {6}>
                         <b>
-                            ₪ {total}
+                            {total}₪
                         </b>
                         </Col>)}
-                    
-                   
 
                 </Row>
+
                 <div style = {{height: "1.1rem"}}/>
                 </ListGroup.Item>
                 
+                {couponCheck.exists && (
+                               <ListGroup.Item style={{ borderTop: '0px solid white', borderBottom: '0px solid white', borderLeft: '0px solid white', borderRight: '0px solid white', borderRadius: "0", marginRight: isMobile ? "0rem" : "2rem", marginLeft: isMobile ? "0rem" : "2rem", transform: "translateY(1.1rem)"}}>
+                               <Row>
+               
+                                   {isTablet ? (
+                                       <Col style = {{justifyContent: "right", textAlign: "right"}}>
+                                       <b>
+                                           מחיר אחרי קופון!
+                                       </b>
+                                   </Col>
+                                   ) : (
+                                   <Col style = {{justifyContent: "right", textAlign: "center"}} md = {6}>
+                                       <b>
+                                       מחיר אחרי קופון
+                                       </b>
+                                   </Col>)}
+               
+                                   {isTablet ? (
+                                   <Col style = {{justifyContent: "left", textAlign: "left"}}>
+                                   <b>
+                                    {discountedTotal}₪ ({couponCheck.discount}% הנחה!)
+                                   </b>
+                                   </Col>
+                                   ) : (
+                                       <Col style = {{justifyContent: "left", textAlign: "center"}} md = {6}>
+                                       <b>
+                                       {discountedTotal}₪ ({couponCheck.discount}% הנחה!)
+                                       </b>
+                                       </Col>)}
+               
+                               </Row>
+                               
+                               <div style = {{height: "1.1rem"}}/>
+                               </ListGroup.Item>)}
+
+                               <Alert variant="danger" show={!couponCheck.exists && couponApplied} style={{ textAlign: 'center' }}>
+        הקופון אינו תקף. אנא בדוק את הקוד שוב או השתמש בקופון אחר.
+      </Alert>
+ 
+
                 <div style = {{height: "1.1rem"}}/>
 
-                <form onSubmit={handleOrderSubmit}>
-            <div style={{ justifyContent: "center", textAlign: "center" }}>
-                <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} type="submit">
-                    מעבר לתשלום
-                </Button>
-            </div>
-        </form>
+                  <form onSubmit={handleOrderSubmit}>
+                    <div style={{ justifyContent: "center", textAlign: "center" }}>
+                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} type="submit">
+                        מעבר לתשלום
+                      </Button>
+                    </div>
+                    <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
+          <b>הוסף הערה</b>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formNote" style = {{direction: "rtl"}}>
+              <Form.Control
+                as="textarea"
+                placeholder="הוסף הערה להזמנה"
+                value={note}
+                onChange={handleNoteChange}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer style = {{justifyContent: "center", textAlign: "center"}}>
+          <Button variant="none" onClick={handleCloseModal}>
+            ביטול
+          </Button>
+          <Button variant="dark" onClick={handleCloseModal}>
+            שלח הערה
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+      <Modal show={showModal2} onHide={handleCloseModal2}>
+  <Modal.Header style={{ justifyContent: "center", textAlign: "center" }}>
+    <b>קוד קופון</b>
+  </Modal.Header>
+  <Modal.Body>
+            <Form.Group controlId="formCoupon" style={{ direction: "rtl" }}>
+              <Form.Control
+                type="text"
+                placeholder="הזן קוד קופון"
+                value={coupon !== undefined ? coupon : ''}
+                onChange={(e) => setCoupon(e.target.value)}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer style={{ justifyContent: "center", textAlign: "center" }}>
+            <Button variant="none" onClick={handleCloseModal2}>
+              ביטול
+            </Button>
+            <Button variant="dark" onClick={() => { handleApplyCoupon(); handleCloseModal2(); }}>
+              חסכו
+            </Button>
+          </Modal.Footer>
+</Modal>
+                  </form>
+
 
               </ListGroup>
 
@@ -279,6 +418,9 @@ const Order = () => {
         {isMobile && (<div style = {{height: "20dvh"}}/>)}
       </Col>
       </Row>
+
+
+      
     </div>
   )
 }
