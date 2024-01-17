@@ -11,10 +11,12 @@ from brand.serializers import BrandSerializer
 from shoe.serializers import ShoeSerializer
 from insta_rec.serializers import InstaRecSerializer
 from order.serializers import GetOrderSerializer
+from coupon.serializers import CouponSerializer
 
 from order.models import Order
 from shoe.models import Shoe
 from brand.models import Brand
+from coupon.models import Coupon
 from insta_rec.models import InstaRec
 
 
@@ -25,7 +27,7 @@ class IsStaff(BasePermission):
     
 
 
-# ------------------------- BRAND START ------------------------- #
+# ------------------------- INSTAREC START ------------------------- #
 @permission_classes([IsStaff])
 @api_view(["POST"])
 def post_insta_rec(request):
@@ -53,21 +55,9 @@ def delete_instarec(request, pk = -1):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except InstaRec.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+# ------------------------- INSTAREC END ------------------------- #        
 
-
-@permission_classes([IsStaff])
-@api_view(["POST"])
-def post_brand(request):
-    if request.method == "POST":
-        serializer = BrandSerializer(data = request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-    
-
-
+# ------------------------- BRAND START ------------------------- #
 @permission_classes([IsStaff])
 @api_view(["GET"])
 def get_paged_insta_recs(request, page):
@@ -85,6 +75,20 @@ def get_paged_insta_recs(request, page):
     serializer = InstaRecSerializer(recs, many=True)
 
     return Response(serializer.data)
+
+
+
+@permission_classes([IsStaff])
+@api_view(["POST"])
+def post_brand(request):
+    if request.method == "POST":
+        serializer = BrandSerializer(data = request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -249,3 +253,66 @@ def recent_orders(request):
     serializer = GetOrderSerializer(orders, many=True)
     return Response(serializer.data)
 # ------------------------- ORDER END ------------------------- #
+
+
+
+# ------------------------- COUPON START ------------------------- #
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def get_coupons(request):
+    coupons = Coupon.objects.all()
+    serializer = CouponSerializer(coupons, many=True)
+    return Response(serializer.data)
+
+
+
+@permission_classes([IsStaff])
+@api_view(["DELETE"])
+def delete_coupon(request, pk = -1):
+    if request.method == "DELETE":
+        try:
+            coupon = Coupon.objects.get(pk = pk)
+            coupon.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Coupon.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+
+
+@permission_classes([IsStaff])
+@api_view(["POST"])
+def post_coupon(request):
+    if request.method == "POST":
+        serializer = CouponSerializer(data = request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status = status.HTTP_201_CREATED)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+
+
+@permission_classes([IsStaff])
+@api_view(["PUT"])
+def update_coupon(request, pk = -1):
+    if request.method == "PUT":
+        coupon = Coupon.objects.get(pk = pk)
+        serializer = CouponSerializer(coupon, data = request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def single_coupon(request, pk = -1):
+    try:
+        coupon = Coupon.objects.get(pk = pk)
+        serializer = CouponSerializer(coupon)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+    except Coupon.DoesNotExist:
+        return Response(status = status.HTTP_404_NOT_FOUND)
+# ------------------------- COUPON END ------------------------- #

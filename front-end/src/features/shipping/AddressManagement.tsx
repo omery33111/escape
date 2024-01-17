@@ -78,8 +78,8 @@ const AddressManagement = () => {
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedCity(e.target.value);
-    setSelectedCity(e.target.value); // קביעת העיר שנבחרה
-    setSelectedStreet(false); // איפוס הסטטוס של הרחובות כאשר משנים את העיר
+    setSelectedCity(e.target.value);
+    setSelectedStreet(false);
   };
 
   const handleStreetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,18 +96,19 @@ const AddressManagement = () => {
 
   const handlePostalCodeChange = (e: any) => {
     const input = e.target.value;
-    // Remove non-numeric characters
     const numericInput = input.replace(/\D/g, '');
 
-    // Ensure the length is not more than 7
     const truncatedInput = numericInput.slice(0, 7);
 
-    // Update state with the formatted postal code
     setPostalCode(truncatedInput);
   };
 
   const handlesetHouseNumber = (e: any) => {
-    setHouseNumber(e.target.value);
+    const numericInput = e.target.value.replace(/\D/g, '');
+  
+    const truncatedInput = numericInput.slice(0, 3);
+  
+    setHouseNumber(truncatedInput);
   };
 
   const address = useAppSelector(selectAddress);
@@ -140,16 +141,13 @@ const AddressManagement = () => {
       phone_number: Number(phoneNumberWithPrefix),
     };
   
-    // Retrieve existing addresses from local storage
     const existingAddresses = JSON.parse(localStorage.getItem('addresses') || '[]');
   
-    // Add the new address to the existing list
     const updatedAddresses = [...existingAddresses, newAddress];
   
-    // Save the updated addresses to local storage
 
     if (storedIsLogged) {
-      if (!address) {
+      if (!address[0]) {
       dispatch(postAddressAsync(formData));
       }
 
@@ -175,10 +173,8 @@ const AddressManagement = () => {
     setSelectedStreet(false);
     setSelectedPrefix('');
 
-    if (!storedIsLogged)
-    {
-      // window.location.reload();
-    }
+    setEditAddress(false)
+
   };
 
   
@@ -254,8 +250,167 @@ const AddressManagement = () => {
        
           {storedIsLogged ? (
             <div>
-                        {!editAddress ? (
-                  <div style={{ direction: 'rtl' }}>
+                        {editAddress || !address[0] ? (
+                            <div>
+                            <form onSubmit={handleSubmit}>
+                        
+                            <div style={{ direction: 'rtl' }}>
+                            
+                            <div style = {{display: "flex", gap: "50px", marginBottom: "1rem"}}>
+                              
+                            <TextField
+                              className={classes.autocompleteAddress}
+                                label="שם פרטי"
+                                type="text"
+                                value={firstName}
+                                variant="standard"
+                                onChange={handleFirstName}
+                              />
+                        
+                            <TextField
+                              className={classes.autocompleteAddress}
+                                label="שם משפחה"
+                                type="text"
+                                value={lastName}
+                                variant="standard"
+                                onChange={handleLastName}
+                              />
+                              </div>
+                        
+                            
+                              <div style={{ display: "flex", gap: "50px", marginBottom: "1rem", width: "100%" }}>
+                          <Autocomplete
+                          freeSolo
+                          style = {{width: "12.3rem"}}
+                            className={classes.autocompleteAddress}
+                            options={israelCities.map((city: any) => city.שם_ישוב)}
+                            autoHighlight
+                            onChange={handleCitySelection}
+                            disableClearable={true}
+                            renderInput={(params) => (
+                              <TextField
+                                className={classes.autocompleteAddress}
+                                {...params}
+                                label="עיר מגורים"
+                                variant="standard"
+                                onChange={handleCityChange}
+                                value={searchedCity}
+                              />
+                            )}
+                          />
+                        
+                        <Autocomplete
+                        freeSolo
+                          style={{ position: "relative", right: isTablet ? "0px" : "-5px", width: "12.3rem" }}
+                          className={classes.autocompleteAddress}
+                          options={israelStreets
+                            .filter((street: any) => street.שם_ישוב === selectedCity)
+                            .map((street: any) => street.שם_רחוב)}
+                          disableClearable={true}
+                          autoHighlight
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              className={classes.autocompleteAddress}
+                              label="שם רחוב"
+                              variant="standard"
+                              onChange={handleStreetChange}
+                              value={searchedStreet}
+                              inputProps={{
+                                ...params.inputProps,
+                              }}
+                            />
+                          )}
+                          disabled={!isCity}
+                          />
+                        </div>
+                        
+                          <div style = {{display: "flex", gap: "50px", marginBottom: "1rem"}}>
+                                <TextField
+                                className={classes.autocompleteAddress}
+                                label="מספר בית"
+                                type="number"
+                                value={houseNumber}
+                                variant="standard"
+                                onChange={handlesetHouseNumber}
+                              />
+                        
+                            
+                        <TextField
+                              className={classes.autocompleteAddress}
+                              label="מיקוד"
+                              type="number"
+                              value={postalCode}
+                              variant="standard"
+                              onChange={handlePostalCodeChange}
+                              inputProps={{
+                                maxLength: 7,
+                                pattern: '[0-9]*',
+                              }}
+                            />
+                              </div>
+                        
+                              <div style = {{display: "flex", gap: "10px"}}>
+                                    <TextField
+                                    className={classes.autocompleteAddress}
+                            label="מספר טלפון"
+                            type="text"
+                            variant="standard"
+                            value={phoneNumber}
+                            onChange={handleSetPhoneNumber}
+                            inputProps={{
+                              maxLength: 7,
+                            }}
+                          />
+                        
+                            <FormControl style = {{width: "20%", top: "-2px"}}>
+                              <InputLabel>קידומת</InputLabel>
+                              <Select
+                              className={`${classes.rtlSelect} rtl-select-shipping`}
+                              variant="standard"
+                                value={selectedPrefix}
+                                onChange={handlePrefixChange}
+                              >
+                                <MenuItem value="">קידומת</MenuItem>
+                                <MenuItem value="050">050</MenuItem>
+                                <MenuItem value="051">051</MenuItem>
+                                <MenuItem value="052">052</MenuItem>
+                                <MenuItem value="053">053</MenuItem>
+                                <MenuItem value="054">054</MenuItem>
+                                <MenuItem value="055">055</MenuItem>
+                                <MenuItem value="058">058</MenuItem>
+                              </Select>
+                            </FormControl>
+                            </div>
+                            
+                               <Button
+                               onClick={() => setEditAddress(false)}
+                               style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2rem)", borderRadius: "0px" }}
+                               type="submit"
+                               variant="contained"
+                               disabled={
+                                 firstName === '' ||
+                                 lastName === '' ||
+                                 selectedCity === '' ||
+                                 searchedStreet === '' ||
+                                 postalCode === '' ||
+                                 houseNumber === '' ||
+                                 phoneNumber.length < 7 ||
+                                 selectedPrefix === ''
+                               }
+                             >
+                               שמירה
+                             </Button>
+                             
+                        
+                          </div>
+                        </form>
+                        
+                        </div>
+
+) : (
+
+                    <div style={{ direction: 'rtl' }}>
 
                             {address.map((address) =>
 
@@ -323,163 +478,7 @@ const AddressManagement = () => {
     
 
     </div>
-) : (
-  <div>
-    <form onSubmit={handleSubmit}>
 
-    <div style={{ direction: 'rtl' }}>
-    
-    <div style = {{display: "flex", gap: "50px", marginBottom: "1rem"}}>
-      
-    <TextField
-      className={classes.autocompleteAddress}
-        label="שם פרטי"
-        type="text"
-        value={firstName}
-        variant="standard"
-        onChange={handleFirstName}
-      />
-
-    <TextField
-      className={classes.autocompleteAddress}
-        label="שם משפחה"
-        type="text"
-        value={lastName}
-        variant="standard"
-        onChange={handleLastName}
-      />
-      </div>
-
-    
-      <div style={{ display: "flex", gap: "50px", marginBottom: "1rem", width: "100%" }}>
-  <Autocomplete
-  freeSolo
-  style = {{width: "12.3rem"}}
-    className={classes.autocompleteAddress}
-    options={israelCities.map((city: any) => city.שם_ישוב)}
-    autoHighlight
-    onChange={handleCitySelection}
-    disableClearable={true}
-    renderInput={(params) => (
-      <TextField
-        className={classes.autocompleteAddress}
-        {...params}
-        label="עיר מגורים"
-        variant="standard"
-        onChange={handleCityChange}
-        value={searchedCity}
-      />
-    )}
-  />
-
-<Autocomplete
-freeSolo
-  style={{ position: "relative", right: isTablet ? "0px" : "-5px", width: "12.3rem" }}
-  className={classes.autocompleteAddress}
-  options={israelStreets
-    .filter((street: any) => street.שם_ישוב === selectedCity) // השינוי כאן: שימוש במשתנה selectedCity במקום searchedCity
-    .map((street: any) => street.שם_רחוב)}
-  disableClearable={true}
-  autoHighlight
-  renderInput={(params) => (
-    <TextField
-      {...params}
-      className={classes.autocompleteAddress}
-      label="שם רחוב"
-      variant="standard"
-      onChange={handleStreetChange}
-      value={searchedStreet}
-      inputProps={{
-        ...params.inputProps,
-      }}
-    />
-  )}
-  disabled={!isCity}
-  />
-</div>
-
-  <div style = {{display: "flex", gap: "50px", marginBottom: "1rem"}}>
-        <TextField
-        className={classes.autocompleteAddress}
-        label="מספר בית"
-        type="number"
-        value={houseNumber}
-        variant="standard"
-        onChange={handlesetHouseNumber}
-      />
-
-    
-<TextField
-      className={classes.autocompleteAddress}
-      label="מיקוד"
-      type="number"
-      value={postalCode}
-      variant="standard"
-      onChange={handlePostalCodeChange}
-      inputProps={{
-        maxLength: 7,
-        pattern: '[0-9]*',
-      }}
-    />
-      </div>
-
-      <div style = {{display: "flex", gap: "10px"}}>
-            <TextField
-            className={classes.autocompleteAddress}
-    label="מספר טלפון"
-    type="text"
-    variant="standard"
-    value={phoneNumber}
-    onChange={handleSetPhoneNumber}
-    inputProps={{
-      maxLength: 7,
-    }}
-  />
-
-    <FormControl style = {{width: "20%", top: "-2px"}}>
-      <InputLabel>קידומת</InputLabel>
-      <Select
-      className={`${classes.rtlSelect} rtl-select-shipping`}
-      variant="standard"
-        value={selectedPrefix}
-        onChange={handlePrefixChange}
-      >
-        <MenuItem value="">קידומת</MenuItem>
-        <MenuItem value="050">050</MenuItem>
-        <MenuItem value="051">051</MenuItem>
-        <MenuItem value="052">052</MenuItem>
-        <MenuItem value="053">053</MenuItem>
-        <MenuItem value="054">054</MenuItem>
-        <MenuItem value="055">055</MenuItem>
-        <MenuItem value="058">058</MenuItem>
-      </Select>
-    </FormControl>
-    </div>
-    
-       <Button
-       onClick={() => setEditAddress(false)}
-       style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2rem)", borderRadius: "0px" }}
-       type="submit"
-       variant="contained"
-       disabled={
-         firstName === '' ||
-         lastName === '' ||
-         selectedCity === '' ||
-         searchedStreet === '' ||
-         postalCode === '' ||
-         houseNumber === '' ||
-         phoneNumber.length < 7 ||
-         selectedPrefix === ''
-       }
-     >
-       שמירה
-     </Button>
-     
-
-  </div>
-</form>
-
-</div>
 )}
             </div>
           ) : (
@@ -608,7 +607,7 @@ freeSolo
   style={{ position: "relative", right: isTablet ? "0px" : "-5px", width: "12.3rem" }}
   className={classes.autocompleteAddress}
   options={israelStreets
-    .filter((street: any) => street.שם_ישוב === selectedCity) // השינוי כאן: שימוש במשתנה selectedCity במקום searchedCity
+    .filter((street: any) => street.שם_ישוב === selectedCity)
     .map((street: any) => street.שם_רחוב)}
   disableClearable={true}
   autoHighlight

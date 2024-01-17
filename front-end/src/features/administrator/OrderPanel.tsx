@@ -131,6 +131,12 @@ const OrderPanel = () => {
                       <Col className="d-flex align-items-center" style = {{direction: "rtl", marginRight: "1rem"}}>
                     כמות: {order.amount}
                     </Col>
+
+                    {order.note && (
+                      <Col className="d-flex align-items-center" style = {{direction: "rtl", width: "200px"}}>
+                        {order.note}
+                      </Col>
+                    )}
                     
                     {isTablet ? (
                                               <Col className="d-flex align-items-center" style = {{direction: "rtl", justifyContent: "center", textAlign: "center"}}>

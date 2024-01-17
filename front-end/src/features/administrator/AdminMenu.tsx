@@ -43,7 +43,7 @@ const AdminMenu = () => {
             <Link to="/administrator/community">
               <img
                 className="admin-panel-pic"
-                src={require('../../images/adminmenu1.png')}
+                src={require('../../images/adminmenu3.png')}
                 alt="portalpic3"
                 height="auto"
                 width="100%"

@@ -109,6 +109,13 @@ const RecentOrdersPanel = () => {
                     כמות: {order.amount}
                     </Col>
                     
+                    {order.note && (
+                      <Col className="d-flex align-items-center" style = {{direction: "rtl", width: "200px"}}>
+                        {order.note}
+                      </Col>
+                    )}
+
+                    
                     {isTablet ? (
                                               <Col className="d-flex align-items-center" style = {{direction: "rtl", justifyContent: "center", textAlign: "center"}}>
                                               <div style = {{width: "130px"}}>
@@ -118,7 +125,8 @@ const RecentOrdersPanel = () => {
                     ) : (
                         <Col className="d-flex align-items-center" style = {{direction: "rtl"}}>
                         <div style = {{width: "130px"}}>
-                    סך הכל לתשלום: <b>₪{order.price}</b>
+                    סך הכל לתשלום: <b>₪{order.price}</b><br/>
+                    <b>{order.coupon && (<div>({order.coupon})</div>)}</b>
                     </div>
                     </Col>
                     )}

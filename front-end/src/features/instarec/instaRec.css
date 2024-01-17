@@ -10,17 +10,8 @@
 }
 
 
-.swiper-slide {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
-}
 
-.swiper-slide-hidden {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
-}
+
 
 @media (min-width: 0px) and (max-width: 1024px) {
   
@@ -28,7 +19,14 @@
 }
 
 @media (min-width: 1000px) and (max-width: 1400px) {
- 
+    .rec-img {
+        display: none;
+    }
+
+    .image-effect {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 

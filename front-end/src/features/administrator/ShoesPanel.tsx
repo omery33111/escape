@@ -70,7 +70,10 @@ const ShoesPanel = () => {
         <br />
         <br />
 
-        <div className="append-admin-button">
+        <div className="append-admin-button" style = {{transform: "translateX(53rem) translateY(-1rem)"}}>
+        <Button onClick = {() => {navigate(`/administrator/coupons`)}} variant="info">
+              COUPON
+            </Button>
         <Button onClick = {() => {navigate(`/administrator/brands`)}} variant="warning" >
               NEW BRAND
             </Button>

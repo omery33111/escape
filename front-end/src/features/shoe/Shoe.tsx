@@ -20,6 +20,7 @@ import RandomShoes from './RandomShoes';
 import './shoe.css';
 import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe, selectSingleShoeLoading } from './shoeSlice';
 import InstaRecommendation from '../instarec/InstaRecommendation';
+import InstaRec from '../instarec/InstaRec';
 
 
 
@@ -528,7 +529,7 @@ const cart = useAppSelector(selectCart);
           <div style = {{height: "4rem"}}/>
           
           <div>
-          <InstaRecommendation />
+          <InstaRec />
           </div>
 
           </div>

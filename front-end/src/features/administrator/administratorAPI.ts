@@ -4,6 +4,7 @@ import { administratorURL, brandURL } from '../../endpoints/endpoints';
 import { Brand } from '../../models/Brand';
 import { InstaRec } from '../../models/InstaRec';
 import { Order } from '../../models/Order';
+import { Coupon } from '../../models/Coupon';
 
 
 
@@ -17,6 +18,19 @@ export function getPagedShoes(page: number) {
       axios.get(`${administratorURL}/get_paged_shoes/${page}/`, config).then((res) => resolve({ data: res.data })
       )
     );
+}
+
+
+
+export function getSingleCoupon(id: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+  }
+  return new Promise<{ data: Coupon }>((resolve) =>
+    axios.get(`${administratorURL}/single_coupon/${id}/`, config).then((res) => resolve({ data: res.data }))
+  );
 }
 
 
@@ -49,6 +63,20 @@ export function getInstaRecAmount() {
   
   
   
+export function getCoupons() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: Coupon[] }>((resolve =>
+        axios.get(`${administratorURL}/get_coupons/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
+}
+  
+  
+  
 export function getShoesAmount() {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
   const accessToken = myToken ? myToken.access : "";
@@ -59,6 +87,19 @@ export function getShoesAmount() {
         axios.get(`${administratorURL}/shoes_amount/`, config).then(res => resolve({ data: res.data })
         )
     ))
+}
+
+
+
+export function deleteCoupon(id: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: Coupon }>((resolve) =>
+      axios.delete(`${administratorURL}/delete_coupon/${id}/`, config).then((res) => resolve({ data: res.data }))
+    );
 }
 
 
@@ -97,6 +138,32 @@ export function postShoe(shoeData: Shoe) {
       }
   return new Promise<{ data: Shoe }>((resolve) =>
     axios.post(`${administratorURL}/post_shoe/`, shoeData, config).then((res) => resolve({ data: res.data }))
+  );
+}
+
+
+
+export function postCoupon(couponData: Coupon) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+    const accessToken = myToken ? myToken.access : "";
+    let config = {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      }
+  return new Promise<{ data: Coupon }>((resolve) =>
+    axios.post(`${administratorURL}/post_coupon/`, couponData, config).then((res) => resolve({ data: res.data }))
+  );
+}
+
+
+
+export function putCoupon(couponData: Coupon, id: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+  return new Promise<{ data: Coupon }>((resolve) =>
+    axios.put(`${administratorURL}/update_coupon/${id}/`, couponData, config).then((res) => resolve({ data: res.data }))
   );
 }
 

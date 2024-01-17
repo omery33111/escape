@@ -101,7 +101,11 @@ const Order = () => {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
-  const handleNoteChange = (e: any) => setNote(e.target.value);
+  const handleNoteChange = (e: any) => {
+    const inputValue = e.target.value;
+    const trimmedValue = inputValue.slice(0, 70);
+    setNote(trimmedValue);
+  };
 
   // COUPON
   const [showModal2, setShowModal2] = useState(false);
@@ -336,7 +340,7 @@ const Order = () => {
                                <div style = {{height: "1.1rem"}}/>
                                </ListGroup.Item>)}
 
-                               <Alert variant="danger" show={!couponCheck.exists && couponApplied} style={{ textAlign: 'center' }}>
+                               <Alert variant="danger" show={!couponCheck.exists && couponApplied} style={{ textAlign: 'center', transform: "translateY(-2px)" }}>
         הקופון אינו תקף. אנא בדוק את הקוד שוב או השתמש בקופון אחר.
       </Alert>
  
@@ -345,7 +349,7 @@ const Order = () => {
 
                   <form onSubmit={handleOrderSubmit}>
                     <div style={{ justifyContent: "center", textAlign: "center" }}>
-                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} type="submit">
+                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} type="submit" disabled = {!address[0]}>
                         מעבר לתשלום
                       </Button>
                     </div>

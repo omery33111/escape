@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AdministratorState } from '../../models/Administrator';
-import { deleteBrand, deleteInstaRec, deleteShoe, getBrandsAmount, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedShoes, getRecentOrders, getShoesAmount, postBrand, postInstaRec, postShoe, putBrand, putShoe } from './administratorAPI';
+import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedShoes, getRecentOrders, getShoesAmount, getSingleCoupon, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe } from './administratorAPI';
 
 
 
@@ -25,9 +25,23 @@ const initialState: AdministratorState = {
   currentBrand: 0,
 
   ordersAmount: 0,
+
+  orders: [],
   
-  orders: []
+  coupons: [],
+
+  singleCoupon: { id: 0, name: "", discount: 0 }
 };
+
+
+
+export const getCouponsAsync = createAsyncThunk(
+  "administrator/getCoupons",
+  async () => {
+    const response = await getCoupons();
+    return response;
+  }
+);
 
 
 
@@ -60,11 +74,30 @@ export const getPagedOrdersAsync = createAsyncThunk(
 );
 
 
+export const getSingleCouponAsync = createAsyncThunk(
+  'shoe/getSingleCoupon',
+  async (id: number) => {
+    const response = await getSingleCoupon(id);
+    return response.data;
+  }
+);
+
+
+
 export const getShoesAmountAsync = createAsyncThunk(
   "administrator/getShoesAmount",
   async () => {
     const response = await getShoesAmount();
     return response;
+  }
+);
+
+
+
+export const deleteCouponAsync = createAsyncThunk(
+  'administrator/deleteCoupon',
+  async (id: number) => { await deleteCoupon(id);
+  return { id };
   }
 );
 
@@ -98,6 +131,16 @@ export const postInstaRecAsync = createAsyncThunk(
 
 
 
+export const postCouponAsync = createAsyncThunk(
+  'administrator/postCoupon',
+  async (couponData: any) => {
+  const response = await postCoupon(couponData);
+  return response.data;
+  }
+);
+
+
+
 export const postShoeAsync = createAsyncThunk(
   'administrator/postShoe',
   async (shoeData: any) => {
@@ -105,6 +148,16 @@ export const postShoeAsync = createAsyncThunk(
   return response.data;
   }
 );
+
+
+
+export const putCouponAsync = createAsyncThunk(
+    'administrator/putCoupon',
+    async (data: {couponData: any, id: number}) => {
+    const response = await putCoupon(data.couponData, data.id);
+    return response;
+  }
+)
 
 
 
@@ -208,6 +261,15 @@ export const administratorSlice = createSlice({
         state.shoes = action.payload.data;
       })
 
+      .addCase(getSingleCouponAsync.fulfilled, (state, action) =>
+      {
+        state.singleCoupon = action.payload
+      })
+
+      .addCase(getCouponsAsync.fulfilled, (state, action) => {
+        state.coupons = action.payload.data;
+      })
+
       .addCase(getPagedInstaRecsAsync.fulfilled, (state, action) => {
         state.instarecs = action.payload.data;
       })
@@ -220,12 +282,20 @@ export const administratorSlice = createSlice({
         state.instarecs = [...state.instarecs, action.payload];
       })
 
+      .addCase(postCouponAsync.fulfilled, (state, action) => {
+        state.coupons = [...state.coupons, action.payload];
+      })
+
       .addCase(postShoeAsync.fulfilled, (state, action) => {
         state.shoes = [...state.shoes, action.payload];
       })
 
       .addCase(putShoeAsync.fulfilled, (state, action) => {
         state.singleShoe = { ...state.singleShoe, ...action.payload }
+      })
+
+      .addCase(putCouponAsync.fulfilled, (state, action) => {
+        state.singleCoupon = { ...state.singleCoupon, ...action.payload }
       })
       
 
@@ -261,6 +331,10 @@ export const administratorSlice = createSlice({
         state.brands = state.brands.filter(item => item.id !== action.payload.id)
       })
 
+      .addCase(deleteCouponAsync.fulfilled, (state, action) => {
+        state.coupons = state.coupons.filter(item => item.id !== action.payload.id)
+      })
+
 
       .addCase(getShoesAmountAsync.fulfilled, (state, action) => {
         state.shoesAmount = action.payload.data;
@@ -279,6 +353,9 @@ export const administratorSlice = createSlice({
 
 
 export const { setCurrentBrand } = administratorSlice.actions;
+
+export const selectSingleCoupon = (state: RootState) => state.administrator.singleCoupon;
+export const selectCoupons = (state: RootState) => state.administrator.coupons;
 
 export const selectOrdersAmount = (state: RootState) => state.administrator.ordersAmount;
 export const selectPagedOrders = (state: RootState) => state.administrator.orders;

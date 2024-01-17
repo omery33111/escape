@@ -25,4 +25,10 @@ urlpatterns = [
     path('get_paged_orders/<int:page>/', views.get_paged_orders),
     path('orders_amount/', views.orders_amount),
     path('recent_orders/', views.recent_orders),
+
+    path('get_coupons/', views.get_coupons),
+    path('post_coupon/', views.post_coupon),
+    path('delete_coupon/<int:pk>/', views.delete_coupon),
+    path('update_coupon/<int:pk>/', views.update_coupon),
+    path('single_coupon/<int:pk>/', views.single_coupon),
 ]

@@ -1,4 +1,5 @@
 import { Brand } from "./Brand";
+import { Coupon } from "./Coupon";
 import { InstaRec } from "./InstaRec";
 import { Order } from "./Order";
 import { Shoe } from "./Shoe";
@@ -8,6 +9,10 @@ import { Shoe } from "./Shoe";
 
   
 export interface AdministratorState {
+    coupons: Coupon[];
+    
+    singleCoupon: Coupon;
+
     shoes: Shoe[];
 
     instarecs: InstaRec[];

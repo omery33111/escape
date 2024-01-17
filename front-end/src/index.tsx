@@ -28,6 +28,10 @@ import Order from './features/order/Order';
 import UserOrders from './features/order/UserOrders';
 import OrderPanel from './features/administrator/OrderPanel';
 import RecentOrdersPanel from './features/administrator/RecentOrdersPanel';
+import ErrorPage from './features/base/ErrorPage';
+import CouponPanel from './features/administrator/CouponPanel';
+import CouponPost from './features/administrator/CouponPost';
+import CouponPut from './features/administrator/CouponPut';
 
 
 
@@ -66,6 +70,13 @@ root.render(
         <Route path = ":id" element = {<ShoePut />} />
       </Route>
       
+      <Route path = "/administrator/coupons" element={<CouponPanel />} />
+      <Route path = "/administrator/post_coupon" element={<CouponPost />} />
+      <Route path = "/administrator/put_coupon">
+        <Route index element = {<CouponPut />} />
+        <Route path = ":id" element = {<CouponPut />} />
+      </Route>
+
       <Route path = "/administrator/brands" element={<BrandPanel />} />
       <Route path = "/administrator/post_brand" element={<BrandPost />} />
       <Route path = "/administrator/put_brand">
@@ -96,7 +107,7 @@ root.render(
 
       </Route>
 
-      {/* <Route path="/*" element={<ErrorPage />} /> */}
+      <Route path="/*" element={<ErrorPage />} />
 
       </Routes>
 

@@ -1,3 +1,4 @@
+import InstaRec from '../instarec/InstaRec';
 import InstaRecommendation from '../instarec/InstaRecommendation';
 import BrandsCar from './BrandsCar';
 import ChosenShoes from './ChosenShoes';
@@ -44,7 +45,7 @@ const HomePage = () => {
 
         <div style = {{height: "10dvh"}}/>
 
-          <InstaRecommendation />
+          <InstaRec />
     </div>
   )
 }
