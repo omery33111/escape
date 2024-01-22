@@ -26,6 +26,9 @@ const initialState: OrderState = {
     saveAddress: 0,
     saveTotal: 0,
 
+    saveNote: "",
+    saveCoupon: "",
+
     isLoading: false,
     isError: false
 };
@@ -77,8 +80,17 @@ export const orderSlice = createSlice({
     updateAddress: (state, action) => {
       state.saveAddress = action.payload
     },
+
     updateTotal: (state, action) => {
       state.saveTotal = action.payload
+    },
+
+    updateNote: (state, action) => {
+      state.saveNote = action.payload
+    },
+
+    updateCoupon: (state, action) => {
+      state.saveCoupon = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -116,10 +128,13 @@ export const orderSlice = createSlice({
 
 
 
-export const { updateAddress, updateTotal } = orderSlice.actions; 
+export const { updateAddress, updateTotal, updateNote, updateCoupon } = orderSlice.actions; 
 
-export const selectOrdersUserLoading = (state: RootState) => state.order.isLoading;
+export const selectSavedNote = (state: RootState) => state.order.saveNote;
+export const selectSavedCoupon = (state: RootState) => state.order.saveCoupon;
+
 export const selectOrdersUserError = (state: RootState) => state.order.isError;
+export const selectOrdersUserLoading = (state: RootState) => state.order.isLoading;
 
 export const selectOrdersUser = (state: RootState) => state.order.orders_user;
 export const selectSingleOrder = (state: RootState) => state.order.single_order;

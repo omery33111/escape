@@ -31,4 +31,9 @@ urlpatterns = [
     path('delete_coupon/<int:pk>/', views.delete_coupon),
     path('update_coupon/<int:pk>/', views.update_coupon),
     path('single_coupon/<int:pk>/', views.single_coupon),
+
+    path('search_profile/', views.search_profile),
+    path('all_profiles/<int:page>/', views.all_profiles),
+    path('orders_peruser/<int:pk>/', views.orders_peruser),
+    path('profiles_amount/', views.profiles_amount),
 ]

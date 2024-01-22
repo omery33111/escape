@@ -10,16 +10,6 @@ const initialState: CartState = {
 
 
 
-// export const displayCartAsync = createAsyncThunk(
-//   "cart/getPagedProducts",
-//   async (page: number) => {
-//     const response = await getPagedProducts(page);
-//     return response;
-//   }
-// );
-
-
-
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,

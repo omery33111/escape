@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Alert, Button, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
-import { myServer } from '../../endpoints/endpoints';
-import { getOrdersAmountAsync, getPagedOrdersAsync, selectOrdersAmount, selectPagedOrders } from './administratorSlice';
 import { Pagination } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { myServer } from '../../endpoints/endpoints';
+import { getUserOrdersAsync, selectUserOrders } from './administratorSlice';
 
-const OrderPanel = () => {
+const UserOrderPanel = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const orders = useAppSelector(selectPagedOrders)
+    const orders = useAppSelector(selectUserOrders)
 
-    const [page, setPage] = useState(1);
+    const { id } = useParams();
+
 
     useEffect(() => {
-        dispatch(getPagedOrdersAsync(page));
-        dispatch(getOrdersAmountAsync());
-    }, [dispatch, page]);
+      if (id !== undefined)
+      {
+        dispatch(getUserOrdersAsync(Number(id)));
+      }
+    }, [dispatch]);
 
     const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
 
@@ -33,23 +36,12 @@ const OrderPanel = () => {
 
     const isMobile = window.innerWidth <= 768;
 
-    const itemsAmount = useAppSelector(selectOrdersAmount);
-
-    const itemsPerPage = 10;
-  
-    const totalPages = Math.ceil(itemsAmount / itemsPerPage);
-  
-    const nextPages = [];
-    for (let i = page; i <= totalPages && i <= page + 4; i++) {
-      nextPages.push(i);
-    }
-
 
   return (
     <div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
             <div style={{ fontSize: '1.7rem', textAlign: 'center' }}>
-                כל ההזמנות
+                ההזמנות של המשתמש
             </div>
           </div>
 
@@ -57,24 +49,6 @@ const OrderPanel = () => {
 
           <div style = {{height: "3rem"}}/>
 
-
-          <div style = {{display: "flex"}}>
-          <div className="append-admin-button">
-        <Button onClick = {() => {navigate(`/administrator/orders/recent_orders/`)}} variant="warning" >
-              הזמנות מהיום
-            </Button>
-            </div>
-          
-          <Pagination
-              count={totalPages}
-              page={page}
-              onChange={(event, newPage) => setPage(newPage)}
-              size="small"
-            />
-            </div>
-
-            <div style = {{height: "0.5rem"}}/>
-            
                 <div>
                   {orders.map((order) =>
                   <div key = {order.id}>
@@ -169,4 +143,4 @@ const OrderPanel = () => {
   )
 }
 
-export default OrderPanel
+export default UserOrderPanel

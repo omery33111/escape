@@ -30,12 +30,6 @@ const RecentOrdersPanel = () => {
 
     const isMobile = window.innerWidth <= 768;
 
-    const [showModal, setShowModal] = useState(false);
-
-    const handleShowModal = () => {
-      setShowModal(true);
-    };
-    
   return (
     <div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -43,7 +37,6 @@ const RecentOrdersPanel = () => {
                 הזמנות מהיום
             </div>
           </div>
-
 
 
           <div style = {{height: "3rem"}}/>
@@ -57,14 +50,16 @@ const RecentOrdersPanel = () => {
             <div style = {{height: "0.5rem"}}/>
 
                 <div>
+
+              <div style = {{justifyContent: "center", textAlign: "center", fontSize: "3rem"}}>                  
+            {orders.length == 0 && ("אין הזמנות להיום")}
+            </div>
+
                   {orders.slice().reverse().map((order) =>
                   <div key = {order.id}>
                   <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0,
                                   boxShadow: "0 0 6px 3px rgba(0, 0, 0, 0.1)"}}>
 
-            <div style = {{position: "absolute", right: 5, top: 5, color: "purple", cursor: "pointer"}} onClick={handleShowModal}>
-              {order.note && ("הערות הזמנה")}
-            </div>
                                     
                     <Row style = {{gap: isTablet ? "0px" : "130px"}}>
 
@@ -143,14 +138,6 @@ const RecentOrdersPanel = () => {
                                           </div>
                       )}
 
-<Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
-        <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
-          <b>הערות הזמנה</b>
-        </Modal.Header>
-        <div>
-                  {order.note}
-        </div>
-      </Modal>
                   </Card>
                   <div style = {{height: "3.5rem"}}/>
                   </div>

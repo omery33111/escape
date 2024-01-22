@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, PageNotAnInteger
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
 from rest_framework import status
@@ -6,18 +7,22 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, BasePermission
 
+from shipping.serializers import ShippingSerializer
 from insta_rec.serializers import InstaRecSerializer
 from brand.serializers import BrandSerializer
 from shoe.serializers import ShoeSerializer
 from insta_rec.serializers import InstaRecSerializer
-from order.serializers import GetOrderSerializer
+from order.serializers import GetOrderSerializer, OrderSerializer
 from coupon.serializers import CouponSerializer
+from profile_user.serializers import GetProfileSerializer, ProfileSerializer
 
 from order.models import Order
 from shoe.models import Shoe
 from brand.models import Brand
 from coupon.models import Coupon
 from insta_rec.models import InstaRec
+from profile_user.models import Profile
+from shipping.models import Shipping
 
 
 
@@ -316,3 +321,67 @@ def single_coupon(request, pk = -1):
     except Coupon.DoesNotExist:
         return Response(status = status.HTTP_404_NOT_FOUND)
 # ------------------------- COUPON END ------------------------- #
+    
+
+
+# ------------------------- USERS START ------------------------- #
+@permission_classes([IsStaff])
+@api_view(['GET'])
+def search_profile(request):
+    username = request.query_params.get('username', None)
+    if username is None:
+        return Response({'error': 'Username parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    print(f"Searching for username: {username}")
+    profiles = Profile.objects.filter(user__username__icontains=username)
+    print(f"Found profiles: {profiles}")
+    serializer = GetProfileSerializer(profiles, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def all_profiles(request, page):
+    profiles_per_page = 8
+
+    all_profiles = Profile.objects.order_by('username')
+
+    paginator = Paginator(all_profiles, profiles_per_page)
+
+    try:
+        profiles = paginator.page(page)
+    except PageNotAnInteger:
+        return Response({"error": "Invalid page number."}, status=400)
+
+    serializer = GetProfileSerializer(profiles, many=True)
+
+    return Response(serializer.data)
+
+
+
+@permission_classes([IsStaff, IsAuthenticated])
+@api_view(["GET"])
+def orders_peruser(request, pk):
+    if request.method == "GET":
+        try:
+            # Retrieve orders for the user with the specified primary key
+            user_orders = Order.objects.filter(user__pk=pk).order_by('-time')
+
+            # Serialize the orders
+            serializer = GetOrderSerializer(user_orders, many=True)
+
+            # Return the serialized data as a response
+            return Response(serializer.data)
+        except Order.DoesNotExist:
+            return Response({"error": f"User with primary key {pk} not found"}, status=404)
+    
+
+
+@permission_classes([IsStaff])
+@api_view(["GET"])
+def profiles_amount(request):
+    profiles_amount = Profile.objects.count()
+    return Response({profiles_amount}, status=status.HTTP_200_OK)
+# ------------------------- USERS END ------------------------- #

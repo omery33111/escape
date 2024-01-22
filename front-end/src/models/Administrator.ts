@@ -2,6 +2,7 @@ import { Brand } from "./Brand";
 import { Coupon } from "./Coupon";
 import { InstaRec } from "./InstaRec";
 import { Order } from "./Order";
+import { ProfileManager } from "./ProfileManager";
 import { Shoe } from "./Shoe";
 
 
@@ -9,6 +10,14 @@ import { Shoe } from "./Shoe";
 
   
 export interface AdministratorState {
+    profilesManager: ProfileManager[];
+
+    profileSearch: string;
+
+    userOrders: Order[];
+
+    profilesAmount: number;
+
     coupons: Coupon[];
     
     singleCoupon: Coupon;

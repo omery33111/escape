@@ -1,3 +1,5 @@
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Button, Card, Col, Form, Modal, Row } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -5,13 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
 import { selectCart } from '../cart/cartSlice';
-import './order.css';
-import AddressManagement from '../shipping/AddressManagement';
-import { postOrderAsync } from './orderSlice';
-import { getAddressesAsync, initGuestAddresses, selectAddress, selectSingleAddress } from '../shipping/shippingSlice';
-import EditIcon from '@mui/icons-material/Edit';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import { checkCouponAsync, selectCouponCheck } from '../coupon/couponSlice';
+import AddressManagement from '../shipping/AddressManagement';
+import { getAddressesAsync, initGuestAddresses, selectAddress, selectGuestAddresses } from '../shipping/shippingSlice';
+import PaypalButton from './PaypalButton';
+import './order.css';
+import { postOrderAsync, selectSavedCoupon, selectSavedNote, updateCoupon, updateNote, updateTotal } from './orderSlice';
 
 
 
@@ -20,6 +21,7 @@ const Order = () => {
     const navigate = useNavigate();
 
     const myCart = useAppSelector(selectCart);
+
 
     const [hoveredItem, setHoveredItem] = useState<number | null>(null);
 
@@ -74,6 +76,8 @@ const Order = () => {
     });
     const roundedTotal = Math.round((tempTotal + Number.EPSILON) * 100) / 100;
     setTotal(roundedTotal);
+
+    dispatch(updateTotal(roundedTotal));
   }, [myCart]);
 
   const isTablet = window.innerWidth <= 0 || window.innerWidth <= 1024;
@@ -81,18 +85,24 @@ const Order = () => {
 
   const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
 
+  const storedAddress = JSON.parse(localStorage.getItem('addresses') as string);
+
+  const guestAddress = useAppSelector(selectGuestAddresses);
+
 
   const address = useAppSelector(selectAddress);
   const couponCheck = useAppSelector(selectCouponCheck);
-
-  const [coupon, setCoupon] = useState<any>(undefined);
 
   useEffect(() => {
     if (storedIsLogged === true) {
       dispatch(getAddressesAsync());
     }
 
-  }, [dispatch, storedIsLogged]);
+    if (storedIsLogged === false) {
+      dispatch(initGuestAddresses());
+    }
+
+  }, [dispatch, storedIsLogged, storedAddress && storedAddress.length]);
   
 
   const [showModal, setShowModal] = useState(false);
@@ -104,7 +114,7 @@ const Order = () => {
   const handleNoteChange = (e: any) => {
     const inputValue = e.target.value;
     const trimmedValue = inputValue.slice(0, 70);
-    setNote(trimmedValue);
+    dispatch(updateNote(trimmedValue));
   };
 
   // COUPON
@@ -113,7 +123,17 @@ const Order = () => {
   const handleOpenModal2 = () => setShowModal2(true);
   const handleCloseModal2 = () => setShowModal2(false);
 
-  const handleCouponChange = (e: any) => setCoupon(e.target.value);
+  const handleCouponChange = (e: any) => {
+    const regex = /^[a-zA-Z0-9]{0,6}$/;
+    const inputValue = e.target.value;
+  
+    if (regex.test(inputValue)) {
+      dispatch(updateCoupon(inputValue));
+    };
+  }
+  
+  const savedCoupon = useAppSelector(selectSavedCoupon);
+  const savedNote = useAppSelector(selectSavedNote);
 
   const handleOrderSubmit = async (event: any) => {
     event.preventDefault();
@@ -126,30 +146,43 @@ const Order = () => {
       shoe: Number(item.id),
       amount: item.amount,
       price: Number(item.price * item.amount),
-      note: note,
-      coupon: coupon,
+      note: savedNote,
+      coupon: savedCoupon,
     }));
   
-    const orderData = {
-      shipping_address: address[0].id,
-    };
 
+    let orderData;
+
+    if (storedIsLogged) {
+      orderData = {
+        shipping_address: address[0].id,
+      };
+    } else {
+      orderData = {
+        shipping_address: String(guestAddress[0].id),
+      };
+    }
+
+    console.log({ orderData, orderDetails })
     dispatch(postOrderAsync({ orderData, orderDetails }));
   };
+
   
   const [couponApplied, setCouponApplied] = useState(false);
 
   const handleApplyCoupon = () => {
-    if (coupon !== undefined && coupon.trim() !== '') {
-      const currentCoupon = coupon.trim();
+    if (savedCoupon !== undefined && savedCoupon.trim() !== '') {
+      const currentCoupon = savedCoupon.trim();
       dispatch(checkCouponAsync(currentCoupon));
-      setCouponApplied(true); // Set the flag indicating the coupon has been applied
+      setCouponApplied(true);
     }
   };
 
   const discountedTotal = total - (total * (couponCheck.discount / 100));
 
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
+  
   return (
     <div>
         <Row>
@@ -347,12 +380,21 @@ const Order = () => {
 
                 <div style = {{height: "1.1rem"}}/>
 
-                  <form onSubmit={handleOrderSubmit}>
+                  
                     <div style={{ justifyContent: "center", textAlign: "center" }}>
-                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} type="submit" disabled = {!address[0]}>
+
+                      {storedIsLogged ? (
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!address[0]}>
                         מעבר לתשלום
                       </Button>
+                      ) : (
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress}>
+                        מעבר לתשלום
+                      </Button>
+                      )}
                     </div>
+
+                  <form onSubmit={handleOrderSubmit}>
                     <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
           <b>הוסף הערה</b>
@@ -363,7 +405,7 @@ const Order = () => {
               <Form.Control
                 as="textarea"
                 placeholder="הוסף הערה להזמנה"
-                value={note}
+                value={savedNote}
                 onChange={handleNoteChange}
               />
             </Form.Group>
@@ -385,14 +427,16 @@ const Order = () => {
     <b>קוד קופון</b>
   </Modal.Header>
   <Modal.Body>
+          <Form>
             <Form.Group controlId="formCoupon" style={{ direction: "rtl" }}>
               <Form.Control
                 type="text"
                 placeholder="הזן קוד קופון"
-                value={coupon !== undefined ? coupon : ''}
-                onChange={(e) => setCoupon(e.target.value)}
+                value={savedCoupon}
+                onChange={handleCouponChange}
               />
             </Form.Group>
+          </Form>
           </Modal.Body>
           <Modal.Footer style={{ justifyContent: "center", textAlign: "center" }}>
             <Button variant="none" onClick={handleCloseModal2}>
@@ -403,7 +447,21 @@ const Order = () => {
             </Button>
           </Modal.Footer>
 </Modal>
-                  </form>
+                
+                <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)} style = {{transform: 'translateY(0rem)'}}>
+                      <Modal.Body style = {{justifyContent: "center", textAlign: "center"}}>
+                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} onClick={(event) => handleOrderSubmit(event)} type="submit">
+                        !ביצוע הזמנה
+                      </Button>
+
+                          <div style = {{height: "1rem"}}/>
+
+                        <PaypalButton />
+                        
+                      </Modal.Body>
+                    </Modal>
+              </form>
+                  
 
 
               </ListGroup>

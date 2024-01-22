@@ -12,7 +12,9 @@ urlpatterns = [
     path('shipping_update/', views.shipping_update),
     path('shipping_update/<int:pk>/', views.shipping_update),
     path('shipping_delete/<int:pk>/', views.shipping_delete),
-    path('addresses_amount/', views.addresses_amount)
+    path('addresses_amount/', views.addresses_amount),
+
+    path('get_next_shipping_id/', views.get_next_shipping_id)
 ]
 
 

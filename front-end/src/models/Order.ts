@@ -1,3 +1,6 @@
+
+
+
 export interface Order {
     id: number;
     price: number;
@@ -23,4 +26,7 @@ export interface Order {
 
       isLoading: boolean;
       isError: boolean;
+
+      saveNote: string;
+      saveCoupon: string;
     };

@@ -10,6 +10,13 @@ export function getAddressesAmount() {
 
 
 
+
+export function getNextShippingID() {
+  return new Promise<{ data: number }>((resolve =>
+      axios.get(`${shippingURL}/get_next_shipping_id/`).then(res => resolve({ data: res.data }))))}
+
+
+
 export function getAddresses() {
   const myToken = JSON.parse(localStorage.getItem("token") as string);
   const accessToken = myToken ? myToken.access : "";

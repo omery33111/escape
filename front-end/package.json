@@ -70,6 +70,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.29",
     "@types/react-slick": "^0.23.13",
-    "@types/swiper": "^6.0.0"
+    "@types/swiper": "^6.0.0",
+    "@types/uuid": "^9.0.7"
   }
 }

@@ -2,80 +2,92 @@ import { PayPalScriptProvider, PayPalButtons, ReactPayPalScriptOptions  } from "
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
 import { selectCart } from "../cart/cartSlice";
-import { postOrderAsync, selectSavedAddress, selectSavedTotal } from "./orderSlice";
+import { postOrderAsync, selectSavedAddress, selectSavedCoupon, selectSavedNote, selectSavedTotal } from "./orderSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { getAddressesAsync, initGuestAddresses, selectAddress } from "../shipping/shippingSlice";
+import { selectCouponCheck } from "../coupon/couponSlice";
 
 
 
 
 const PaypalButton = () => {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const cart = useAppSelector(selectCart);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  
+  const myCart = useAppSelector(selectCart);
+
     const myTotal = useAppSelector(selectSavedTotal);
-    const savedAddress = useAppSelector(selectSavedAddress);
 
+    const address = useAppSelector(selectAddress);
+
+    const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
+
+    const storedAddress = JSON.parse(localStorage.getItem('addresses') as string);
+
+    useEffect(() => {
+      if (storedIsLogged === true) {
+        dispatch(getAddressesAsync());
+      }
+  
+      if (storedIsLogged === false) {
+        dispatch(initGuestAddresses());
+      }
+  
+    }, [dispatch, storedIsLogged, storedAddress && storedAddress.length]);
+
+    const savedCoupon = useAppSelector(selectSavedCoupon);
+    const savedNote = useAppSelector(selectSavedNote);
     
-
     const onApprove = async (data: any, action: any) => {
       return action.order?.capture().then((details: any) => {
-        const tempTotal = cart.reduce((accumulator, item) => {
-          return accumulator + item.amount * item.price;
-        }, 0);
-        const orderDetails = cart.map((item) => ({
-          shoe: Number(item.id),
-          amount: item.amount,
-          price: Number(item.price * item.amount),
-        }));
-        const orderData = {
-          shipping_address: savedAddress,
-        };
+      
+      const tempTotal = myCart.reduce((accumulator: any, item: any) => {
+        return accumulator + item.amount * item.price;
+      }, 0);
 
-        // dispatch(postOrderAsync({ orderData, orderDetails }));
-        navigate("/")
-      })
-        
+      const orderDetails = myCart.map((item: any) => ({
+        shoe: Number(item.id),
+        amount: item.amount,
+        price: Number(item.price * item.amount),
+        note: savedNote,
+        coupon: savedCoupon,
+      }));
+    
+      const orderData = {
+        shipping_address: address[0].id,
       };
+
+       dispatch(postOrderAsync({ orderData, orderDetails }));
+      })
+    };
   
     const initialOptions = {
-    clientId: "AdP_mKF4VEQj5HkcfXVdAfN4we_j8dMhdlufiEoXho4LxhBcmFfU-xiLNShsbTcfmqcme5NP6-TvAMsT",
-      currency: "USD",
+      clientId: "Aa9LVrqH_mxtGausxxaqSF2tMa-l91hDInwS1IyLXEgCSGo7SonDozMV7yVm1NUJK6q8D4AOGVCMMUZD",
+      currency: "ILS",
       intent: "capture",
     };
 
-    const [total, setTotal] = useState(0);
+    const couponCheck = useAppSelector(selectCouponCheck);
 
-    useEffect(() => {
-        let tempTotal = 0;
-        cart.forEach((item) => {
-          tempTotal += item.amount * item.price;
-        });
-        const roundedTotal = Math.round((tempTotal + Number.EPSILON) * 100) / 100;
-        setTotal(roundedTotal);
-      }, [cart, total]);
+    const discountedTotal = myTotal - (myTotal * (couponCheck.discount / 100));
 
-      
     return (
       <div>
         <PayPalScriptProvider options={initialOptions}>
           <PayPalButtons
-            // disabled={!savedAddress}
             createOrder={(data, actions) => {
-              let totalWithShipping = myTotal;
-              if (myTotal < 50) {
-                totalWithShipping += 5;
-              }
               return actions.order.create({
                 purchase_units: [
                   {
-                    amount: { value: String(totalWithShipping) },
+                    amount: { value: String(discountedTotal) },
                   },
                 ],
               });
             }}
             onApprove={onApprove}
-            onError={() => {
+            onError={(error) => {
+              console.error("PayPal error:", error);
               toast.error("There was an error with the payment, try again.");
             }}
             onCancel={() => {

@@ -1,5 +1,5 @@
 export interface Address {
-  id?: number;
+  id: number;
   first_name: string;
   last_name: string;
   city: string;
@@ -26,4 +26,6 @@ export interface AddressState {
 
   searchCity: string;
   searchStreet: string;
+
+  nextID: number;
 };

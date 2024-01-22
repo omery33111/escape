@@ -3,8 +3,7 @@ import { Button, Container, Form } from 'react-bootstrap';
 import { BsCheckLg, BsXLg } from 'react-icons/bs';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../app/hooks';
-import { Brand } from '../../models/Brand';
-import { getSingleCouponAsync, postBrandAsync, postCouponAsync, putCouponAsync } from './administratorSlice';
+import { getSingleCouponAsync, putCouponAsync } from './administratorSlice';
 
 
 
@@ -60,7 +59,7 @@ const CouponPut = () => {
           
         <Form.Group>
           <Form.Label><h5>COUPON CODE</h5></Form.Label>
-          <Form.Control type="textarea" value={name} required onChange={handleNameChange} />
+          <Form.Control type="textarea" maxLength={6} value={name} required onChange={handleNameChange} />
         </Form.Group>
           
         <Form.Group>

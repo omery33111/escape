@@ -5,8 +5,41 @@ import { Brand } from '../../models/Brand';
 import { InstaRec } from '../../models/InstaRec';
 import { Order } from '../../models/Order';
 import { Coupon } from '../../models/Coupon';
+import { ProfileManager } from '../../models/ProfileManager';
 
 
+
+export function searchProfile(searchQuery: string)
+{
+  return new Promise<{ data: ProfileManager[] }>((resolve) =>
+    axios.get(`${administratorURL}/search_profile/`, { params: { username: searchQuery }}).then((res) => resolve({ data: res.data })));
+}
+
+
+
+export function getPagedProfilesManager(page: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: ProfileManager[] }>((resolve) =>
+      axios.get(`${administratorURL}/all_profiles/${page}/`, config).then((res) => resolve({ data: res.data })
+      )
+    );
+}
+
+export function getPagedOrders(page: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+  return new Promise<{ data: Order[] }>((resolve) =>
+    axios.get(`${administratorURL}/get_paged_orders/${page}/`, config).then((res) => resolve({ data: res.data })
+    )
+  );
+}
 
 export function getPagedShoes(page: number) {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
@@ -45,6 +78,20 @@ export function getPagedInstaRecs(page: number) {
       axios.get(`${administratorURL}/get_paged_insta_recs/${page}/`, config).then((res) => resolve({ data: res.data })
       )
     );
+}
+  
+  
+  
+export function getProfilesAmount() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: number }>((resolve =>
+        axios.get(`${administratorURL}/profiles_amount/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
 }
   
   
@@ -210,17 +257,21 @@ export function getRecentOrders() {
 
 
 
-export function getPagedOrders(page: number) {
+export function getUserOrders(id: number) {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
   const accessToken = myToken ? myToken.access : "";
   let config = {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     }
   return new Promise<{ data: Order[] }>((resolve) =>
-    axios.get(`${administratorURL}/get_paged_orders/${page}/`, config).then((res) => resolve({ data: res.data })
+    axios.get(`${administratorURL}/orders_peruser/${id}/`, config).then((res) => resolve({ data: res.data })
     )
   );
 }
+
+
+
+
 
 
 

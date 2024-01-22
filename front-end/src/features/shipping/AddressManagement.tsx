@@ -2,7 +2,7 @@ import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextFi
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Address } from '../../models/Shipping';
-import { deleteGuestAddress, getAddressesAmountAsync, getAddressesAsync, getIsraelCitiesAsync, getIsraelStreetsAsync, initGuestAddresses, patchAddressAsync, postAddressAsync, selectAddress, selectAddressesAmount, selectGuestAddresses, selectIsraelCities, selectIsraelStreets } from '../shipping/shippingSlice';
+import { deleteGuestAddress, getAddressesAmountAsync, getAddressesAsync, getIsraelCitiesAsync, getIsraelStreetsAsync, getNextShippingIDAsync, initGuestAddresses, patchAddressAsync, postAddressAsync, selectAddress, selectAddressesAmount, selectGuestAddresses, selectIsraelCities, selectIsraelStreets, selectNextShippingID } from '../shipping/shippingSlice';
 import './shipping.css';
 import { makeStyles } from "@mui/styles";
 import { Col, Container, Row } from 'react-bootstrap';
@@ -127,9 +127,7 @@ const AddressManagement = () => {
     formData.append('house_number', houseNumber);
     formData.append('phone_number', phoneNumberWithPrefix);
   
-    
 
-  
     // Save the address to local storage
     const newAddress: Address = {
       first_name: firstName,
@@ -139,6 +137,7 @@ const AddressManagement = () => {
       postal_code: Number(postalCode),
       house_number: Number(houseNumber),
       phone_number: Number(phoneNumberWithPrefix),
+      id: nextAddressID
     };
   
     const existingAddresses = JSON.parse(localStorage.getItem('addresses') || '[]');
@@ -186,6 +185,8 @@ const AddressManagement = () => {
 
   const allGuestAddresses = useAppSelector(selectGuestAddresses)
 
+  const nextAddressID = useAppSelector(selectNextShippingID)
+
 
   useEffect(() => {
 
@@ -198,6 +199,7 @@ const AddressManagement = () => {
     {
       dispatch(initGuestAddresses());
       dispatch(getAddressesAmountAsync());
+      dispatch(getNextShippingIDAsync());
     }
     
     }, [dispatch]);
@@ -385,7 +387,7 @@ const AddressManagement = () => {
                             
                                <Button
                                onClick={() => setEditAddress(false)}
-                               style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2rem)", borderRadius: "0px" }}
+                               style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2.5rem)", borderRadius: "0px" }}
                                type="submit"
                                variant="contained"
                                disabled={
@@ -440,10 +442,6 @@ const AddressManagement = () => {
 
           <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
 
-
-    
-        
-
                     <div style = {{width: "30.9%"}}>
                   <div style = {{position: "absolute", marginTop: "-10px"}}>
                   {address.city}
@@ -461,15 +459,25 @@ const AddressManagement = () => {
              </div>
              <br/>
     
+             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
 
             <div style = {{width: "30.9%", marginBottom: "10px"}}>
-                <div style = {{position: "absolute", marginTop: "-25px"}}>
+                <div style = {{position: "absolute", marginTop: "-10px"}}>
                 0{address.phone_number}
                 </div>
               <hr/>
             </div>
+
+            <div style = {{width: "30.9%", marginBottom: "10px"}}>
+                <div style = {{position: "absolute", marginTop: "-10px"}}>
+                {address.postal_code}
+                </div>
+              <hr/>
+            </div>
+
+            </div>
         
-          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", transform: "translateY(5.6rem)", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => setEditAddress(true)}>
+          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", transform: "translateY(4.5rem)", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => setEditAddress(true)}>
             עריכה
           </Button>
     
@@ -537,15 +545,26 @@ const AddressManagement = () => {
              <br/>
     
 
+             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
+
             <div style = {{width: "30.9%", marginBottom: "10px"}}>
-                <div style = {{position: "absolute", marginTop: "-25px"}}>
+                <div style = {{position: "absolute", marginTop: "-10px"}}>
                 0{address.phone_number}
                 </div>
               <hr/>
             </div>
+
+            <div style = {{width: "30.9%", marginBottom: "10px"}}>
+                <div style = {{position: "absolute", marginTop: "-10px"}}>
+                {address.postal_code}
+                </div>
+              <hr/>
+            </div>
+
+            </div>
         
           <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", transform: "translateY(5.6rem)", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
-            עריכה
+            עריכה!
           </Button>
     
           </div>

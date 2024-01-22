@@ -9,6 +9,17 @@ from .models import Shipping
 
 
 # ------------------------- SHIPPING START ------------------------- #
+@api_view(["GET"])
+def get_next_shipping_id(request):
+    try:
+        last_shipping = Shipping.objects.latest('id')
+        last_shipping_id = last_shipping.id + 1
+        return Response({last_shipping_id}, status=status.HTTP_200_OK)
+    except Shipping.DoesNotExist:
+        return Response({"detail": "No shipping records found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
 @api_view(["POST"])
 def post_shipping(request):
     if request.method == "POST":

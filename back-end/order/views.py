@@ -35,9 +35,10 @@ def order(request):
                 try:
                     coupon = Coupon.objects.get(name=coupon_name)
                     discount_percentage = coupon.discount
-                    item["price"] *= (1 - discount_percentage / 100)  # Apply discount
+                    item_price = item["price"]
+                    item["price_with_discount"] = item_price * (1 - discount_percentage / 100)
                 except Coupon.DoesNotExist:
-                    item["coupon"] = None  # Coupon not found, set the coupon field to None
+                    item["coupon"] = None
 
             item["shipping_address"] = shipping_address
             serializer = PostOrderSerializer(data=item, context={'user': user})
@@ -45,7 +46,7 @@ def order(request):
             if serializer.is_valid():
                 serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"message": "Order placed successfully"}, status=status.HTTP_201_CREATED)
 
     return Response({"error": "Invalid request"}, status=status.HTTP_400_BAD_REQUEST)
 

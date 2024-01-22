@@ -16,17 +16,16 @@ class ProfileManager(models.Manager):
 
 
 class Profile(AbstractUser):
-    user = models.OneToOneField(User, on_delete = models.SET_NULL, null = True)
-    username = models.CharField(max_length = 40, default = "UNKNOWN")
-    date = models.DateTimeField(auto_now_add = True)
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    username = models.CharField(max_length=40, default="UNKNOWN")
+    date = models.DateTimeField(auto_now_add=True)
     objects = ProfileManager()
 
     groups = models.ManyToManyField(Group, related_name='profile_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='profile_user_permissions')
 
-
     def __init__(self, *args, **kwargs):
         super(Profile, self).__init__(*args, **kwargs)
 
     def __str__(self):
-        return self.user
+        return self.username

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { Address, AddressState } from "../../models/Shipping";
-import { getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, getSingleAddress, patchAddress, postAddress } from "./shippingAPI";
+import { getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, getNextShippingID, getSingleAddress, patchAddress, postAddress } from "./shippingAPI";
 
 
 
@@ -20,6 +20,8 @@ const initialState: AddressState = {
 
   searchCity: "",
   searchStreet: "",
+
+  nextID: 0
 };
 
 
@@ -50,6 +52,16 @@ export const getAddressesAmountAsync = createAsyncThunk(
   "shipping/getAddressesAmount",
   async () => {
     const response = await getAddressesAmount();
+    return response;
+  }
+);
+
+
+
+export const getNextShippingIDAsync = createAsyncThunk(
+  "shipping/getNextShippingID",
+  async () => {
+    const response = await getNextShippingID();
     return response;
   }
 );
@@ -151,6 +163,10 @@ export const shippingSlice = createSlice({
           state.addressesAmount = action.payload.data;
         })
 
+        .addCase(getNextShippingIDAsync.fulfilled, (state, action) => {
+          state.nextID = action.payload.data;
+        })
+
         .addCase(getIsraelCitiesAsync.fulfilled, (state, action) => {
           if (action.payload) {
             console.log('Fetched data:', action.payload);
@@ -175,6 +191,8 @@ export const shippingSlice = createSlice({
 
 
 export const { deleteGuestAddress, initGuestAddresses, setCitySearch, setStreetSearch } = shippingSlice.actions; 
+
+export const selectNextShippingID = (state: RootState) => state.shipping.nextID;
 
 export const selectSearchCity = (state: RootState) => state.shipping.searchCity;
 export const selectSearchStreet = (state: RootState) => state.shipping.searchStreet;

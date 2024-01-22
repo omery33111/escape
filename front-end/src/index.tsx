@@ -32,6 +32,8 @@ import ErrorPage from './features/base/ErrorPage';
 import CouponPanel from './features/administrator/CouponPanel';
 import CouponPost from './features/administrator/CouponPost';
 import CouponPut from './features/administrator/CouponPut';
+import ProfileManagerPanel from './features/administrator/ProfileManagerPanel';
+import UserOrderPanel from './features/administrator/UserOrderPanel';
 
 
 
@@ -61,6 +63,12 @@ root.render(
       <Route path = "/administrator/menu" element={<AdminMenu />} />
       <Route path = "/administrator/shoes" element={<ShoesPanel />} />
       <Route path = "/administrator/orders" element={<OrderPanel />} />
+      <Route path = "/administrator/user_orders">
+        <Route index element = {<UserOrderPanel />} />
+        <Route path = ":id" element = {<UserOrderPanel />} />
+      </Route>
+
+      <Route path = "/administrator/community" element={<ProfileManagerPanel />} />
       <Route path = "/administrator/orders/recent_orders" element={<RecentOrdersPanel />} />
       <Route path = "/administrator/instagram_recs" element={<InstaRecommendationsPanel />} />
       <Route path = "/administrator/post_instagram_rec" element={<InstaRecPost />} />

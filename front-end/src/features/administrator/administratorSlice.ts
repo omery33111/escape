@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AdministratorState } from '../../models/Administrator';
-import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedShoes, getRecentOrders, getShoesAmount, getSingleCoupon, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe } from './administratorAPI';
+import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile } from './administratorAPI';
 
 
 
@@ -26,12 +26,30 @@ const initialState: AdministratorState = {
 
   ordersAmount: 0,
 
+  profilesAmount: 0,
+
   orders: [],
-  
+
   coupons: [],
 
-  singleCoupon: { id: 0, name: "", discount: 0 }
+  singleCoupon: { id: 0, name: "", discount: 0 },
+
+  profilesManager: [],
+
+  userOrders: [],
+
+  profileSearch: '',
 };
+
+
+
+export const searchProfileAsync = createAsyncThunk(
+  'administrator/searchProfile',
+  async (data: {searchQuery: string}) => {
+    const response = await searchProfile(data.searchQuery);
+    return response.data;
+  }
+);
 
 
 
@@ -39,6 +57,26 @@ export const getCouponsAsync = createAsyncThunk(
   "administrator/getCoupons",
   async () => {
     const response = await getCoupons();
+    return response;
+  }
+);
+
+
+
+export const getPagedProfilesManagerAsync = createAsyncThunk(
+  "administrator/getPagedProfilesManager",
+  async (page: number) => {
+    const response = await getPagedProfilesManager(page);
+    return response;
+  }
+);
+
+
+
+export const getPagedOrdersAsync = createAsyncThunk(
+  "administrator/getPagedOrders",
+  async (page: number) => {
+    const response = await getPagedOrders(page);
     return response;
   }
 );
@@ -65,20 +103,21 @@ export const getPagedInstaRecsAsync = createAsyncThunk(
 
 
 
-export const getPagedOrdersAsync = createAsyncThunk(
-  "administrator/getPagedOrders",
-  async (page: number) => {
-    const response = await getPagedOrders(page);
-    return response;
-  }
-);
-
-
 export const getSingleCouponAsync = createAsyncThunk(
   'shoe/getSingleCoupon',
   async (id: number) => {
     const response = await getSingleCoupon(id);
     return response.data;
+  }
+);
+
+
+
+export const getProfilesAmountAsync = createAsyncThunk(
+  "administrator/getProfilesAmount",
+  async () => {
+    const response = await getProfilesAmount();
+    return response;
   }
 );
 
@@ -181,6 +220,16 @@ export const getRecentOrdersAsync = createAsyncThunk(
 
 
 
+export const getUserOrdersAsync = createAsyncThunk(
+  "administrator/getUserOrders",
+  async (id: number) => {
+    const response = await getUserOrders(id);
+    return response;
+  }
+);
+
+
+
 export const getPagedBrandsAsync = createAsyncThunk(
   "administrator/getPagedBrands",
   async (page: number) => {
@@ -253,12 +302,30 @@ export const administratorSlice = createSlice({
   reducers: {
     setCurrentBrand: (state, action) => {
       state.currentBrand = action.payload
+    },
+
+    updateSearchProfile: (state, action) => {
+      state.profileSearch = action.payload
     }
+
   },
   extraReducers: (builder) => {
     builder
+      .addCase(searchProfileAsync.fulfilled, (state, action) =>
+      {
+        state.profilesManager = action.payload
+      })
+
       .addCase(getPagedShoesAsync.fulfilled, (state, action) => {
         state.shoes = action.payload.data;
+      })
+
+      .addCase(getUserOrdersAsync.fulfilled, (state, action) => {
+        state.userOrders = action.payload.data;
+      })
+
+      .addCase(getPagedProfilesManagerAsync.fulfilled, (state, action) => {
+        state.profilesManager = action.payload.data;
       })
 
       .addCase(getSingleCouponAsync.fulfilled, (state, action) =>
@@ -340,6 +407,10 @@ export const administratorSlice = createSlice({
         state.shoesAmount = action.payload.data;
       })
 
+      .addCase(getProfilesAmountAsync.fulfilled, (state, action) => {
+        state.profilesAmount = action.payload.data;
+      })
+
       .addCase(deleteShoeAsync.fulfilled, (state, action) => {
         state.shoes = state.shoes.filter(item => item.id !== action.payload.id)
       })
@@ -352,7 +423,13 @@ export const administratorSlice = createSlice({
 
 
 
-export const { setCurrentBrand } = administratorSlice.actions;
+export const { setCurrentBrand, updateSearchProfile } = administratorSlice.actions;
+
+export const selectUserOrders = (state: RootState) => state.administrator.userOrders;
+
+export const selectProfilesAmount = (state: RootState) => state.administrator.profilesAmount;
+export const selectProfilesManager = (state: RootState) => state.administrator.profilesManager;
+export const selectProfileSearch = (state: RootState) => state.administrator.profileSearch;
 
 export const selectSingleCoupon = (state: RootState) => state.administrator.singleCoupon;
 export const selectCoupons = (state: RootState) => state.administrator.coupons;
