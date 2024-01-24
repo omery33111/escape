@@ -23,7 +23,6 @@ import WishList from './features/wishlist/WishList';
 import './index.css';
 import InstaRecPost from './features/administrator/InstaRecPost';
 import InstaRecommendationsPanel from './features/administrator/InstaRecommendationsPanel';
-import InstaRecommendation from './features/instarec/InstaRecommendation';
 import Order from './features/order/Order';
 import UserOrders from './features/order/UserOrders';
 import OrderPanel from './features/administrator/OrderPanel';
@@ -52,8 +51,6 @@ root.render(
       <Route path = "/" element={<App />}>
 
       <Route path = "/" element={<HomePage />} />
-
-      <Route path = "/test" element={<InstaRecommendation />} />
 
       <Route path = "/profile" element={<Profile />} />
 

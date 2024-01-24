@@ -1,5 +1,4 @@
 import InstaRec from '../instarec/InstaRec';
-import InstaRecommendation from '../instarec/InstaRecommendation';
 import BrandsCar from './BrandsCar';
 import ChosenShoes from './ChosenShoes';
 import DoubleBox from './DoubleBox';
@@ -17,7 +16,7 @@ const HomePage = () => {
 
 
   return (
-    <div style = {{marginTop: '28px', marginBottom: "-70dvh"}}>
+    <div style = {{marginTop: '28px', marginBottom: isMobile ? "0dvh" : "-50dvh"}}>
 
       {isTablet ? (
       <HomePageCarMobile />
@@ -34,6 +33,10 @@ const HomePage = () => {
         <WallMobile />
       ) : (
         <Wall />
+      )}
+
+      {isMobile && (
+        <div style = {{height: "5dvh"}}/>
       )}
 
         <DoubleBox />

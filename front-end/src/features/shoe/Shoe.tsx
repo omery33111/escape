@@ -19,7 +19,6 @@ import { addWish, removeWish, selectWishList } from '../wishlist/wishListSlice';
 import RandomShoes from './RandomShoes';
 import './shoe.css';
 import { getRandomShoesAsync, getSingleShoeAsync, selectSingleShoe, selectSingleShoeLoading } from './shoeSlice';
-import InstaRecommendation from '../instarec/InstaRecommendation';
 import InstaRec from '../instarec/InstaRec';
 
 

@@ -37,6 +37,10 @@ const ThanksPage = () => {
                                   חזרה לעמוד הבית
                                   </p>
                 )}
+
+                <h3 style = {{direction: "rtl", marginTop: "1rem"}}>
+                שלחו לנו באינסטגרם או בווצאפ את פרטי ההזמנה וקבלו הטבה להזמנה הבאה
+                </h3>
           
             <div className = "contact-icons-thanks" style = {{marginTop: "8rem"}}>
                 <div style = {{position: "absolute", marginBottom: "6rem", fontSize: "1.2rem"}}>

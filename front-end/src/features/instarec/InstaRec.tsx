@@ -65,7 +65,7 @@ const InstaRec = () => {
 
 
   const handleInstagramClick = () => {
-    window.open('https://www.instagram.com/escapeil_/', '_blank');
+    window.open('https://www.instagram.com/escapeshoesil/', '_blank');
   };
 
   return (

@@ -388,6 +388,10 @@ const Order = () => {
           אני מאשר/ת את{' '}
           <a href="" style={{ textDecoration: "none" }}>
             תקנון האתר
+          </a>{' '}
+          ו
+          <a href="" style={{ textDecoration: "none" }}>
+            מדיניות המשלוח
           </a>
         </span>
 

@@ -64,7 +64,7 @@ const PaypalButton = () => {
     };
   
     const initialOptions = {
-      clientId: "Aa9LVrqH_mxtGausxxaqSF2tMa-l91hDInwS1IyLXEgCSGo7SonDozMV7yVm1NUJK6q8D4AOGVCMMUZD",
+      clientId: "AbWcNgNxHACE4xkwEw-L2BhfPD1_nbDWAb6zcgxvSi0OOMSZvtvfYtl8ocgahJaCcYEH6kV5DeztDBt1",
       currency: "ILS",
       intent: "capture",
     };
