@@ -99,9 +99,9 @@ const Order = () => {
     }
 
     if (storedIsLogged === false) {
-      dispatch(initGuestAddresses());
+    dispatch(initGuestAddresses());
     }
-
+    
   }, [dispatch, storedIsLogged, storedAddress && storedAddress.length]);
   
 
@@ -144,30 +144,20 @@ const Order = () => {
   
     const orderDetails = myCart.map((item: any) => ({
       shoe: Number(item.id),
+      size: item.size,
       amount: item.amount,
       price: Number(item.price * item.amount),
       note: savedNote,
       coupon: savedCoupon,
     }));
   
-
-    let orderData;
-
-    if (storedIsLogged) {
-      orderData = {
-        shipping_address: address[0].id,
-      };
-    } else {
-      orderData = {
-        shipping_address: String(guestAddress[0].id),
-      };
-    }
-
-    console.log({ orderData, orderDetails })
+    const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
+  
     dispatch(postOrderAsync({ orderData, orderDetails }));
+   
+    navigate('/thankspage')
   };
 
-  
   const [couponApplied, setCouponApplied] = useState(false);
 
   const handleApplyCoupon = () => {
@@ -182,6 +172,11 @@ const Order = () => {
 
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setIsCheckboxChecked(!isCheckboxChecked);
+  };
   
   return (
     <div>
@@ -382,13 +377,28 @@ const Order = () => {
 
                   
                     <div style={{ justifyContent: "center", textAlign: "center" }}>
+                        
+                    <input
+          type="checkbox"
+          checked={isCheckboxChecked}
+          onChange={handleCheckboxChange}
+        /> &nbsp;
+
+<span>
+          אני מאשר/ת את{' '}
+          <a href="" style={{ textDecoration: "none" }}>
+            תקנון האתר
+          </a>
+        </span>
+
+                      <div style = {{height: "1rem"}}/>
 
                       {storedIsLogged ? (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!address[0]}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled={!address[0] || !isCheckboxChecked}>
                         מעבר לתשלום
                       </Button>
                       ) : (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress || !isCheckboxChecked}>
                         מעבר לתשלום
                       </Button>
                       )}
@@ -477,7 +487,11 @@ const Order = () => {
       <Col md = {isTablet ? 6 : 7} xs={{ order: isMobile ? "1" : "2" }}>
       <div style = {{height: "0.8rem"}} />
         <AddressManagement />
+
+
         {isMobile && (<div style = {{height: "20dvh"}}/>)}
+
+
       </Col>
       </Row>
 

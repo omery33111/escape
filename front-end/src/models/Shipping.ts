@@ -1,9 +1,10 @@
 export interface Address {
-  id: number;
+  id: string;
   first_name: string;
   last_name: string;
   city: string;
   address: string;
+  email?: string;
   house_number: number;
   phone_number: number;
   postal_code: number;

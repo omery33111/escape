@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { myServer } from "../../endpoints/endpoints";
 import { getAllBrandsAsync, getPagedShoesOfBrandAsync, selectAllBrands, selectBrandsLoading } from "../brand/brandSlice";
 import { selectCart } from '../cart/cartSlice';
-import { searchShoeAsync, selectAllShoes, selectSearchShoe, setShoeSearch } from "../shoe/shoeSlice";
+import { searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from "../shoe/shoeSlice";
 import { selectWishList } from '../wishlist/wishListSlice';
 import './navigators.css';
 
@@ -85,6 +85,8 @@ const BrandNavbar = () => {
 
   const searchShoe = useAppSelector(selectSearchShoe);
   const isLoading = useAppSelector(selectBrandsLoading);
+
+  const isSearchLoading = useAppSelector(selectSingleShoeLoading);
   
 
   const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -337,18 +339,26 @@ const BrandNavbar = () => {
           getOptionLabel={(shoe: any) => shoe.name}
           renderOption={(props, shoe) => (
             <li {...props}>
-              <div
-                style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
-                onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}
-              >
-                <img
-                style = {{transform: "scaleX(-1)"}}
-                  src={`${myServer}/static/images/${shoe.image}`}
-                  width="20%"
-                  height="auto"
-                />
-                <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>{shoe.name}</p>
-              </div>
+
+              {isSearchLoading ? (
+                <div className="loader" style = {{width: "30px", direction: "rtl"}}/>
+              ) : (
+                              <div
+                              style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
+                              onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}>
+                              <img
+                              style = {{transform: "scaleX(-1)"}}
+                                src={`${myServer}/static/images/${shoe.image}`}
+                                width="20%"
+                                height="auto"
+                              />
+                              <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>
+                                {shoe.name}
+                                </p>
+                            </div>
+              )}
+
+
             </li>
           )}
           renderInput={(params) => (

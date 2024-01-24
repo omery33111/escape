@@ -10,7 +10,7 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
 import { selectWishList } from '../wishlist/wishListSlice';
 import { Autocomplete, TextField, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
-import { searchShoeAsync, selectAllShoes, selectSearchShoe, setShoeSearch } from '../shoe/shoeSlice';
+import { searchShoeAsync, selectAllShoes, selectSearchLoading, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from '../shoe/shoeSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { myServer } from '../../endpoints/endpoints';
 import SearchIcon from '@mui/icons-material/Search';
@@ -47,6 +47,7 @@ const Hamburger = () => {
     const [isHamburgerActive, setIsHamburgerActive] = useState(true);
     const [hoveredItem, setHoveredItem] = useState(null);
 
+    const isSearchLoading = useAppSelector(selectSearchLoading);
 
     const handleOffcanvasClose = () => {
       setShowOffcanvas(false);
@@ -204,7 +205,11 @@ const Hamburger = () => {
           getOptionLabel={(shoe: any) => shoe.name}
           renderOption={(props, shoe) => (
             <li {...props} onClick = {handleOffcanvasClose}>
-              <div
+
+              {isSearchLoading ? (
+                <div className="loader" style = {{width: "30px", direction: "rtl"}}/>
+              ) : (
+                <div
                 style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
                 onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}
               >
@@ -216,6 +221,9 @@ const Hamburger = () => {
                 />
                 <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>{shoe.name}</p>
               </div>
+              )}
+
+
             </li>
           )}
           renderInput={(params) => (

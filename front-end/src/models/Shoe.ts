@@ -34,4 +34,6 @@ export interface Shoe {
     isError: boolean;
 
     searchShoe: string;
+
+    isSearchLoading: boolean;
   }

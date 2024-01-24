@@ -1,14 +1,14 @@
-import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Alert, Card, Col, Container, ListGroup, Modal, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { myServer } from '../../endpoints/endpoints';
 import { logoutAsync } from '../authentication/authenticationSlice';
-import AddressManagement from '../shipping/AddressManagement';
-import { getProfileAsync, selectMyProfile, selectProfileIsLoading } from './profileSlice';
 import { selectCart } from '../cart/cartSlice';
 import { getLastMonthOrdersAsync, selectOrdersUser } from '../order/orderSlice';
-import { myServer } from '../../endpoints/endpoints';
-import { Navigate, useNavigate } from 'react-router-dom';
+import AddressManagement from '../shipping/AddressManagement';
+import { getProfileAsync, selectMyProfile, selectProfileIsLoading } from './profileSlice';
 
 
 
@@ -158,10 +158,23 @@ const Profile = () => {
                 </ListGroup>
               </Col>
         
-                <Col className="d-flex align-items-center" style = {{direction: "rtl"}}>
-              כמות: {order.amount}
-              </Col>
-        
+              <Col className="d-flex align-items-center">
+                      <div style = {{direction: "rtl"}}>
+                        <b>
+                        כמות: {order.amount}
+                        </b>
+                          <br/>
+                        <p>
+                        {order.size && (
+                                  <div>
+                                  מידה: {order.size}
+                                  </div>
+                            )}
+                          
+                        </p>
+                      </div>
+                    </Col>
+
                 <Col className="d-flex align-items-center" style = {{direction: "rtl"}}>
                   <div style = {{width: "130px"}}>
               סך הכל לתשלום: <b>₪{order.price}</b>

@@ -31,10 +31,7 @@ const UserOrders = () => {
     const isMobile = window.innerWidth <= 768;
 
     const [showModal, setShowModal] = useState(false);
-
-    const handleShowModal = () => {
-      setShowModal(true);
-    };
+    const [selectedOrderNote, setSelectedOrderNote] = useState('');
 
   return (
     <div>
@@ -64,9 +61,26 @@ const UserOrders = () => {
           <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0,
                           boxShadow: "0 0 6px 3px rgba(0, 0, 0, 0.1)"}}>
 
-            <div style = {{position: "absolute", right: 5, top: 5, color: "purple", cursor: "pointer"}} onClick={handleShowModal}>
-              {order.note && ("הערות הזמנה")}
-            </div>
+{order.note && (
+                                        <div style = {{position: "absolute", right: 5, top: 5, cursor: "pointer"}}
+                                        onClick={() => {
+                                          setSelectedOrderNote(order.note);
+                                          setShowModal(true);}}>
+                                        הערת הזמנה
+                                      </div>
+                  )}
+
+              <Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
+                      <Modal.Header>
+                        <Modal.Title>הערת הזמנה</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>{selectedOrderNote}</Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                          סגור
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
 
             <Row style = {{gap: isTablet ? "0px" : "130px"}}>
 
@@ -107,9 +121,22 @@ const UserOrders = () => {
               </ListGroup>
             </Col>
 
-              <Col className="d-flex align-items-center" style = {{direction: "rtl", marginRight: "1rem"}}>
-            כמות: {order.amount}
-            </Col>
+            <Col className="d-flex align-items-center">
+                      <div style = {{direction: "rtl"}}>
+                        <b>
+                        כמות: {order.amount}
+                        </b>
+                          <br/>
+                        <p>
+                        {order.size && (
+                                  <div>
+                                  מידה: {order.size}
+                                  </div>
+                            )}
+                          
+                        </p>
+                      </div>
+                    </Col>
             
             {isTablet ? (
                                       <Col className="d-flex align-items-center" style = {{direction: "rtl", justifyContent: "center", textAlign: "center"}}>
@@ -137,15 +164,6 @@ const UserOrders = () => {
                                   </div>
               )}
 
-
-      <Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
-        <Modal.Header style = {{justifyContent: "center", textAlign: "center"}}>
-          <b>הערות הזמנה</b>
-        </Modal.Header>
-        <div>
-                  {order.note}
-        </div>
-      </Modal>
 
           </Card>
           <div style = {{height: "3.5rem"}}/>

@@ -5,7 +5,7 @@ import { Address } from '../../models/Shipping';
 import { deleteGuestAddress, getAddressesAmountAsync, getAddressesAsync, getIsraelCitiesAsync, getIsraelStreetsAsync, getNextShippingIDAsync, initGuestAddresses, patchAddressAsync, postAddressAsync, selectAddress, selectAddressesAmount, selectGuestAddresses, selectIsraelCities, selectIsraelStreets, selectNextShippingID } from '../shipping/shippingSlice';
 import './shipping.css';
 import { makeStyles } from "@mui/styles";
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
 import Shipping from './Shipping';
 
 
@@ -44,6 +44,10 @@ const AddressManagement = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const postalCodeRegex = /^\d{7}$/;
+  const phoneNumberRegex = /^\d{7}$/;
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setlastName] = useState('');
   const [searchedCity, setSearchedCity] = useState('');
@@ -51,6 +55,7 @@ const AddressManagement = () => {
   const [postalCode, setPostalCode] = useState('');
   const [houseNumber, setHouseNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
 
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedStreet, setSelectedStreet] = useState<boolean>(false);
@@ -75,6 +80,11 @@ const AddressManagement = () => {
 
   const israelCities = useAppSelector(selectIsraelCities);
   const israelStreets = useAppSelector(selectIsraelStreets);
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+  };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedCity(e.target.value);
@@ -126,36 +136,40 @@ const AddressManagement = () => {
     formData.append('postal_code', postalCode);
     formData.append('house_number', houseNumber);
     formData.append('phone_number', phoneNumberWithPrefix);
+    formData.append('email', email);
   
-
     // Save the address to local storage
     const newAddress: Address = {
       first_name: firstName,
       last_name: lastName,
       city: searchedCity,
       address: searchedStreet,
+      email: email,
       postal_code: Number(postalCode),
       house_number: Number(houseNumber),
       phone_number: Number(phoneNumberWithPrefix),
-      id: nextAddressID
+      id: String(nextAddressID)
     };
   
     const existingAddresses = JSON.parse(localStorage.getItem('addresses') || '[]');
   
     const updatedAddresses = [...existingAddresses, newAddress];
   
-
     if (storedIsLogged) {
       if (!address[0]) {
-      dispatch(postAddressAsync(formData));
+        console.log("Dispatching postAddressAsync");
+        dispatch(postAddressAsync(formData));
       }
-
-      else {
+  
+      if (address[0]) {
+        console.log("Dispatching patchAddressAsync");
         dispatch(patchAddressAsync({ shippingData: formData, id: Number(address[0].id) }));
+        console.log({ shippingData: formData, id: Number(address[0].id) });
       }
     }
-
+  
     if (!storedIsLogged) {
+      console.log("Dispatching postAddressAsync (Guest)");
       localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
       dispatch(postAddressAsync(formData));
     }
@@ -171,9 +185,9 @@ const AddressManagement = () => {
     setSelectedCity(null);
     setSelectedStreet(false);
     setSelectedPrefix('');
-
-    setEditAddress(false)
-
+    setEmail('');
+  
+    setEditAddress(false);
   };
 
   
@@ -186,6 +200,12 @@ const AddressManagement = () => {
   const allGuestAddresses = useAppSelector(selectGuestAddresses)
 
   const nextAddressID = useAppSelector(selectNextShippingID)
+
+  useEffect(() => {
+    if (storedIsLogged) {
+      localStorage.removeItem('addresses');
+    }
+  }, [storedIsLogged]);
 
 
   useEffect(() => {
@@ -208,7 +228,7 @@ const AddressManagement = () => {
     
 
 
-  const [selectedPrefix, setSelectedPrefix] = useState('');
+    const [selectedPrefix, setSelectedPrefix] = useState('');
 
   const [isCity, setIsCity] = useState<boolean>(false);
 
@@ -254,7 +274,7 @@ const AddressManagement = () => {
             <div>
                         {editAddress || !address[0] ? (
                             <div>
-                            <form onSubmit={handleSubmit}>
+                            <Form onSubmit={handleSubmit}>
                         
                             <div style={{ direction: 'rtl' }}>
                             
@@ -352,7 +372,7 @@ const AddressManagement = () => {
                             />
                               </div>
                         
-                              <div style = {{display: "flex", gap: "10px"}}>
+                              <div style = {{display: "flex", gap: "10px", marginBottom: "1rem"}}>
                                     <TextField
                                     className={classes.autocompleteAddress}
                             label="מספר טלפון"
@@ -384,29 +404,40 @@ const AddressManagement = () => {
                               </Select>
                             </FormControl>
                             </div>
-                            
-                               <Button
-                               onClick={() => setEditAddress(false)}
-                               style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2.5rem)", borderRadius: "0px" }}
+
+                              <div style = {{display: "flex", gap: "10px"}}>
+                              <TextField
+                                className={classes.autocompleteAddress}
+                                label="כתובת אימייל"
+                                type="email"
+                                value={email}
+                                variant="standard"
+                                onChange={handleEmailChange}
+                              />
+
+
+                              <Button
+                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)" }}
                                type="submit"
-                               variant="contained"
-                               disabled={
-                                 firstName === '' ||
-                                 lastName === '' ||
-                                 selectedCity === '' ||
-                                 searchedStreet === '' ||
-                                 postalCode === '' ||
-                                 houseNumber === '' ||
-                                 phoneNumber.length < 7 ||
-                                 selectedPrefix === ''
-                               }
-                             >
-                               שמירה
-                             </Button>
-                             
+                                variant="contained"
+                                disabled={
+                                  firstName === '' ||
+                                  lastName === '' ||
+                                  selectedCity === '' ||
+                                  searchedStreet === '' ||
+                                  postalCode === '' ||
+                                  houseNumber === '' ||
+                                  phoneNumber.length < 7 ||
+                                  selectedPrefix === ''}>
+                                שמירה
+                              </Button>
+
+                            </div>
+
+
                         
                           </div>
-                        </form>
+                        </Form>
                         
                         </div>
 
@@ -476,8 +507,22 @@ const AddressManagement = () => {
             </div>
 
             </div>
+
+             <div style = {{height: "1rem"}}/>
+              
+              {address.email && (
+                             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
+                             <div style = {{width: "30.9%", marginBottom: "10px"}}>
+                                 <div style = {{position: "absolute", marginTop: "-10px"}}>
+                                 {address.email}
+                                 </div>
+                               <hr/>
+                             </div>
+                             </div>
+              )}
+
         
-          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", transform: "translateY(4.5rem)", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => setEditAddress(true)}>
+          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} variant="contained" onClick={() => setEditAddress(true)}>
             עריכה
           </Button>
     
@@ -562,9 +607,23 @@ const AddressManagement = () => {
             </div>
 
             </div>
+
+            <div style = {{height: "1rem"}}/>
+              
+              {address.email && (
+                             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
+                             <div style = {{width: "30.9%", marginBottom: "10px"}}>
+                                 <div style = {{position: "absolute", marginTop: "-10px"}}>
+                                 {address.email}
+                                 </div>
+                               <hr/>
+                             </div>
+                             </div>
+              )}
+
         
-          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", transform: "translateY(5.6rem)", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
-            עריכה!
+          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
+            עריכה
           </Button>
     
           </div>
@@ -685,46 +744,61 @@ freeSolo
     }}
   />
 
-    <FormControl style = {{width: "20%", top: "-2px"}}>
-      <InputLabel>קידומת</InputLabel>
-      <Select
-      className={`${classes.rtlSelect} rtl-select-shipping`}
-      variant="standard"
-        value={selectedPrefix}
-        onChange={handlePrefixChange}
-      >
-        <MenuItem value="">קידומת</MenuItem>
-        <MenuItem value="050">050</MenuItem>
-        <MenuItem value="051">051</MenuItem>
-        <MenuItem value="052">052</MenuItem>
-        <MenuItem value="053">053</MenuItem>
-        <MenuItem value="054">054</MenuItem>
-        <MenuItem value="055">055</MenuItem>
-        <MenuItem value="058">058</MenuItem>
-      </Select>
-    </FormControl>
-    </div>
-    
-   
-      <Button
-      style={{ backgroundColor: "#1A002E", position: "relative", transform: "translateY(2rem)", borderRadius: "0px" }}
-      type="submit"
-      variant="contained"
-      disabled={
-        firstName === '' ||
-        lastName === '' ||
-        selectedCity === '' ||
-        searchedStreet === '' ||
-        postalCode === '' ||
-        houseNumber === '' ||
-        phoneNumber.length < 7 ||
-        selectedPrefix === ''}>
-      שמירה
-    </Button>
-    
+<FormControl style = {{width: "20%", top: "-2px"}}>
+                              <InputLabel>קידומת</InputLabel>
+                              <Select
+                              className={`${classes.rtlSelect} rtl-select-shipping`}
+                              variant="standard"
+                                value={selectedPrefix}
+                                onChange={handlePrefixChange}
+                              >
+                                <MenuItem value="">קידומת</MenuItem>
+                                <MenuItem value="050">050</MenuItem>
+                                <MenuItem value="051">051</MenuItem>
+                                <MenuItem value="052">052</MenuItem>
+                                <MenuItem value="053">053</MenuItem>
+                                <MenuItem value="054">054</MenuItem>
+                                <MenuItem value="055">055</MenuItem>
+                                <MenuItem value="058">058</MenuItem>
+                              </Select>
+                            </FormControl>
+                            </div>
+                              <div style = {{height: "1rem"}}/>
+                              <div style = {{display: "flex", gap: "10px"}}>
+                                <TextField
+                                    className={classes.autocompleteAddress}
+                                    label="כתובת אימייל"
+                                    type="email"
+                                    value={email}
+                                    variant="standard"
+                                    onChange={handleEmailChange}
+                                />
 
-  </div>
-</form>
+                            <Button
+                               onClick={() => setEditAddress(false)}
+                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)" }}
+                               type="submit"
+                               variant="contained"
+                               disabled={
+                                 firstName === '' ||
+                                 lastName === '' ||
+                                 selectedCity === '' ||
+                                 searchedStreet === '' ||
+                                 postalCode === '' ||
+                                 houseNumber === '' ||
+                                 phoneNumber.length < 7 ||
+                                 selectedPrefix === ''
+                               }
+                             >
+                               שמירה
+                             </Button>
+
+                            </div>
+
+
+                        
+                          </div>
+                        </form>
 
 </div>
 )}

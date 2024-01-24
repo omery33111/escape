@@ -8,7 +8,7 @@ import { getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, ge
 const initialState: AddressState = {
   addresses: [],
   guestAddress: [],
-  single_address: { id: 0, first_name: '', last_name: '', address: '', city: '', house_number: 0, phone_number: 0, postal_code: 0 },
+  single_address: { id: "", first_name: '', last_name: '', address: '', city: '', house_number: 0, phone_number: 0, postal_code: 0 },
 
   addressesAmount: 0,
 
@@ -96,7 +96,7 @@ export const getSingleAddressAsync = createAsyncThunk(
   
   export const patchAddressAsync = createAsyncThunk(
     'shipping/patchAddress',
-    async (data: {shippingData: any, id: number}) => {
+    async (data: {shippingData: Address, id: number}) => {
     const response = await patchAddress(data.shippingData, data.id);
     return response;
     }
@@ -108,14 +108,10 @@ export const shippingSlice = createSlice({
     reducers: {
       deleteGuestAddress: (state, action) => {
         const item = action.payload.item
-      
-      state.guestAddress = state.guestAddress.filter(({id}) => id !== item.id)
-      
-      localStorage.setItem("addresses", JSON.stringify(state.guestAddress))
-
-      if (state.guestAddress.length === 0) {
+        
+        state.guestAddress = state.guestAddress.filter(({id}) => id !== item.id)
+        
         localStorage.removeItem("addresses");
-      }
       },
 
       initGuestAddresses: (state) =>

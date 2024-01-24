@@ -5,7 +5,7 @@ import { selectCart } from "../cart/cartSlice";
 import { postOrderAsync, selectSavedAddress, selectSavedCoupon, selectSavedNote, selectSavedTotal } from "./orderSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { getAddressesAsync, initGuestAddresses, selectAddress } from "../shipping/shippingSlice";
+import { getAddressesAsync, initGuestAddresses, selectAddress, selectGuestAddresses } from "../shipping/shippingSlice";
 import { selectCouponCheck } from "../coupon/couponSlice";
 
 
@@ -25,20 +25,20 @@ const PaypalButton = () => {
 
     const storedAddress = JSON.parse(localStorage.getItem('addresses') as string);
 
+    const guestAddress = useAppSelector(selectGuestAddresses);
+
     useEffect(() => {
       if (storedIsLogged === true) {
         dispatch(getAddressesAsync());
       }
   
-      if (storedIsLogged === false) {
-        dispatch(initGuestAddresses());
-      }
+      dispatch(initGuestAddresses());
   
     }, [dispatch, storedIsLogged, storedAddress && storedAddress.length]);
 
     const savedCoupon = useAppSelector(selectSavedCoupon);
     const savedNote = useAppSelector(selectSavedNote);
-    
+
     const onApprove = async (data: any, action: any) => {
       return action.order?.capture().then((details: any) => {
       
@@ -48,17 +48,18 @@ const PaypalButton = () => {
 
       const orderDetails = myCart.map((item: any) => ({
         shoe: Number(item.id),
+        size: item.size,
         amount: item.amount,
         price: Number(item.price * item.amount),
         note: savedNote,
         coupon: savedCoupon,
       }));
     
-      const orderData = {
-        shipping_address: address[0].id,
-      };
+      const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
+    
+      dispatch(postOrderAsync({ orderData, orderDetails }));
 
-       dispatch(postOrderAsync({ orderData, orderDetails }));
+      navigate('/thankspage')
       })
     };
   

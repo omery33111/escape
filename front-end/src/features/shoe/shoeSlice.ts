@@ -21,7 +21,9 @@ const initialState: ShoeState = {
 
   searchShoe: "",
   chosenIsLoading: false,
-  wallIsLoading: false
+  wallIsLoading: false,
+  
+  isSearchLoading: false
 };
 
 
@@ -159,10 +161,10 @@ export const shoeSlice = createSlice({
       .addCase(searchShoeAsync.fulfilled, (state, action) =>
       {
         state.shoes = action.payload
-        state.isLoading = false;
+        state.isSearchLoading = false;
       })
       .addCase(searchShoeAsync.pending, (state) => {
-        state.isLoading = true;
+        state.isSearchLoading = true;
       })
       .addCase(searchShoeAsync.rejected, (state) => {
         state.isError = true;
@@ -175,6 +177,8 @@ export const shoeSlice = createSlice({
 export const { setShoeSearch } = shoeSlice.actions;
 
 
+
+export const selectSearchLoading = (state: RootState) => state.shoe.isSearchLoading;
 
 export const selectChosenShoes = (state: RootState) => state.shoe.chosenShoes;
 

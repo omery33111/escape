@@ -8,6 +8,7 @@ export interface Order {
     coupon: string;
     amount: number;
     user: number;
+    size: string;
     shoe: { id: string;
               images: string[];
               name: string;

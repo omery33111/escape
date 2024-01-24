@@ -34,6 +34,7 @@ import CouponPost from './features/administrator/CouponPost';
 import CouponPut from './features/administrator/CouponPut';
 import ProfileManagerPanel from './features/administrator/ProfileManagerPanel';
 import UserOrderPanel from './features/administrator/UserOrderPanel';
+import ThanksPage from './features/order/ThanksPage';
 
 
 
@@ -110,6 +111,8 @@ root.render(
       <Route path = "/wishlist" element={<WishList />} />
 
       <Route path = "/order" element={<Order />} />
+
+      <Route path = "/thankspage" element={<ThanksPage />} />
 
       <Route path = "/profile/orders" element={<UserOrders />} />
 

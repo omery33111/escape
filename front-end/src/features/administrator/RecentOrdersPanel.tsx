@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Alert, Button, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
-import { myServer } from '../../endpoints/endpoints';
-import { getOrdersAmountAsync, getPagedOrdersAsync, getRecentOrdersAsync, selectOrdersAmount, selectPagedOrders } from './administratorSlice';
-import { Pagination } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Button, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { myServer } from '../../endpoints/endpoints';
+import { getRecentOrdersAsync, selectPagedOrders } from './administratorSlice';
 
 const RecentOrdersPanel = () => {
     const dispatch = useAppDispatch();
@@ -29,6 +28,9 @@ const RecentOrdersPanel = () => {
     }
 
     const isMobile = window.innerWidth <= 768;
+
+    const [showModal, setShowModal] = useState(false);
+    const [selectedOrderNote, setSelectedOrderNote] = useState('');
 
   return (
     <div>
@@ -59,7 +61,27 @@ const RecentOrdersPanel = () => {
                   <div key = {order.id}>
                   <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0,
                                   boxShadow: "0 0 6px 3px rgba(0, 0, 0, 0.1)"}}>
+                      
+                  {order.note && (
+                                        <div style = {{position: "absolute", right: 5, top: 5, cursor: "pointer"}}
+                                        onClick={() => {
+                                          setSelectedOrderNote(order.note);
+                                          setShowModal(true);}}>
+                                        הערת הזמנה
+                                      </div>
+                  )}
 
+              <Modal show={showModal} onHide={() => setShowModal(false)} style = {{direction: "rtl"}}>
+                      <Modal.Header>
+                        <Modal.Title>הערת הזמנה</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>{selectedOrderNote}</Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                          סגור
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
                                     
                     <Row style = {{gap: isTablet ? "0px" : "130px"}}>
 
@@ -82,33 +104,40 @@ const RecentOrdersPanel = () => {
 
                       <ListGroup style = {{direction: "rtl", maxWidth: "170px", minWidth: "120px"}}>
                         <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0}}>
-                        {order.shipping_address.first_name} {order.shipping_address.last_name}
+                        {order.shipping_address?.first_name} {order.shipping_address?.last_name}
                         </ListGroup.Item>
 
                         <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0}}>
-                        {order.shipping_address.city}
+                        {order.shipping_address?.city}
                         </ListGroup.Item>
                         
                         <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0}}>
-                        {order.shipping_address.address} {order.shipping_address.house_number}
+                        {order.shipping_address?.address} {order.shipping_address?.house_number}
                         </ListGroup.Item>
 
                         <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0}}>
-                        0{order.shipping_address.phone_number}
+                        0{order.shipping_address?.phone_number}
                         </ListGroup.Item>
 
                       </ListGroup>
                     </Col>
 
-                      <Col className="d-flex align-items-center" style = {{direction: "rtl", marginRight: "1rem"}}>
-                    כמות: {order.amount}
+                    <Col className="d-flex align-items-center">
+                      <div style = {{direction: "rtl"}}>
+                        <b>
+                        כמות: {order.amount}
+                        </b>
+                          <br/>
+                        <p>
+                        {order.size && (
+                                  <div>
+                                  מידה: {order.size}
+                                  </div>
+                            )}
+                          
+                        </p>
+                      </div>
                     </Col>
-                    
-                    {order.note && (
-                      <Col className="d-flex align-items-center" style = {{direction: "rtl", width: "200px"}}>
-                        {order.note}
-                      </Col>
-                    )}
 
                     
                     {isTablet ? (

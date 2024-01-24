@@ -14,8 +14,8 @@ const initialState: OrderState = {
                                                             postal_code: 0,
                                                             phone_number: 0,
                                                             house_number: 0 },
-                                                            shoe:
-                                                          { id: "",
+                                                            size: "",
+                                                            shoe: { id: "",
                                                           images: [],
                                                           name: "",
                                                             description: "" },

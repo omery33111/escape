@@ -42,7 +42,7 @@ export function getSingleAddress(id: string) {
 }
 
 
-export function patchAddress(shippingData: any, id: number) {
+export function patchAddress(shippingData: Address, id: number) {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
     const accessToken = myToken ? myToken.access : "";
     let config = {

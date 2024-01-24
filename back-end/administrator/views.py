@@ -37,12 +37,17 @@ class IsStaff(BasePermission):
 @api_view(["POST"])
 def post_insta_rec(request):
     if request.method == "POST":
-        serializer = InstaRecSerializer(data = request.data)
+        serializer = InstaRecSerializer(data=request.data)
 
         if serializer.is_valid():
+            if InstaRec.objects.count() >= 50:
+                oldest_instarec = InstaRec.objects.earliest('id')
+                oldest_instarec.delete()
+
             serializer.save()
-            return Response(serializer.data, status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @permission_classes([IsStaff])
 @api_view(["GET"])

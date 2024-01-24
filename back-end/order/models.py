@@ -12,6 +12,7 @@ class Order(models.Model):
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
     amount = models.IntegerField(default = 1)
     shoe = models.ForeignKey(Shoe, on_delete = models.SET_NULL, null = True)
+    size = models.TextField(max_length = 10, null = True, blank = True)
     shipping_address = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True, blank=False)
     note = models.TextField(max_length = 70, null = True, blank = True)
     coupon = models.TextField(max_length = 60, null = True, blank = True)

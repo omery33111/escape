@@ -12,6 +12,20 @@
 }
 
 
+.contact-icons-thanks {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  gap: 35px;
+  justify-content: center;
+  border-radius: 20px;
+  background-color: #ebe5f5;
+  margin-right: 15rem;
+  margin-left: 15rem;
+}
+
+
+
   /* MOBILE AND TABLET RESPONSIVE STYLING */
   @media (min-width: 0px) and (max-width: 1024px) {
   
