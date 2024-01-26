@@ -96,7 +96,7 @@ root.render(
       </Route>
 
 
-      <Route path = "/brand/shoe">
+      <Route path = "/brand/single_shoe">
         <Route index element = {<Shoe />} />
         <Route path = ":id" element = {<Shoe />} />
       </Route>

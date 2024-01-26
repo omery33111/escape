@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useNavigate } from 'react-router-dom';
 import { myServer } from '../../endpoints/endpoints';
 import Container from 'react-bootstrap/Container';
-import Shoe from '../shoe/Shoe';
 
 const Wall: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -57,7 +56,7 @@ const Wall: React.FC = () => {
                   <img
                     onMouseEnter={() => setHoveredShoe(shoe.id)}
                     onMouseLeave={() => setHoveredShoe(null)}
-                    onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
+                    onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                     style={{ cursor: 'pointer', marginBottom: isTablet ? "20px" : '0px'}}
                     src={`${myServer}/static/images/${shoe.images[0]}`}
                     width={isTablet ? "70px" : '105px'}

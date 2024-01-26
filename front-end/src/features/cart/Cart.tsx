@@ -139,7 +139,7 @@ const Cart = () => {
                     <img className="image-container-brand"
                       onMouseEnter={() => handleMouseEnter(shoeIndex)}
                       onMouseLeave={() => handleMouseLeave(shoeIndex)}
-                      onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
+                      onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                       style={{ cursor: "pointer" }}
                       src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
                       width={isMobile ? `150px` : `200px`}

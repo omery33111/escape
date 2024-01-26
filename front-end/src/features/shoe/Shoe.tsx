@@ -225,7 +225,7 @@ const cart = useAppSelector(selectCart);
   
                               &nbsp;/&nbsp;
   
-                              <div onClick = {() => navigate(`/brand/shoe/${id}/`)}>
+                              <div onClick = {() => navigate(`/brand/single_shoe/${id}/`)}>
                               {shoe.name}
                               </div>
   
@@ -329,7 +329,7 @@ const cart = useAppSelector(selectCart);
 
                   &nbsp;/&nbsp;
 
-                  <div onClick = {() => navigate(`/brand/shoe/${id}/`)}>
+                  <div onClick = {() => navigate(`/brand/single_shoe/${id}/`)}>
                   {shoe.name}
                   </div>
 

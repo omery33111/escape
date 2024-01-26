@@ -99,7 +99,7 @@ const Order = () => {
     }
 
     if (storedIsLogged === false) {
-    dispatch(initGuestAddresses());
+      dispatch(initGuestAddresses());
     }
     
   }, [dispatch, storedIsLogged, storedAddress && storedAddress.length]);
@@ -135,6 +135,8 @@ const Order = () => {
   const savedCoupon = useAppSelector(selectSavedCoupon);
   const savedNote = useAppSelector(selectSavedNote);
 
+  const usedCoupons = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
+
   const handleOrderSubmit = async (event: any) => {
     event.preventDefault();
   
@@ -153,6 +155,12 @@ const Order = () => {
   
     const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
   
+
+    if (!usedCoupons.includes(savedCoupon)) {
+      usedCoupons.push(savedCoupon);
+      localStorage.setItem('usedCoupons', JSON.stringify(usedCoupons));
+    }
+
     dispatch(postOrderAsync({ orderData, orderDetails }));
    
     navigate('/thankspage')
@@ -160,15 +168,24 @@ const Order = () => {
 
   const [couponApplied, setCouponApplied] = useState(false);
 
+
   const handleApplyCoupon = () => {
     if (savedCoupon !== undefined && savedCoupon.trim() !== '') {
       const currentCoupon = savedCoupon.trim();
+  
+      if (usedCoupons.includes(currentCoupon)) {
+        setIsCouponAlreadyUsed(true);
+        setCouponApplied(false);
+        return;
+      }
+  
       dispatch(checkCouponAsync(currentCoupon));
       setCouponApplied(true);
     }
   };
 
-  const discountedTotal = total - (total * (couponCheck.discount / 100));
+
+  const discountedTotal = (total - (total * (couponCheck.discount / 100))).toFixed(2);
 
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
@@ -177,6 +194,9 @@ const Order = () => {
   const handleCheckboxChange = () => {
     setIsCheckboxChecked(!isCheckboxChecked);
   };
+
+  const [isCouponAlreadyUsed, setIsCouponAlreadyUsed] = useState(false);
+
   
   return (
     <div>
@@ -220,7 +240,14 @@ const Order = () => {
                 
                 <div>
                     <Card style = {{direction: "rtl", borderRadius: 0, boxShadow: "0 0 6px 3px rgba(0, 0, 0, 0.1)"}}>
+                    <img
+                        style = {{position: "absolute", transform: "translateY(-4rem)"}}
+                        src={require('../../images/payments.png')}
+                        alt="payments"
+                        height="auto"
+                        width="100%"/>
                         <Card.Body style = {{justifyContent: "center", textAlign: "center"}}>
+                        
                             <b style = {{fontSize: "1.3rem"}}>
                         סיכום הזמנה
                         </b>
@@ -247,7 +274,7 @@ const Order = () => {
                     <img className="image-container-order"
                       onMouseEnter={() => handleMouseEnter(shoeIndex)}
                       onMouseLeave={() => handleMouseLeave(shoeIndex)}
-                      onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
+                      onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                       style={{ cursor: "pointer" }}
                       src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
                       width={isTablet ? `100px` : `100px`}
@@ -256,7 +283,7 @@ const Order = () => {
 
                     <Col className="d-flex align-items-center">
                       <div className="text-right">
-                        <b onClick={() => navigate(`/brand/shoe/${shoe.id}`)} style = {{cursor: "pointer"}}>
+                        <b onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)} style = {{cursor: "pointer"}}>
 
                             {isTablet ? (
                                 <div style = {{fontSize: "0.7rem"}}>
@@ -371,7 +398,12 @@ const Order = () => {
                                <Alert variant="danger" show={!couponCheck.exists && couponApplied} style={{ textAlign: 'center', transform: "translateY(-2px)" }}>
         הקופון אינו תקף. אנא בדוק את הקוד שוב או השתמש בקופון אחר.
       </Alert>
- 
+      
+      <Alert variant="danger" show={isCouponAlreadyUsed} style={{ textAlign: 'center', transform: "translateY(-2px)" }}>
+  הקופון חד פעמי וכבר שומש בעבר. השתמש בקופון אחר.
+</Alert>
+
+
 
                 <div style = {{height: "1.1rem"}}/>
 

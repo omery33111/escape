@@ -15,6 +15,7 @@ export interface Shoe {
   model: string;
   wall: boolean;
   chosen: boolean;
+  out_of: boolean;
 }
 
   export interface ShoeState {

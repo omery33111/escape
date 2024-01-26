@@ -30,4 +30,6 @@ export interface Order {
 
       saveNote: string;
       saveCoupon: string;
+
+      userOrdersAmount: number;
     };

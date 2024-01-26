@@ -29,16 +29,30 @@ export function postOrder(orderData: any, orderDetails: { shoe: number, amount: 
 
 
 
-export function getOrdersUser() {
+export function getOrdersUser(page: number) {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
   const accessToken = myToken ? myToken.access : "";
   let config = {
       headers: { 'Authorization': `Bearer ${accessToken}` }
     }
   return new Promise<{ data: Order[] }>((resolve =>
-      axios.get(`${orderURL}/orders_peruser/`, config).then(res => resolve({ data: res.data }))))}
+      axios.get(`${orderURL}/user_orders/${page}/`, config).then(res => resolve({ data: res.data }))))}
 
+
+
+export function getUserOrdersAmount() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: number }>((resolve =>
+        axios.get(`${orderURL}/user_orders_amount/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
+}
       
+
 
 export function getLastMonthOrders() {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
@@ -59,15 +73,3 @@ export function getUserOrders() {
     }
   return new Promise<{ data: Order[] }>((resolve =>
       axios.get(`${orderURL}/user_orders/`, config).then(res => resolve({ data: res.data }))))}
-
-
-
-
-// export function getOrders() {
-//   const myToken = JSON.parse(localStorage.getItem("token") as string)
-//   const accessToken = myToken ? myToken.access : "";
-//   let config = {
-//       headers: { 'Authorization': `Bearer ${accessToken}` }
-//     }
-//   return new Promise<{ data: Order[] }>((resolve =>
-//       axios.get(`${orderURL}/get_orders/`, config).then(res => resolve({ data: res.data }))))}

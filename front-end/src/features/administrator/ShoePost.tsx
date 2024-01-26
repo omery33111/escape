@@ -27,6 +27,7 @@ const ShoePost = () => {
   const [model, setModel] = useState('');
   const [wall, setWall] = useState(false);
   const [chosen, setChosen] = useState(false);
+  const [outOf, setOutOf] = useState(false);
 
 
   const [sizesArray, setSizesArray] = useState<string[]>(['']);
@@ -123,27 +124,14 @@ const ShoePost = () => {
     formData.append('model', model);
     formData.append('wall', wall);
     formData.append('chosen', chosen);
+    formData.append('out_of', outOf);
 
 
     const sizesJson = JSON.stringify(sizesArray); 
     formData.append('sizes', sizesJson);
 
     const imagesJson = JSON.stringify(imagesArray); 
-    formData.append('images', imagesJson);
-  
-    // const newSubject: Shoe = {
-    //   name: name,
-    //   description: description,
-    //   price_before: priceBefore,
-    //   price: price,
-    //   sizes: sizes,
-    //   images: images,
-    //   brand: brand,
-    //   model: model,
-    // };
-
-    // ^^^ deleted when Shoe.ts model shoe id became "id: number | undefined", also on ShoePut.tsx
-    
+    formData.append('images', imagesJson); 
   
     dispatch(postShoeAsync(formData));
   
@@ -363,6 +351,14 @@ const ShoePost = () => {
     type="checkbox"
     label="Chosen"
     onChange={(e) => setChosen(e.target.checked)}
+  />
+</Form.Group>
+<br/>
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Out Of Stock"
+    onChange={(e) => setOutOf(e.target.checked)}
   />
 </Form.Group>
 </div>

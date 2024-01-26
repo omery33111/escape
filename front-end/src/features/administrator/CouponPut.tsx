@@ -22,6 +22,7 @@ const CouponPut = () => {
 
   const [name, setName] = useState('');
   const [discount, setDiscount] = useState<number>(0);
+  const [isOneTime, setIsOneTime] = useState(true);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -35,12 +36,17 @@ const CouponPut = () => {
     setDiscount(discountValue);
   };
 
+  const handleIsOneTimeChange = () => {
+    setIsOneTime(!isOneTime);
+  };
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
     const formData: any = new FormData();
     formData.append('name', name);
     formData.append('discount', discount.toString());
+    formData.append('one_time', isOneTime.toString());
 
     dispatch(putCouponAsync({ couponData: formData, id: Number(id) }));
 
@@ -65,8 +71,16 @@ const CouponPut = () => {
         <Form.Group>
           <Form.Label><h5>DISCOUNT</h5></Form.Label>
           <Form.Control type="number" value={discount} required onChange = {handleDiscountChange}/>
-        </Form.Group>
+        </Form.Group><br/>
 
+        <Form.Group>
+            <Form.Check
+              type="checkbox"
+              label="חד פעמי"
+              onChange={handleIsOneTimeChange}
+              checked={isOneTime}
+            />
+          </Form.Group>
         <br/>
 
             <div style = {{gap: "20px", display: "flex", width: "100%"}}>

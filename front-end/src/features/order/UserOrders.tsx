@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getUserOrdersAsync, selectOrdersUser, selectOrdersUserLoading } from './orderSlice';
+import { getOrdersUserAsync, getUserOrdersAmountAsync, selectOrdersUser, selectOrdersUserLoading, selectUserOrdersAmount } from './orderSlice';
 import { Alert, Button, Card, Col, ListGroup, Modal, Row } from 'react-bootstrap';
 import { myServer } from '../../endpoints/endpoints';
 import { useNavigate } from 'react-router-dom';
+import { Pagination } from '@mui/material';
+
+
 
 const UserOrders = () => {
     const dispatch = useAppDispatch();
@@ -12,9 +15,23 @@ const UserOrders = () => {
     const orders = useAppSelector(selectOrdersUser)
     const isLoading = useAppSelector(selectOrdersUserLoading)
 
+    const [page, setPage] = useState(1);
+
     useEffect(() => {
-          dispatch(getUserOrdersAsync());
-    }, [dispatch]);
+          dispatch(getOrdersUserAsync(page));
+          dispatch(getUserOrdersAmountAsync());
+    }, [dispatch, page]);
+
+    const itemsAmount = useAppSelector(selectUserOrdersAmount);
+
+    const itemsPerPage = 10;
+  
+    const totalPages = Math.ceil(itemsAmount / itemsPerPage);
+  
+    const nextPages = [];
+    for (let i = page; i <= totalPages && i <= page + 4; i++) {
+      nextPages.push(i);
+    }
 
     const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
 
@@ -41,6 +58,7 @@ const UserOrders = () => {
             </div>
           </div>
 
+          
           {isLoading ? (
         <div style = {{height: "35dvh", display: "flex", justifyContent: "center", alignItems: "center"}}>
           <div className="loader" />
@@ -56,6 +74,14 @@ const UserOrders = () => {
       : 
       (
         <div>
+        <div style = {{marginBottom: "1rem"}}>
+                  <Pagination
+              count={totalPages}
+              page={page}
+              onChange={(event, newPage) => setPage(newPage)}
+              size="small"
+            />
+            </div>
           {orders.slice().reverse().map((order) =>
           <div key = {order.id}>
           <Card style = {{height: "230px", alignItems: "center", justifyContent: "center", display: "flex", borderRadius: 0,
@@ -86,11 +112,11 @@ const UserOrders = () => {
 
               <Col className="d-flex align-items-center" style = {{width: "250px"}}>
               <ListGroup style = {{justifyContent: "center", textAlign: "center"}}>
-              <div style = {{cursor: "pointer"}} onClick = {() => navigate(`/brand/shoe/${order.shoe.id}`)}>
+              <div style = {{cursor: "pointer"}} onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}>
                       {order.shoe.name}
                       </div>
                 <img
-                 onClick = {() => navigate(`/brand/shoe/${order.shoe.id}`)}
+                 onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}
               style = {{width: isTablet ? "120px" : "160px", height: isTablet ? "120px" : "160px", cursor: "pointer"}}
                 width={"100%"}
                 height={"100%"}

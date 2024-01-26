@@ -52,7 +52,7 @@ const ChosenShoes = () => {
     if (hoveredItem !== null) {
       handleMouseLeave(hoveredItem);
     }
-    navigate(`/brand/shoe/${shoeId}`);
+    navigate(`/brand/single_shoe/${shoeId}`);
   };
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const ChosenShoes = () => {
               </div>
 
             <div>
-              <Card.Text style = {{width: "110%", position: "relative", right: "10px", height: "90px", cursor: "pointer", fontSize: "1rem"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+              <Card.Text style = {{width: "110%", position: "relative", right: "10px", height: "90px", cursor: "pointer", fontSize: "1rem"}} onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
 
               
               <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before > 0 ? `${isMobile || isTablet ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>

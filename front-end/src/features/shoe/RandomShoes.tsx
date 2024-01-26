@@ -79,7 +79,7 @@ const RandomShoes = () => {
     if (hoveredItem !== null) {
       handleMouseLeave(hoveredItem);
     }
-    navigate(`/brand/shoe/${shoeId}`);
+    navigate(`/brand/single_shoe/${shoeId}`);
   };
 
 
@@ -170,7 +170,7 @@ const RandomShoes = () => {
                 </div>
 
               <div>
-                <Card.Text style = {{width: "110%", position: "relative", right: "4px", height: "90px", cursor: "pointer", fontSize: "0.8rem"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+                <Card.Text style = {{width: "110%", position: "relative", right: "4px", height: "90px", cursor: "pointer", fontSize: "0.8rem"}} onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
 
                 
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before > 0 ? `${isMobile || isTablet ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
@@ -218,7 +218,7 @@ const RandomShoes = () => {
                 </div>
 
               <div>
-                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+                <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
 
                 
                 <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before ? `${isMobile || isTablet ? "1dvh" : "2.5dvh"}` : '0dvh'}`}}>
@@ -252,7 +252,7 @@ const RandomShoes = () => {
                 
                 </div>
                 
-                <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>
+                <div onMouseEnter={() => setIsHovered(shoeIndex)} onMouseLeave={() => setIsHovered(null)} style = {{cursor: "pointer", color: "black"}} onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}>
                 <GiConverseShoe style = {{fontSize: "2rem", position: "relative", right: "-4px", top: "0px"}}/>
                 {isHovered === shoeIndex && (
     <div style={{ position: "absolute", fontSize: "0.8rem", marginTop: "-5px", transform: "translateX(-10px)" }}>

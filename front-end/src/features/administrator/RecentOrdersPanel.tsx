@@ -91,7 +91,7 @@ const RecentOrdersPanel = () => {
                 {order.shoe.name}
                 </div>
                 <img
-                  onClick = {() => navigate(`/brand/shoe/${order.shoe.id}`)}
+                  onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}
               style = {{width: isTablet ? "120px" : "160px", height: isTablet ? "120px" : "160px", cursor: "pointer"}}
                 width={"100%"}
                 height={"100%"}

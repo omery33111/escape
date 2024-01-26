@@ -14,6 +14,7 @@ class Shoe(models.Model):
     time = models.DateTimeField(auto_now_add = True)
     brand = models.ForeignKey(Brand, on_delete = models.CASCADE, related_name = "shoes")
     wall = models.BooleanField(default = False)
+    out_of = models.BooleanField(default = False)
     chosen = models.BooleanField(default = False)
 
     def __str__(self):

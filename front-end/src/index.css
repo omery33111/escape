@@ -108,6 +108,12 @@ body {
 }
 
 
+
+.divider-white {
+  border-bottom: 2px solid white;
+}
+
+
 /* MOBILE AND TABLET RESPONSIVE STYLING */
 @media (min-width: 0px) and (max-width: 1024px) {
   .special-container {

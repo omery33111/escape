@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { initCart } from './features/cart/cartSlice';
 import BrandNavbar from './features/navigators/BrandNavbar';
 import MyFooter from './features/navigators/MyFooter';
@@ -11,6 +11,8 @@ import MyNavbar from './features/navigators/MyNavbar';
 import { initwishList } from './features/wishlist/wishListSlice';
 import './index.css';
 import { logoutAsync } from './features/authentication/authenticationSlice';
+import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
+import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -76,6 +78,59 @@ function App() {
   const { pathname } = useLocation();
   const isHomepage = pathname === '/';
 
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (pathname.startsWith('/brand/shoes/') && id !== undefined) {
+      dispatch(getSingleBrandAsync(id));
+    }
+
+    if (pathname.startsWith('/brand/single_shoe/') && id !== undefined) {
+      dispatch(getSingleShoeAsync(id));
+    }
+  }, [id]);
+
+
+  const singleBrand = useAppSelector(selectSingleBrand);
+
+  const singleShoe = useAppSelector(selectSingleShoe);
+
+  useEffect(() => {
+    let title = 'Escape Shoes';
+
+    switch (pathname) {
+      case '/':
+        title = 'Escape Shoes - מותגי נעליים';
+        break;
+      case '/wishlist':
+        title = 'Escape Shoes - הרשימה שלי';
+        break;
+      case '/cart':
+        title = 'Escape Shoes - העגלה שלי';
+        break;
+      case '/profile':
+        title = 'Escape Shoes - החשבון שלי';
+        break;
+      case '/profile/orders':
+        title = 'Escape Shoes - ההזמנות שלי';
+        break;
+
+      default:
+        title = 'Escape Shoes - מותגי נעליים';
+        break;
+    }
+
+    if (pathname.startsWith('/brand/shoes/') && singleBrand.name) {
+      title = `Escape Shoes - ${singleBrand.name}`;
+    }
+
+    else if (pathname.startsWith('/brand/single_shoe/') && singleShoe.name) {
+      title = `Escape Shoes - ${singleShoe.name}`;
+    }
+
+    document.title = title;
+  }, [pathname, singleBrand.name, singleShoe.name]);
+  
   return (
     <div className="App">
       <ToastContainer />
@@ -94,7 +149,8 @@ function App() {
         </Container>
       )}
 
-      <MyFooter />
+      {isHomepage && <MyFooter />}
+      {!isHomepage && <MyFooter />}
     </div>
   );
 }

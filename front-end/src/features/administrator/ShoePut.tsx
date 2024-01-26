@@ -26,8 +26,9 @@ const ShoePut = () => {
   const [images, setImages] = useState<any>(null);
   const [brand, setBrand] = useState(0);
   const [model, setModel] = useState('');
-  const [wall, setWall] = useState(false);
-  const [chosen, setChosen] = useState(false);
+  const [wall, setWall] = useState<boolean>(false);
+  const [chosen, setChosen] = useState<boolean>(false);
+  const [outOf, setOutOf] = useState<boolean>(false);
 
 
 
@@ -84,6 +85,7 @@ const ShoePut = () => {
     formData.append('model', model);
     formData.append('wall', wall);
     formData.append('chosen', chosen);
+    formData.append('out_of', outOf);
 
 
     const sizesJson = JSON.stringify(sizesArray); 
@@ -91,20 +93,8 @@ const ShoePut = () => {
 
     const imagesJson = JSON.stringify(imagesArray); 
     formData.append('images', imagesJson);
-  
-    // const newSubject: Shoe = {
-    //   name: name,
-    //   description: description,
-    //   price_before: priceBefore,
-    //   price: price,
-    //   sizes: sizes,
-    //   images: images,
-    //   brand: brand,
-    //   model: model,
-    // };
+
     
-    
-  
     dispatch(putShoeAsync({ shoeData: formData, id: Number(id) }));
   
     setTimeout(() => {
@@ -160,7 +150,9 @@ const ShoePut = () => {
       setPrice(singleShoe.price || 0);
       setBrand(singleShoe.brand || 0);
       setModel(singleShoe.model || '');
-      // Assuming sizes and images are arrays in singleShoe
+      setWall(singleShoe.wall || false);
+      setChosen(singleShoe.chosen || false);
+      setOutOf(singleShoe.out_of || false);
       setSizesArray(singleShoe.sizes || []);
       setImagesArray(singleShoe.images || []);
     }
@@ -169,14 +161,14 @@ const ShoePut = () => {
   const brands = useAppSelector(selectAllBrands)
 
   const handleModelChange = (e: React.ChangeEvent<{ value: unknown }>) => {
-    const selectedModelId = e.target.value as string; // Assuming model ID is a string
-    setModel(selectedModelId); // Update local state with selected model ID
+    const selectedModelId = e.target.value as string;
+    setModel(selectedModelId);
   };
   
   const handleBrandChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     const selectedBrandId = Number(e.target.value);
-    setBrand(selectedBrandId); // Update local state
-    dispatch(setCurrentBrand(selectedBrandId)); // Dispatch action to update Redux state
+    setBrand(selectedBrandId);
+    dispatch(setCurrentBrand(selectedBrandId));
   };
 
   return (
@@ -300,6 +292,14 @@ const ShoePut = () => {
     type="checkbox"
     label="Chosen"
     onChange={(e) => setChosen(e.target.checked)}
+  />
+</Form.Group>
+<br/>
+<Form.Group>
+  <Form.Check
+    type="checkbox"
+    label="Out Of Stock"
+    onChange={(e) => setOutOf(e.target.checked)}
   />
 </Form.Group>
 </div>

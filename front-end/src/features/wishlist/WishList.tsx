@@ -56,9 +56,6 @@ const WishList = () => {
       setImageIndexes(new Array(wishList.length).fill(0));
     }, [wishList]);
     
-  const handleNavigation = (shoeId: string) => {
-    navigate(`/brand/shoe/${shoeId}`);
-  };
 
   const isMobile = window.innerWidth <= 768;
 
@@ -99,7 +96,7 @@ const WishList = () => {
           className="image-container-brand"
           onMouseEnter={() => handleMouseEnter(shoeIndex)}
           onMouseLeave={() => handleMouseLeave(shoeIndex)}
-          onClick={() => navigate(`/brand/shoe/${shoe.id}`)}
+          onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
           style={{ cursor: "pointer" }}
           src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
           width={isMobile ? `150px` : `225px`}
@@ -109,7 +106,7 @@ const WishList = () => {
         </div>
 
       <div>
-        <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
+        <Card.Text style = {{width: "100%", height: "90px", cursor: "pointer"}} onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}>{shoe.name}</Card.Text>
         <div style={{ display: "flex", justifyContent: "center", gap: `${shoe.price_before != 0 ? `${isMobile ? "1.2dvh" : "2.5dvh"}` : '0dvh'}` }}>
         <div className={hoveredItem === shoeIndex ? "card-info-hover" : "card-info"}>
         

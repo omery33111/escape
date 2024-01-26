@@ -10,7 +10,7 @@ const initialState: ShoeState = {
 
   chosenShoes: [],
 
-  singleShoe: { id: 0, name: '', description: '', price_before: 0, model: '', price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false },
+  singleShoe: { id: 0, name: '', description: '', price_before: 0, model: '', price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false, out_of: false },
 
   shoesAmount: 0,
 

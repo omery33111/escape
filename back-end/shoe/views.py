@@ -74,24 +74,18 @@ def post_shoe_image(request):
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
     
 
+from django.db.models import Q
 
 @api_view(["GET"])
 def search_shoe(request):
-    name = request.GET.get("name", "").strip()
+    shoe_name = request.GET.get("name", "")
 
-    if not name:
-        return Response([], status=status.HTTP_200_OK)
+    if not shoe_name:
+        return Response([])
 
-    shoes = Shoe.objects.filter(name__icontains=name).annotate(
-        similarity=Case(
-            When(name__iexact=name, then=Value(2)),
-            When(name__istartswith=name, then=Value(1.5)),
-            When(name__icontains=name, then=Value(1)),
-            default=Value(0),
-            output_field=CharField(),
-        )
-    ).order_by('-similarity')
+    shoes = Shoe.objects.filter(Q(name__icontains=shoe_name))
 
     serializer = ShoeSerializer(shoes, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    return Response(serializer.data)
 # ------------------------- SHOE START ------------------------- #

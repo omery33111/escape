@@ -59,6 +59,7 @@ const CouponPanel = () => {
               <th>ID</th>
               <th>קוד קופון</th>
               <th>אחוזי הנחה</th>
+              <th>חד פעמי / רב שימושי</th>
               <th></th>
             </tr>
           </thead>
@@ -70,6 +71,7 @@ const CouponPanel = () => {
                 <td onClick={() => navigate(`/administrator/put_coupon/${coupon.id}/`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>{coupon.id}</td>
                 <td onClick={() => navigate(`/administrator/put_coupon/${coupon.id}/`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{coupon.name}</td>
                 <td onClick={() => navigate(`/administrator/put_coupon/${coupon.id}/`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{coupon.discount}%</td>
+                <td onClick={() => navigate(`/administrator/put_coupon/${coupon.id}/`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{coupon.one_time ? ("חד פעמי") : ("רב שימושי")}</td>
                 <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>
                   <Button
                     variant="danger"

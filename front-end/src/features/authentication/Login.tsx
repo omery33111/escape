@@ -85,11 +85,11 @@ const Login = () => {
     <div style = {{backgroundColor: "white"}}>
     <div className="container d-flex justify-content-center">
       
-  <form className="form-group col-md-6" onSubmit={onSubmit}>
+  <form className="form-group col-md-6" onSubmit={onSubmit} style = {{direction: "rtl"}}>
   <h1 className="text-center" style = {{color: "black"}}>
-      <FaSignInAlt /> Login
+  <FaSignInAlt /> התחברות 
     </h1>
-    <p className="text-center" style = {{color: "black"}}>Enter user details</p>
+    <p className="text-center" style = {{color: "black"}}>הזן פרטי משתמש</p>
 
     <div className="form-group">
       <input
@@ -119,10 +119,10 @@ const Login = () => {
 
     <div className="form-group text-center">
       <Button type="submit" variant = 'warning'>
-        Login
+        התחברות
       </Button><br/><br/>
       <Button style = {{width: "50%"}} onClick = {() => navigate('/authentication/register')} variant = 'dark'>
-        Register
+        הרשמה
       </Button>
     </div>
   </form>

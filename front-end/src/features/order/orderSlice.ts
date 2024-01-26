@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { Order, OrderState } from '../../models/Order';
-import { getLastMonthOrders, getOrdersUser, getUserOrders, postOrder } from './orderAPI';
+import { getLastMonthOrders, getOrdersUser, getUserOrders, getUserOrdersAmount, postOrder } from './orderAPI';
 
 
 
@@ -30,7 +30,9 @@ const initialState: OrderState = {
     saveCoupon: "",
 
     isLoading: false,
-    isError: false
+    isError: false,
+
+    userOrdersAmount: 0
 };
 
 
@@ -43,10 +45,21 @@ export const postOrderAsync = createAsyncThunk(
   }
 );
 
+
+export const getUserOrdersAmountAsync = createAsyncThunk(
+  "order/getUserOrdersAmount",
+  async () => {
+    const response = await getUserOrdersAmount();
+    return response;
+  }
+);
+
+
+
 export const getOrdersUserAsync = createAsyncThunk(
   'order/getOrdersUser',
-  async () => {
-      const response = await getOrdersUser();
+  async (page: number) => {
+      const response = await getOrdersUser(page);
       return response.data;
   }
 )
@@ -123,12 +136,18 @@ export const orderSlice = createSlice({
       .addCase(getUserOrdersAsync.fulfilled, (state, action) => {
         state.orders_user = action.payload
       })
+
+      .addCase(getUserOrdersAmountAsync.fulfilled, (state, action) => {
+        state.userOrdersAmount = action.payload.data;
+      })
   },
 });
 
 
 
 export const { updateAddress, updateTotal, updateNote, updateCoupon } = orderSlice.actions; 
+
+export const selectUserOrdersAmount = (state: RootState) => state.order.userOrdersAmount;
 
 export const selectSavedNote = (state: RootState) => state.order.saveNote;
 export const selectSavedCoupon = (state: RootState) => state.order.saveCoupon;

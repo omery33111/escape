@@ -16,6 +16,10 @@ body {
   border-bottom: 2px solid white;
 }
 
+.slide-up {
+  transform: translateY(-100vh);
+  transition: transform 0.8s ease-in-out;
+}
 
 .rtl-select .Mui-focused {
   border-bottom: 2px solid red;

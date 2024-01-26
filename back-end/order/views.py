@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework.permissions import BasePermission
 
 from django.contrib.auth.models import AnonymousUser
+from django.core.paginator import Paginator, PageNotAnInteger
 
 from .serializers import GetOrderSerializer, PostOrderSerializer
 
@@ -70,10 +71,32 @@ def user_lastmonth_orders(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def user_orders(request):
-    orders = Order.objects.filter(user_id = request.user.id)
-    serializer = GetOrderSerializer(orders, many = True, context = {'request': request})
+def user_orders(request, page):
+    items_per_page = 6
+
+    orders = Order.objects.filter(user_id=request.user.id)
+
+    # Use the pagination logic
+    paginator = Paginator(orders, items_per_page)
+
+    try:
+        orders_page = paginator.page(page)
+    except PageNotAnInteger:
+        return Response({"error": "Invalid page number."}, status=400)
+
+    serializer = GetOrderSerializer(orders_page, many=True, context={'request': request})
+    
     return Response(serializer.data)
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_orders_amount(request):
+    user_order_count = Order.objects.filter(user_id=request.user.id).count()
+    return Response({user_order_count})
+
+
 
 @api_view(["DELETE"])
 def delete_order(request, pk = -1):

@@ -1,6 +1,6 @@
 /* GLOBAL RESPONSIVE STYLING */
 .shoe-page-height {
-  max-height: 145dvh;
+  max-height: 170dvh;
   width: 100%;
 }
 
@@ -175,7 +175,7 @@
 @media (max-width: 768px) {
 
   .shoe-page-height {
-    max-height: 180dvh;
+    max-height: 310dvh;
   }
 
 

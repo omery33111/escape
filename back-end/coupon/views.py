@@ -16,18 +16,6 @@ def post_coupon(request):
             serializer.save()
             return Response(serializer.data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
-    
-
-
-@api_view(["DELETE"])
-def delete_coupon(request, pk = -1):
-    if request.method == "DELETE":
-        try:
-            item = Coupon.objects.get(pk = pk)
-            item.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Coupon.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
         
 
 
@@ -38,12 +26,15 @@ def check_coupon(request, coupon = ""):
             coupon = Coupon.objects.get(name=coupon)
             response_data = {
                 "exists": True,
-                "discount": coupon.discount
+                "discount": coupon.discount,
+                "one_time": coupon.one_time,
             }
             return Response(response_data, status=status.HTTP_200_OK)
         except Coupon.DoesNotExist:
             response_data = {
                 "exists": False,
-                "discount": None
+                "discount": None,
+                "one_time": None,
+
             }
             return Response(response_data, status=status.HTTP_200_OK)

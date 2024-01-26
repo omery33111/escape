@@ -10,7 +10,7 @@ const initialState: AdministratorState = {
 
   instarecs: [],
 
-  singleShoe: { id: 0, name: '', description: '', model: '', price_before: 0, price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false },
+  singleShoe: { id: 0, name: '', description: '', model: '', price_before: 0, price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false, out_of: false },
 
   shoesAmount: 0,
 
@@ -32,7 +32,7 @@ const initialState: AdministratorState = {
 
   coupons: [],
 
-  singleCoupon: { id: 0, name: "", discount: 0 },
+  singleCoupon: { id: 0, name: "", discount: 0, one_time: true },
 
   profilesManager: [],
 

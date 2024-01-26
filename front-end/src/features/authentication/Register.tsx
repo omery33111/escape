@@ -62,12 +62,11 @@ const Register = () => {
 
     return (
         <div className="container d-flex justify-content-center">
-          <form className="form-group col-md-6" onSubmit={onSubmit}>
+          <form className="form-group col-md-6" onSubmit={onSubmit} style = {{direction: "rtl"}}>
             <h1 className="text-center">
-              <AiOutlineUser /> Register
+            <AiOutlineUser /> הרשמה 
             </h1>
-            <p className="text-center">Enter user details to create an account</p>
-      
+              <br />      
             <div className="form-group">
               <input
                 type="text"
@@ -75,7 +74,7 @@ const Register = () => {
                 id="username"
                 name="username"
                 value={username}
-                placeholder="Enter your name"
+                placeholder="הזן שם משתמש"
                 onChange={onChange}
               />
             </div><br/>
@@ -87,7 +86,7 @@ const Register = () => {
                 id="password"
                 name="password"
                 value={password}
-                placeholder="Password"
+                placeholder="סיסמה"
                 onChange={onChange}
               />
             </div><br/>
@@ -99,7 +98,7 @@ const Register = () => {
                 id="password2"
                 name="password2"
                 value={password2}
-                placeholder="Confirm password"
+                placeholder="וידוא סיסמה"
                 onChange={onChange}
               />
             </div><br/>
@@ -111,7 +110,7 @@ const Register = () => {
                 id="email"
                 name="email"
                 value={email}
-                placeholder="Email address"
+                placeholder="כתובת אימייל"
                 onChange={onChange}
               />
             </div><br/>

@@ -6,7 +6,7 @@ import { checkCoupon } from './couponAPI';
 
 
 const initialState: CouponCheckState = {
-  checked: { id: '', exists: false, discount: 0},
+  checked: { id: '', exists: false, discount: 0, one_time: true},
 };
 
 

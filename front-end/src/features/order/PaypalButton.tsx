@@ -6,7 +6,7 @@ import { postOrderAsync, selectSavedAddress, selectSavedCoupon, selectSavedNote,
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getAddressesAsync, initGuestAddresses, selectAddress, selectGuestAddresses } from "../shipping/shippingSlice";
-import { selectCouponCheck } from "../coupon/couponSlice";
+import { checkCouponAsync, selectCouponCheck } from "../coupon/couponSlice";
 
 
 
@@ -39,6 +39,8 @@ const PaypalButton = () => {
     const savedCoupon = useAppSelector(selectSavedCoupon);
     const savedNote = useAppSelector(selectSavedNote);
 
+    const usedCoupons = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
+
     const onApprove = async (data: any, action: any) => {
       return action.order?.capture().then((details: any) => {
       
@@ -57,6 +59,11 @@ const PaypalButton = () => {
     
       const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
     
+      if (!usedCoupons.includes(savedCoupon)) {
+        usedCoupons.push(savedCoupon);
+        localStorage.setItem('usedCoupons', JSON.stringify(usedCoupons));
+      }
+
       dispatch(postOrderAsync({ orderData, orderDetails }));
 
       navigate('/thankspage')
@@ -71,7 +78,7 @@ const PaypalButton = () => {
 
     const couponCheck = useAppSelector(selectCouponCheck);
 
-    const discountedTotal = myTotal - (myTotal * (couponCheck.discount / 100));
+    const discountedTotal = (myTotal - (myTotal * (couponCheck.discount / 100))).toFixed(2);
 
     return (
       <div>

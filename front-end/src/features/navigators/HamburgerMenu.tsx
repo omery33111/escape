@@ -211,7 +211,7 @@ const Hamburger = () => {
               ) : (
                 <div
                 style={{ display: 'flex', direction: 'rtl', alignItems: "center"}}
-                onClick={() => navigate(`/brand/shoe/${shoe.id}/`)}
+                onClick={() => navigate(`/brand/single_shoe/${shoe.id}/`)}
               >
                 <img
                 style = {{transform: "scaleX(-1)"}}
