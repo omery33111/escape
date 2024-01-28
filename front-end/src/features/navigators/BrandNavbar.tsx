@@ -215,7 +215,7 @@ const BrandNavbar = () => {
               </Nav>
            
         
-          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "20px", left: showAutocomplete ? "140px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-3.43rem)"}` : "translateX(0px)" }}>
+          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "20px", left: showAutocomplete ? "125px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-3.43rem)"}` : "translateX(0px)" }}>
 
           {isTablet ? (
             
@@ -328,7 +328,7 @@ const BrandNavbar = () => {
             <div style = {{direction: "rtl"}}>
             
             <Autocomplete
-            style = {{width: "250px"}}
+            style = {{width: "220px"}}
           className={classes.autocompleteRoot}
           freeSolo
           options={shoes.map((shoe) => ({

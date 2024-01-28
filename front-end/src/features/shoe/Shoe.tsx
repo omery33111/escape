@@ -5,7 +5,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Chip, MenuItem, Select, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { useEffect, useRef, useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap';
 import { BiSolidCart, BiSolidCartAdd } from 'react-icons/bi';
 import { FaHeart } from 'react-icons/fa';
 import { IoIosMail } from 'react-icons/io';
@@ -198,6 +198,36 @@ const cart = useAppSelector(selectCart);
 
   const [isChipVisible, setIsChipVisible] = useState(true);
 
+
+  const [showModal1, setShowModal1] = useState(false);
+
+  const handleEmailClick1 = () => {
+    setShowModal1(true);
+  };
+
+  const handleCloseModal1 = () => {
+    setShowModal1(false);
+  };
+
+  const whatsappNumber2 = '972546742787';
+
+  const handleWhatsappClick2 = () => {
+    const encodedMessage = encodeURIComponent("היי Escape Shoes. אני פונה אליכם בנושא");
+
+    const whatsappLink = `https://wa.me/${whatsappNumber2}?text=${encodedMessage}`;
+
+    window.open(whatsappLink, '_blank');
+  };
+
+  const handleInstagramClick = () => {
+    window.open('https://www.instagram.com/escapeshoesil/', '_blank');
+  };
+
+  const handleFacebookClick = () => {
+    window.open('https://www.facebook.com/profile.php?id=100092993603244', '_blank');
+  };
+
+
   return (
     <Container fluid className = "shoe-page-height">
       <Row>
@@ -360,9 +390,20 @@ const cart = useAppSelector(selectCart);
   </div>
 )}
 
+    {shoe.out_of && (
+      <div style = {{color: "red", direction: "rtl"}}>
+            <b style = {{color: "red"}}>
+            <div style = {{height: "1rem"}}/>
+              אזל המלאי
+            </b>
+            <p>
+              שלחו לנו הודעה באינסטגרם או בוואצפ ונתאים לכם דגם דומה במלאי
+            </p>
+     </div>
+    )}
 
 
-  {isMobile ? (<div style = {{height: "20px"}}/>) : (<div style = {{height: "60px"}}/>)}
+  {isMobile ? (<div style = {{height: "20px"}}/>) : (<div style = {{height: "40px"}}/>)}
 
   <div style={{ display: 'flex' }}>
   <Select
@@ -490,16 +531,25 @@ const cart = useAppSelector(selectCart);
           <b>ליצירת קשר</b>
       </div>
       
-      <IoIosMail style={{color: "#78c1d9", fontSize: "3rem", cursor: "pointer"}}/>
-      <FontAwesomeIcon icon={faWhatsapp} style={{color: "#25d366", fontSize: "2.4rem", cursor: "pointer"}} />
+      <Modal show={showModal1} onHide={handleCloseModal1} style = {{direction: "rtl"}}>
+            <Modal.Header>
+              <Modal.Title>צרו קשר במייל</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <b>escapeilhelp@gmail.com</b>
+            </Modal.Body>
+          </Modal>
+          
+      <IoIosMail style={{color: "#78c1d9", fontSize: "3rem", cursor: "pointer"}} onClick={handleEmailClick1}/>
+      <FontAwesomeIcon icon={faWhatsapp} style={{color: "#25d366", fontSize: "2.4rem", cursor: "pointer"}} onClick = {handleWhatsappClick2}/>
       <img width='35px' height='35px'
                   src={require('../../images/instagram.png')}
                   alt = "instagramlogo"
-                  style = {{position: "relative", right: "5px", top: "1px", cursor: "pointer"}}/>
+                  style = {{position: "relative", right: "5px", top: "1px", cursor: "pointer"}} onClick = {handleInstagramClick}/>
 
   
 
-      <FontAwesomeIcon icon={faFacebook} style = {{fontSize: "2.2rem", color: "#316ff6", position: "relative", right: "10px", top: "1px", cursor: "pointer"}}/>
+      <FontAwesomeIcon icon={faFacebook} style = {{fontSize: "2.2rem", color: "#316ff6", position: "relative", right: "10px", top: "1px", cursor: "pointer"}} onClick = {handleFacebookClick}/>
       
       </div>
 

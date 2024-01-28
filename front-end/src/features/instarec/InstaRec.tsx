@@ -121,11 +121,11 @@ const InstaRec = () => {
             {isComputer && (
                             <img
                             className = "rec-img"
-                            style = {{position: "absolute", zIndex: 10, left: 0, transform: "translateY(-10.4rem)"}}
+                            style = {{position: "absolute", zIndex: 10, left: 0, transform: "translateY(-8rem)"}}
                             src={require('../../images/Screenshot_1.png')}
-                            alt="portalpic3"
-                            height="450px"
-                            width="305px"
+                            alt="sidecontainer2"
+                            height="403px"
+                            width="303px"
                           />
             )}
 
@@ -154,11 +154,11 @@ const InstaRec = () => {
           {isComputer && (
                   <img
                   className = "rec-img"
-                  style = {{position: "absolute", zIndex: 10, right: 0, transform: "translateY(-26rem)"}}
+                  style = {{position: "absolute", zIndex: 10, right: 0, transform: "translateY(-23.62rem)"}}
                   src={require('../../images/Screenshot_1.png')}
-                  alt="portalpic3"
-                  height="450px"
-                  width="305px"
+                  alt="sidecontainer1"
+                  height="403px"
+                  width="303px"
                 />
           )}
 
