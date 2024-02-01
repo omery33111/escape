@@ -15,7 +15,6 @@ import './order.css';
 import { postOrderAsync, selectSavedCoupon, selectSavedNote, updateCoupon, updateNote, updateTotal } from './orderSlice';
 
 
-
 const Order = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -126,16 +125,15 @@ const Order = () => {
   const handleCouponChange = (e: any) => {
     const regex = /^[a-zA-Z0-9]{0,6}$/;
     const inputValue = e.target.value;
-  
+
     if (regex.test(inputValue)) {
       dispatch(updateCoupon(inputValue));
-    };
-  }
+      setIsCouponAlreadyUsed(false);
+    }
+  };
   
   const savedCoupon = useAppSelector(selectSavedCoupon);
   const savedNote = useAppSelector(selectSavedNote);
-
-  const usedCoupons = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
 
   const handleOrderSubmit = async (event: any) => {
     event.preventDefault();
@@ -154,15 +152,10 @@ const Order = () => {
     }));
   
     const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
-  
 
-    if (!usedCoupons.includes(savedCoupon)) {
-      usedCoupons.push(savedCoupon);
-      localStorage.setItem('usedCoupons', JSON.stringify(usedCoupons));
-    }
 
     dispatch(postOrderAsync({ orderData, orderDetails }));
-   
+
     navigate('/thankspage')
   };
 
@@ -172,13 +165,13 @@ const Order = () => {
   const handleApplyCoupon = () => {
     if (savedCoupon !== undefined && savedCoupon.trim() !== '') {
       const currentCoupon = savedCoupon.trim();
-  
-      if (usedCoupons.includes(currentCoupon)) {
-        setIsCouponAlreadyUsed(true);
-        setCouponApplied(false);
-        return;
-      }
-  
+
+      // if (usedCoupons.includes(currentCoupon)) {
+      //   setIsCouponAlreadyUsed(true);
+      //   setCouponApplied(false);
+      //   return;
+      // }
+
       dispatch(checkCouponAsync(currentCoupon));
       setCouponApplied(true);
     }
@@ -332,7 +325,7 @@ const Order = () => {
                       onMouseLeave={() => handleMouseLeave(shoeIndex)}
                       onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                       style={{ cursor: "pointer" }}
-                      src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                      src={`${myServer}/media/${shoe.images[imageIndexes[shoeIndex]]}`}
                       width={isTablet ? `100px` : `100px`}
                       height={isTablet ? `100px` : `100px`}/>
                     </Col>
@@ -450,7 +443,7 @@ const Order = () => {
                                
                                <div style = {{height: "1.1rem"}}/>
                                </ListGroup.Item>)}
-
+                            
                                <Alert variant="danger" show={!couponCheck.exists && couponApplied} style={{ textAlign: 'center', transform: "translateY(-2px)" }}>
         הקופון אינו תקף. אנא בדוק את הקוד שוב או השתמש בקופון אחר.
       </Alert>
@@ -578,10 +571,6 @@ const Order = () => {
                 
                 <Modal show={showPaymentModal} onHide={() => setShowPaymentModal(false)} style = {{transform: 'translateY(0rem)'}}>
                       <Modal.Body style = {{justifyContent: "center", textAlign: "center"}}>
-                      <Button style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} onClick={(event) => handleOrderSubmit(event)} type="submit">
-                        !ביצוע הזמנה
-                      </Button>
-
                           <div style = {{height: "1rem"}}/>
 
                         <PaypalButton />

@@ -120,7 +120,7 @@ const BrandNavbar = () => {
     if (navbarRef.current) {
       const { top, height } = navbarRef.current.getBoundingClientRect();
       setIsNavbarFixed(top <= 0);
-      setNavbarHeight(height); // Store the height of the navbar
+      setNavbarHeight(height);
     }
   };
 
@@ -131,16 +131,17 @@ const BrandNavbar = () => {
     };
   }, []);
 
-  const cart = useAppSelector(selectCart);
   const wishList = useAppSelector(selectWishList);
 
   const isMobile = window.innerWidth <= 768;
   const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
 
-  const [scrollPosition, setScrollPosition] = useState(0); // State to manage scroll position
+  const [scrollPosition, setScrollPosition] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const brandsToShow = 4; // Define the number of brands to display
+
+  const brandsToShow = isMobile ? 4 : 13;
+
   const [visibleBrands, setVisibleBrands] = useState(brands.slice(0, brandsToShow));
   const [startIndex, setStartIndex] = useState(0);
 
@@ -164,7 +165,6 @@ const BrandNavbar = () => {
   const showRightScroll = startIndex + brandsToShow < brands.length;
   
 
-
   return (
     <div>
       <div ref={navbarRef}>
@@ -175,51 +175,13 @@ const BrandNavbar = () => {
         )}
         
         <Container>
-          
 
-        <Nav style = {{gap: isTablet ? "0px" : "30px"}}>
-              
-        {isNavbarFixed && (
-          <div style = {{display: "flex", gap: isTablet ? "0px" : "30px"}}>
-              <Nav.Link href = "/cart">
-
-              {isTablet ? ("") : (
-                <div>
-                   {cart.length > 0 && (
-                <span className="counter">{cart.length}</span>
-              )}
-              <LocalMallIcon style = {{color: "white"}}/>
-                </div>
-              )}
-             
-
-              </Nav.Link>
-              
-
-
-              <Nav.Link href = "/wishlist">
-              {isTablet ? ("") : (
-                <div>
-                                {wishList.length > 0 && (
-                <span className="counter">{wishList.length}</span>
-              )}
-                <FavoriteOutlinedIcon style = {{color: "white"}}/>
-
-                </div>
-              )}
-
-              </Nav.Link>
-              </div>
-        )}
-
-              </Nav>
-           
         
-          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "20px", left: showAutocomplete ? "125px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-3.43rem)"}` : "translateX(0px)" }}>
+          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "15px", left: showAutocomplete ? "10px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-0rem)"}` : "translateX(0px)" }}>
 
           {isTablet ? (
             
-            <div style={{ display: "flex" }}>
+            <>
 
                   {isLoading ? (
                                           <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -227,7 +189,7 @@ const BrandNavbar = () => {
                                         </div>
                   ) : (
                     <>
-                                    {brands.slice(startIndex, startIndex + brandsToShow).map((brand) => (
+               {brands.slice(startIndex, startIndex + brandsToShow).map((brand) => (
                 <Dropdown
                   key={brand.id}
                   show={selectedBrand === brand.id}
@@ -241,27 +203,33 @@ const BrandNavbar = () => {
                     </Link>
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
-                    {brand.models.map((model, index) => (
-                      <Dropdown.Item
-                        key={index}
-                        style={{
-                          color: hoveredItem === index ? 'white' : 'black',
-                        }}
-                        onMouseEnter={() => handleItemHover(index)}
-                        onClick={() => handleDropdownClick(brand.id, model)}
-                      >
-                        {model}
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
+      <Dropdown.Item style = {{textAlign: "right"}}
+        onMouseEnter={() => handleItemHover(-1)}
+        onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
+      >
+        כל הנעליים
+      </Dropdown.Item>
+      {brand.models.length > 1 ? (
+        <>
+              {brand.models.map((model, index) => (
+        <Dropdown.Item
+        style = {{textAlign: "right"}}
+          key={index}
+          onMouseEnter={() => handleItemHover(index)}
+          onClick={() => handleDropdownClick(brand.id, model)}>
+          {model}
+        </Dropdown.Item>
+      ))}
+        </>
+      ) : ("")}
+
+    </Dropdown.Menu>
                 </Dropdown>
               ))}
                     </>
                   )}
-        
 
-
-          </div>
+          </>
 
           ) : (
             
@@ -274,41 +242,51 @@ const BrandNavbar = () => {
                                         </div>
                   ) : (
                     <>
-                                               {brands.map((brand) => (
+                  
+                  <div style = {{display: "flex", transform: "translateX(-15rem)", gap: "15px"}}>
+                    {showLeftScroll && (<IoIosArrowBack className="brand-arrow1-gen" onClick={scrollLeft} />)}
+
+               {brands.slice(startIndex, startIndex + brandsToShow).map((brand) => (
             <Dropdown
-              key={brand.id}
-              show={selectedBrand === brand.id}
-              onMouseEnter={() => handleDropdownEnter(brand.id)}
-              onMouseLeave={handleDropdownLeave}>
-              <Dropdown.Toggle as={Nav.Link} style = {{color: "black"}}>
-                
-              <Link to={`/brand/shoes/${brand.id}/`} style={{ textDecoration: 'none', color: 'white' }}>
-                  <b style = {{fontSize: "0.9rem"}}>{brand.name}</b>
-                </Link>
-              </Dropdown.Toggle>
-              <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
-                {brand.models.map((model, index) => (
-                  <Dropdown.Item
-                    key={index}
-                    style={{
-                      color: hoveredItem === index ? 'white' : 'black',
-                    }}
-                    onMouseEnter={() =>
-                      handleItemHover(index)
-                    }
-                    onClick={() =>
-                      handleDropdownClick(brand.id, model)
-                    } // Handle the click on the model here
-                  >
-                    {model}
-                  </Dropdown.Item>
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
+  key={brand.id}
+  show={selectedBrand === brand.id}
+  onMouseEnter={() => handleDropdownEnter(brand.id)}
+  onMouseLeave={handleDropdownLeave}
+>
+  <Dropdown.Toggle as={Nav.Link} style={{ color: "black" }}>
+    <Link to={`/brand/shoes/${brand.id}/`} style={{ textDecoration: 'none', color: 'white' }}>
+      <b style={{ fontSize: "0.9rem" }}>{brand.name}</b>
+    </Link>
+  </Dropdown.Toggle>
+    <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
+      <Dropdown.Item style = {{textAlign: "right"}}
+        onMouseEnter={() => handleItemHover(-1)}
+        onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
+      >
+        כל הנעליים
+      </Dropdown.Item>
+      {brand.models.length > 1 ? (
+        <>
+              {brand.models.map((model, index) => (
+        <Dropdown.Item
+        style = {{textAlign: "right"}}
+          key={index}
+          onMouseEnter={() => handleItemHover(index)}
+          onClick={() => handleDropdownClick(brand.id, model)}>
+          {model}
+        </Dropdown.Item>
+      ))}
+        </>
+      ) : ("")}
+
+    </Dropdown.Menu>
+</Dropdown>
           ))}
-                    </>)}
+              {showRightScroll && (<IoIosArrowForward className="brand-arrow2-gen" onClick={scrollRight} />)}
+              </div>
 
-
+                    </>
+                    )}
             </>
 
           )}
@@ -316,19 +294,18 @@ const BrandNavbar = () => {
  
           </Nav>
 
-
-
+  
               
-            <Nav style = {{gap: "10px"}}>
-          
-            {isTablet ? ("") : (
+          <Nav style = {{gap: "10px", transform: "translateX(-17rem)"}}>
+
+          {isTablet ? ("") : (
               <div style={{ position: "relative", right: "6px", display: "flex", gap: "10px"}}>
                   {showAutocomplete && (
             
             <div style = {{direction: "rtl"}}>
             
             <Autocomplete
-            style = {{width: "220px"}}
+            style = {{width: "250px"}}
           className={classes.autocompleteRoot}
           freeSolo
           options={shoes.map((shoe) => ({
@@ -348,8 +325,8 @@ const BrandNavbar = () => {
                               onClick={() => navigate(`/brand/single_shoe/${shoe.id}/`)}>
                               <img
                               style = {{transform: "scaleX(-1)"}}
-                                src={`${myServer}/static/images/${shoe.image}`}
-                                width="20%"
+                                src={`${myServer}/media/${shoe.image}`}
+                                width="30%"
                                 height="auto"
                               />
                               <p style = {{position: "relative", marginTop: "20px", alignItems: "flex-end", marginRight: "10px"}}>
@@ -373,15 +350,14 @@ const BrandNavbar = () => {
           )}
         />
         </div>
-
           )}
 
-          <SearchIcon style = {{position: "relative", top: showAutocomplete ? "4px" : "0px", right: "0px", color: "white", cursor: "pointer"}} onClick = {handleSearchIconClick}/>
+          <SearchIcon style = {{position: "relative", top: showAutocomplete ? "4px" : "0px", right: "0px", color: "white", cursor: "pointer", transform: showAutocomplete ? "translateX(0rem)" : "translateX(5rem)"}} onClick = {handleSearchIconClick}/>
         
               </div>
             )}
 
-        
+
           </Nav>
 
         </Container>

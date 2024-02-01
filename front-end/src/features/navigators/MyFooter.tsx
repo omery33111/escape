@@ -440,7 +440,7 @@ const MyFooter = () => {
                 </Col>
 
                 {brands.map(brand =>
-                <Col key = {brand.id} className="mb-2" style = {{cursor: "pointer", width: isMobile ? "100%" : "30%"}}>
+                <Col key = {brand.id} className="mb-2" style = {{cursor: "pointer", width: isMobile ? "100%" : "70%"}}>
                   <div onClick = {() => navigate(`/brand/shoes/${brand.id}/`)}>
                     {brand.name}
                   </div>
@@ -539,7 +539,7 @@ const MyFooter = () => {
               >
                 <img
                 style = {{transform: "scaleX(-1)"}}
-                  src={`${myServer}/static/images/${shoe.image}`}
+                  src={`${myServer}/media/${shoe.image}`}
                   width="20%"
                   height="auto"
                 />

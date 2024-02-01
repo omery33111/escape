@@ -43,5 +43,7 @@ export interface AdministratorState {
     ordersAmount: number;
 
     currentBrand: number;
+
+    is_user_staff: boolean;
 }
   

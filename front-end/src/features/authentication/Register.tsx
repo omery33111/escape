@@ -38,27 +38,28 @@ const Register = () => {
 
     const onChange = (event: any) => {setFormData((PreviousState) => ({ ...PreviousState, [event.target.name]: event.target.value}))}
 
-    const onSubmit = (event: any) =>
-    {
-        event.preventDefault()
-        if (password !== password2)
-        {
-            toast.error("Passwords do not match.")
-        }
-        else
-        {
-            const userData =
-            {
-                username,
-                email,
-                password
-            }
-            dispatch(registerAsync(userData))
-            .catch((error) => {
-              toast.error(error.message);
-            });
-        }
-    }
+    const onSubmit = (event: any) => {
+      event.preventDefault();
+  
+      const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+      
+      if (!passwordRegex.test(password)) {
+          toast.error("Password must be at least 8 characters long and contain at least one digit, one lowercase letter and one uppercase letter.");
+      } else if (password !== password2) {
+          toast.error("Passwords do not match.");
+      } else {
+          const userData = {
+              username,
+              email,
+              password
+          };
+  
+          dispatch(registerAsync(userData))
+              .catch((error) => {
+                  toast.error(error.message);
+              });
+      }
+  }
 
     return (
         <div className="container d-flex justify-content-center">
@@ -117,7 +118,7 @@ const Register = () => {
       
             <div className="form-group text-center">
               <Button type="submit" className="btn btn-dark">
-                Submit
+                הירשמות
               </Button>
             </div>
             <div style = {{height: "300px"}} />

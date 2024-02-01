@@ -16,7 +16,7 @@ const HomePage = () => {
 
 
   return (
-    <div style = {{marginTop: '28px', marginBottom: isMobile ? "0dvh" : "-30dvh"}}>
+    <div style = {{marginTop: '28px', overflowX : "hidden"}}>
 
       {isTablet ? (
       <HomePageCarMobile />

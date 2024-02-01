@@ -131,7 +131,7 @@ const Profile = () => {
                 style = {{width: "110px", height: "110px", cursor: "pointer"}}
                   width={"100%"}
                   height={"100%"}
-                  src={`${myServer}/static/images/${order.shoe.images[0]}`}
+                  src={`${myServer}/media/${order.shoe.images[0]}`}
                   alt={`shoe${order.id}`}/>
                   </ListGroup>
               </Col>

@@ -70,6 +70,22 @@
 }
 
 
+.brand-arrow1-gen {
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: white;
+  transform: translateY(0.6rem);
+}
+
+
+.brand-arrow2-gen {
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: white;
+  transform: translateY(0.6rem);
+}
+
+
 .brand-arrow1 {
   cursor: pointer;
   font-size: 1.4rem;

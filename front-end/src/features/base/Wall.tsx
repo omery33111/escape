@@ -58,7 +58,7 @@ const Wall: React.FC = () => {
                     onMouseLeave={() => setHoveredShoe(null)}
                     onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                     style={{ cursor: 'pointer', marginBottom: isTablet ? "20px" : '0px'}}
-                    src={`${myServer}/static/images/${shoe.images[0]}`}
+                    src={`${myServer}/media/${shoe.images[0]}`}
                     width={isTablet ? "70px" : '105px'}
                     height={isTablet ? "70px" : '105px'}
                     alt={`Shoe ${shoe.id}`}

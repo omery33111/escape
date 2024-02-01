@@ -98,7 +98,7 @@ const WishList = () => {
           onMouseLeave={() => handleMouseLeave(shoeIndex)}
           onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
           style={{ cursor: "pointer" }}
-          src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+          src={`${myServer}/media/${shoe.images[imageIndexes[shoeIndex]]}`}
           width={isMobile ? `150px` : `225px`}
           height={isMobile ? `150px` : `225px`}
 

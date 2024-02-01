@@ -36,4 +36,6 @@ urlpatterns = [
     path('all_profiles/<int:page>/', views.all_profiles),
     path('orders_peruser/<int:pk>/', views.orders_peruser),
     path('profiles_amount/', views.profiles_amount),
+
+    path('is_user_staff/', views.is_user_staff),
 ]

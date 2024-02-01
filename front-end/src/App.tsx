@@ -13,6 +13,8 @@ import './index.css';
 import { logoutAsync } from './features/authentication/authenticationSlice';
 import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
 import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
+import { isUserStaffAsync, selectIsUserStaff } from './features/administrator/administratorSlice';
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -130,6 +132,20 @@ function App() {
 
     document.title = title;
   }, [pathname, singleBrand.name, singleShoe.name]);
+
+
+  const isUserStaff = useAppSelector(selectIsUserStaff);
+
+  useEffect(() => {
+    if (pathname.startsWith('/administrator')) {
+      dispatch(isUserStaffAsync())
+
+      if (isUserStaff === false)
+      {
+        dispatch(logoutAsync())
+      }
+    }
+  }, [isUserStaff]);
   
   return (
     <div className="App">

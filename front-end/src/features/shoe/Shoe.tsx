@@ -92,7 +92,7 @@ const Shoe = () => {
             <div key={index} className = 'rest-images' onClick={() => handleMainImageClick(index + 1)}>
                 <img
                 style={{borderRadius: "100%"}}
-                    src={`${myServer}/static/images/${image}`}
+                    src={`${myServer}/media/${image}`}
                     width={isTablet || isLaptop ? `70px` : `110px`}
                     height={isTablet || isLaptop ? `70px` : `110px`}
                     alt={`shoe${index + 1}`}
@@ -106,7 +106,7 @@ const renderExtraImages = (images: string[]) => {
         <div key={index} className = 'rest-images' onClick={() => handleMainImageClick(index + 6)}>
             <img
             style={{borderRadius: "100%"}}
-                src={`${myServer}/static/images/${image}`}
+                src={`${myServer}/media/${image}`}
                 width={isTablet || isLaptop ? `70px` : `110px`}
                 height={isTablet || isLaptop ? `70px` : `110px`}
                 alt={`shoe${index + 6}`}
@@ -120,7 +120,7 @@ const renderRestImages = (images: string[]) => {
         <div key={index} className = 'rest-images' onClick={() => handleMainImageClick(index + 6)}>
             <img
             style={{borderRadius: "100%"}}
-                src={`${myServer}/static/images/${image}`}
+                src={`${myServer}/media/${image}`}
                 width={isTablet || isLaptop ? `70px` : `110px`}
                 height={isTablet || isLaptop ? `70px` : `110px`}
                 alt={`shoe${index + 6}`}
@@ -300,7 +300,7 @@ const cart = useAppSelector(selectCart);
                         width={isTablet || isLaptop ? "340px" : "550"}
                         height={isTablet || isLaptop ? "340px" : "550"}
                         style={{ cursor: 'zoom-in', transition: 'transform 0.5s ease', transform: isZoomed ? 'scale(1.1)' : 'scale(1)'}}
-                        src={`${myServer}/static/images/${mainImage}`}
+                        src={`${myServer}/media/${mainImage}`}
                         alt={`shoeMainImage`}
                         onClick={() => handleMainImageClick(0)}/>
 
@@ -497,7 +497,7 @@ const cart = useAppSelector(selectCart);
   <div style = {{height: "4px"}}/>
 
   <div style = {{width: isMobile ? "100%" : "55%"}}>
-  <Button onClick = {() => navigate('/cart')} style = {{backgroundColor: "black", border: "0px solid black", height: "3rem", width: "100%", borderRadius: "0px"}}>
+  <Button onClick={() => { dispatch(addProduct({ item: shoe })); navigate('/cart'); }} style = {{backgroundColor: "black", border: "0px solid black", height: "3rem", width: "100%", borderRadius: "0px"}}>
     <b>
   לקנייה מהירה      
   </b>

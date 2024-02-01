@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AdministratorState } from '../../models/Administrator';
-import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile } from './administratorAPI';
+import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, isUserStaff, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile } from './administratorAPI';
 
 
 
@@ -39,6 +39,8 @@ const initialState: AdministratorState = {
   userOrders: [],
 
   profileSearch: '',
+
+  is_user_staff: true
 };
 
 
@@ -248,6 +250,15 @@ export const getBrandsAmountAsync = createAsyncThunk(
 );
 
 
+export const isUserStaffAsync = createAsyncThunk(
+  "administrator/isUserStaff",
+  async () => {
+    const response = await isUserStaff();
+    return response;
+  }
+);
+
+
 export const getInstaRecAmountAsync = createAsyncThunk(
   "administrator/getInstaRecAmount",
   async () => {
@@ -403,6 +414,10 @@ export const administratorSlice = createSlice({
       })
 
 
+      .addCase(isUserStaffAsync.fulfilled, (state, action) => {
+        state.is_user_staff = action.payload.data;
+      })
+
       .addCase(getShoesAmountAsync.fulfilled, (state, action) => {
         state.shoesAmount = action.payload.data;
       })
@@ -424,6 +439,8 @@ export const administratorSlice = createSlice({
 
 
 export const { setCurrentBrand, updateSearchProfile } = administratorSlice.actions;
+
+export const selectIsUserStaff = (state: RootState) => state.administrator.is_user_staff;
 
 export const selectUserOrders = (state: RootState) => state.administrator.userOrders;
 

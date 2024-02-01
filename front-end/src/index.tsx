@@ -34,6 +34,7 @@ import CouponPut from './features/administrator/CouponPut';
 import ProfileManagerPanel from './features/administrator/ProfileManagerPanel';
 import UserOrderPanel from './features/administrator/UserOrderPanel';
 import ThanksPage from './features/order/ThanksPage';
+import NagishliRedirect from './features/base/NagishliRedirect';
 
 
 
@@ -54,6 +55,8 @@ root.render(
 
       <Route path = "/profile" element={<Profile />} />
 
+      <Route path="/accessibility/nagishli.js" element={<NagishliRedirect />} />
+      
       <Route path = "/authentication/login" element={<Login />} />
       <Route path = "/authentication/register" element={<Register />} />
 

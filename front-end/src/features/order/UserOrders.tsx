@@ -120,7 +120,7 @@ const UserOrders = () => {
               style = {{width: isTablet ? "120px" : "160px", height: isTablet ? "120px" : "160px", cursor: "pointer"}}
                 width={"100%"}
                 height={"100%"}
-                src={`${myServer}/static/images/${order.shoe.images[0]}`}
+                src={`${myServer}/media/${order.shoe.images[0]}`}
                 alt={`shoe${order.id}`}/>
                 </ListGroup>
             </Col>

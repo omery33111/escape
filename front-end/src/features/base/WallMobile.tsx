@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { myServer } from '../../endpoints/endpoints';
 import Container from 'react-bootstrap/Container';
 
-const Wall: React.FC = () => {
+const WallMobile: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ const Wall: React.FC = () => {
                     onMouseLeave={() => setHoveredShoe(null)}
                     onClick={() => navigate(`/brand/single_shoe/${shoe.id}`)}
                     style={{ cursor: 'pointer', margin: '-3px' }}
-                    src={`${myServer}/static/images/${shoe.images[0]}`}
+                    src={`${myServer}/media/${shoe.images[0]}`}
                     width={'55px'}
                     height={'55px'}
                     alt={`Shoe ${shoe.id}`}
@@ -84,4 +84,4 @@ const Wall: React.FC = () => {
   );
 };
 
-export default Wall;
+export default WallMobile;

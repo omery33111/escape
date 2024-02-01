@@ -60,19 +60,26 @@ const Login = () => {
   const isError = useAppSelector(selectIsError);
 
 
-   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const passwordRegex = /^[^\s]+$/;
+
+    if (!passwordRegex.test(password)) {
+        toast.error("Password cannot contain special characters or spaces.");
+        return;
+    }
+
     const userData = {
-      username,
-      password,
+        username,
+        password,
     };
 
     const submitTime = new Date().toISOString();
     localStorage.setItem('loginTime', submitTime);
 
     dispatch(loginAsync(userData));
-  };
+};
 
   useEffect(() => {
     if (isError) {
@@ -93,26 +100,24 @@ const Login = () => {
 
     <div className="form-group">
       <input
-      style = {{textAlign: "left"}}
         type="text"
         className="form-control"
         id="username"
         name="username"
         value={username}
-        placeholder="Username"
+        placeholder="שם משתמש"
         onChange={onChange}
       />
     </div><br/>
 
     <div className="form-group">
       <input
-      style = {{textAlign: "left"}}
         type="password"
         className="form-control"
         id="password"
         name="password"
         value={password}
-        placeholder="Password"
+        placeholder="סיסמה"
         onChange={onChange}
       />
     </div><br/>

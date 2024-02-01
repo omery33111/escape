@@ -36,7 +36,7 @@ const InstaRec = () => {
   
       const intervalId = setInterval(() => {
         goToNextPage();
-      }, 100);
+      }, 2000);
   
       return () => {
         if (mySwiper) {

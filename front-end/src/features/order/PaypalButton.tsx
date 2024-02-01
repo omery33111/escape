@@ -1,14 +1,12 @@
-import { PayPalScriptProvider, PayPalButtons, ReactPayPalScriptOptions  } from "@paypal/react-paypal-js";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useEffect, useState } from "react";
-import { selectCart } from "../cart/cartSlice";
-import { postOrderAsync, selectSavedAddress, selectSavedCoupon, selectSavedNote, selectSavedTotal } from "./orderSlice";
-import { toast } from "react-toastify";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { selectCart } from "../cart/cartSlice";
+import { selectCouponCheck } from "../coupon/couponSlice";
 import { getAddressesAsync, initGuestAddresses, selectAddress, selectGuestAddresses } from "../shipping/shippingSlice";
-import { checkCouponAsync, selectCouponCheck } from "../coupon/couponSlice";
-
-
+import { postOrderAsync, selectSavedCoupon, selectSavedNote, selectSavedTotal } from "./orderSlice";
 
 
 const PaypalButton = () => {
@@ -39,8 +37,6 @@ const PaypalButton = () => {
     const savedCoupon = useAppSelector(selectSavedCoupon);
     const savedNote = useAppSelector(selectSavedNote);
 
-    const usedCoupons = JSON.parse(localStorage.getItem('usedCoupons') || '[]');
-
     const onApprove = async (data: any, action: any) => {
       return action.order?.capture().then((details: any) => {
       
@@ -58,12 +54,7 @@ const PaypalButton = () => {
       }));
     
       const orderData = storedIsLogged ? { shipping_address: address[0]?.id } : { shipping_address: String(guestAddress[0]?.id) };
-    
-      if (!usedCoupons.includes(savedCoupon)) {
-        usedCoupons.push(savedCoupon);
-        localStorage.setItem('usedCoupons', JSON.stringify(usedCoupons));
-      }
-
+  
       dispatch(postOrderAsync({ orderData, orderDetails }));
 
       navigate('/thankspage')

@@ -3,7 +3,7 @@ import { Shoe } from "./Shoe";
 
 
 export interface Brand {
-  id?: number;
+  id: number;
   name: string;
   description?: string;
   models: [];

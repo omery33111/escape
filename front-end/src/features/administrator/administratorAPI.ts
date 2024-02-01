@@ -82,6 +82,20 @@ export function getPagedInstaRecs(page: number) {
   
   
   
+export function isUserStaff() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: boolean }>((resolve =>
+        axios.get(`${administratorURL}/is_user_staff/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
+}
+  
+  
+  
 export function getProfilesAmount() {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
   const accessToken = myToken ? myToken.access : "";

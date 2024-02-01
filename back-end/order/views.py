@@ -30,11 +30,14 @@ def order(request):
         shipping_address = request.data["orderData"]["shipping_address"]
 
         for item in order_details:
-            # Check if the coupon exists in the Coupon class
             coupon_name = item.get("coupon")
             if coupon_name:
                 try:
                     coupon = Coupon.objects.get(name=coupon_name)
+
+                    if coupon.one_time:
+                        coupon.delete()
+
                     discount_percentage = coupon.discount
                     item_price = item["price"]
                     item["price_with_discount"] = item_price * (1 - discount_percentage / 100)

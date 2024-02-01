@@ -26,6 +26,7 @@ const BrandsCar = () => {
     }
   };
 
+
 useEffect(() => {
   let slideInterval: NodeJS.Timeout;
 
@@ -87,7 +88,7 @@ useEffect(() => {
       <div style={{ justifyContent: 'center', textAlign: 'center' }}>
         <b style={{ fontSize: '2rem' }}>מותגים מובחרים</b>
         <div ref={swiperRef} style={{ transition: 'transform 2s ease-in-out' }}>
-          <div className="swiper-wrapper">
+          <div className="swiper-wrapper" style = {{width: isTablet ? "510px" : ""}}>
             {logos.map((logo, index) => (
               <div key={index} className="swiper-slide">
                 <img

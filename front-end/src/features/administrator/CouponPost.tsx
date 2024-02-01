@@ -17,7 +17,8 @@ const CouponPost = () => {
   const [isOneTime, setIsOneTime] = useState(true);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const enteredValue = e.target.value.slice(0, 6);
+    setName(enteredValue);
   };
 
   const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,9 +42,6 @@ const CouponPost = () => {
     formData.append('one_time', isOneTime.toString());
 
     dispatch(postCouponAsync(formData));
-
-    console.log(isOneTime)
-
 
     setTimeout(() => {
       navigate("/administrator/coupons/");

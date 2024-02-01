@@ -1,16 +1,15 @@
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined'
 import LocalMallIcon from '@mui/icons-material/LocalMall'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
-import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { Container, Nav, Navbar } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectCart } from '../cart/cartSlice'
+import { getAddressesAsync, initGuestAddresses, selectAddress } from '../shipping/shippingSlice'
 import { selectWishList } from '../wishlist/wishListSlice'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react'
 import HamburgerMenu from './HamburgerMenu'
 
 
@@ -39,6 +38,26 @@ const MyNavbar = () => {
   const handleOffcanvasShow = () => setShowOffcanvas(true);
 
   const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
+
+  const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
+  
+  const address = useAppSelector(selectAddress);
+
+  useEffect(() => {
+
+    if (storedIsLogged)
+    {
+      dispatch(getAddressesAsync());
+    }
+
+    else
+    {
+      dispatch(initGuestAddresses());
+    }
+    
+    }, [dispatch]);
+
+  const localGuestAddress = JSON.parse(localStorage.getItem('addresses') as string);
 
   return (
     <div>
@@ -85,7 +104,34 @@ const MyNavbar = () => {
             </Navbar.Brand>
 
             <Nav style = {{gap: isMobile ? "0px" : "30px"}}>
-            
+              
+              {localGuestAddress && (
+                <>
+                {isStaff ? ("") : (
+                                                <div>
+                                                {localGuestAddress.map((address: any) =>
+                                                <div style = {{position: "absolute", direction: "rtl", transform: "translateY(0.71rem) translateX(-1.5rem)"}}>
+                                                 שלום, {address.first_name}
+                                                </div>)}
+                                             </div>
+                )}
+
+                </>
+              )}
+              
+              {address && (
+                <>
+                {isStaff ? ("") : (
+                                                <div>
+                                                {address.map((address: any) =>
+                                                <div style = {{position: "absolute", direction: "rtl", transform: "translateY(0.71rem) translateX(-1.5rem)"}}>
+                                                 שלום, {address.first_name}
+                                                </div>)}
+                                             </div>
+                )}
+
+                </>
+              )}
             
                       <div>
                         {!isTablet && isStaff && (
@@ -94,6 +140,7 @@ const MyNavbar = () => {
                           </Nav.Link>
                         )}
                         </div>
+
 
             
                 {isTablet ? (

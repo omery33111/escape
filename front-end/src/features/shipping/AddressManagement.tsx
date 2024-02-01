@@ -222,10 +222,8 @@ const AddressManagement = () => {
       dispatch(getNextShippingIDAsync());
     }
     
-    }, [dispatch]);
+    }, [dispatch, editAddress]);
 
-
-    
 
 
     const [selectedPrefix, setSelectedPrefix] = useState('');
@@ -260,8 +258,29 @@ const AddressManagement = () => {
   const isTablet = window.innerWidth >= 0 && window.innerWidth <= 1024;
 
   const isMobile = window.innerWidth <= 768;
-  
 
+  const [currentAddressData, setCurrentAddressData] = useState<Address | null>(null);
+  
+  useEffect(() => {
+    if (editAddress && address[0]) {
+      // Set the state values based on the current address
+      setFirstName(address[0].first_name || '');
+      setlastName(address[0].last_name || '');
+      setSearchedCity(address[0].city || '');
+      setSearchedStreet(address[0].address || '');
+      setPostalCode(address[0].postal_code ? address[0].postal_code.toString() : '');
+      setHouseNumber(address[0].house_number ? address[0].house_number.toString() : '');
+      setPhoneNumber(address[0].phone_number ? address[0].phone_number.toString() : '');
+      setEmail(address[0].email || '');
+
+      // Set the selected city and street
+      setSelectedCity(address[0].city || null);
+      setSelectedStreet(true); // Assuming that the street is always selected in edit mode
+
+      // Set the current address data for further use
+      setCurrentAddressData(address[0]);
+    }
+  }, [editAddress, address]);
 
   return (
     <div>

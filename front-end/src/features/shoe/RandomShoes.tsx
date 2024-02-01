@@ -163,7 +163,7 @@ const RandomShoes = () => {
                     onMouseEnter={() => handleMouseEnter(shoeIndex)}
                     onMouseLeave={() => handleMouseLeave(shoeIndex)}
                     style={{ cursor: "pointer" }}
-                    src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                    src={`${myServer}/media/${shoe.images[imageIndexes[shoeIndex]]}`}
                     width={isMobile || isTablet ? `130px` : `225px`}
                     height={isMobile || isTablet ? `130px` : `225px`}
                   />
@@ -211,7 +211,7 @@ const RandomShoes = () => {
                     onMouseLeave={() => handleMouseLeave(shoeIndex)}
                     onClick={() => handleNavigation(String(shoe.id))}
                     style={{ cursor: "pointer"}}
-                    src={`${myServer}/static/images/${shoe.images[imageIndexes[shoeIndex]]}`}
+                    src={`${myServer}/media/${shoe.images[imageIndexes[shoeIndex]]}`}
                     width={isMobile || isTablet ? `150px` : `225px`}
                     height={isMobile || isTablet ? `150px` : `225px`}
                   />

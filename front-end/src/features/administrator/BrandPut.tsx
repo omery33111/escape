@@ -36,11 +36,14 @@ const BrandPut = () => {
 
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const updatedName = e.target.value.replace(/<br\s*\/?>/g, '\n');
+    setName(updatedName);
   };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Replace <br> or <br/> with newline characters \n before updating the state
+    const updatedDescription = e.target.value.replace(/<br\s*\/?>/g, '\n');
+    setDescription(updatedDescription);
   };
 
   const handleSubmit = async (event: any) => {
@@ -52,12 +55,6 @@ const BrandPut = () => {
 
     const modelsJson = JSON.stringify(modelsArray); 
     formData.append('models', modelsJson);
-  
-    const newSubject: Brand = {
-        name: name,
-        description: description,
-        models: models
-    };
   
   
     dispatch(putBrandAsync({ brandData: formData, id: Number(id) }));

@@ -215,7 +215,7 @@ const Hamburger = () => {
               >
                 <img
                 style = {{transform: "scaleX(-1)"}}
-                  src={`${myServer}/static/images/${shoe.image}`}
+                  src={`${myServer}/media/${shoe.image}`}
                   width="20%"
                   height="auto"
                 />

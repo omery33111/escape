@@ -27,7 +27,8 @@ const BrandPost = () => {
 
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    const updatedName = e.target.value.replace(/<br\s*\/?>/g, '\n');
+    setName(updatedName);
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,12 +46,6 @@ const BrandPost = () => {
 
     const modelsJson = JSON.stringify(modelsArray); 
     formData.append('models', modelsJson);
-  
-    const newSubject: Brand = {
-        name: name,
-        description: description,
-        models: models
-    };
   
   
     dispatch(postBrandAsync(formData));
@@ -80,7 +75,7 @@ const BrandPost = () => {
           
         <Form.Group>
           <Form.Label><h5>DESCRIPTION</h5></Form.Label>
-          <Form.Control as="textarea" value={description} required onChange={handleDescriptionChange} />
+          <Form.Control as="textarea" value={description} onChange={handleDescriptionChange} />
         </Form.Group>
 
         <Form.Group>
@@ -90,7 +85,6 @@ const BrandPost = () => {
   {modelsArray.map((model, index) => (
     <div key={index}>
       <Form.Control
-      required
         type="text"
         value={model}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleModelInputChange(index, e)}

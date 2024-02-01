@@ -51,7 +51,7 @@ const InstaRecPost = () => {
         <Form onSubmit={handleImageSubmit} className="post-form">
           <Form.Group controlId="formThumbnail">
                     <Form.Label className = "blog-form-title"><h5>Upload Images</h5></Form.Label>
-                    <Form.Control type="file" onChange = {handleImage}/>
+                    <Form.Control type="file" accept="image/png" onChange = {handleImage}/>
           </Form.Group><br/>
 
           <Button variant="secondary" type="submit">
