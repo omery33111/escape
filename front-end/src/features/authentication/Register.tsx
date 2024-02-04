@@ -23,18 +23,6 @@ const Register = () => {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-
-    const {isSuccess} = useAppSelector((state) => state.authentication)
-
-    useEffect(() =>
-    {
-        if (isSuccess)
-        {
-            navigate("/authentication/login")
-        }
-        
-        dispatch(reset())
-    }, [isSuccess, navigate, dispatch])
     
 
 
@@ -60,6 +48,8 @@ const Register = () => {
           .catch((error) => {
             toast.error(error.message);
           });
+          
+          navigate("/authentication/login")
       }
     }
 
