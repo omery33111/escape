@@ -11,6 +11,8 @@ urlpatterns = [
     path('update_brand/<int:pk>/', views.update_brand),
 
     path('post_shoe/', views.post_shoe),
+    path('get_blacklisted_shoes/<int:page>/', views.get_blacklisted_shoes),
+    path('shoes_blacklist_amount/', views.shoes_blacklist_amount),
     path('get_paged_shoes/<int:page>/', views.get_paged_shoes),
     path('shoes_amount/', views.shoes_amount),
     path('delete_shoe/<int:pk>/', views.delete_shoe),

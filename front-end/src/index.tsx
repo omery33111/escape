@@ -35,6 +35,7 @@ import ProfileManagerPanel from './features/administrator/ProfileManagerPanel';
 import UserOrderPanel from './features/administrator/UserOrderPanel';
 import ThanksPage from './features/order/ThanksPage';
 import NagishliRedirect from './features/base/NagishliRedirect';
+import BlacklistedShoesPanel from './features/administrator/BlacklistedShoesPanel';
 
 
 
@@ -62,6 +63,7 @@ root.render(
 
 
       <Route path = "/administrator/menu" element={<AdminMenu />} />
+      <Route path = "/administrator/shoes_blacklist" element={<BlacklistedShoesPanel />} />
       <Route path = "/administrator/shoes" element={<ShoesPanel />} />
       <Route path = "/administrator/orders" element={<OrderPanel />} />
       <Route path = "/administrator/user_orders">

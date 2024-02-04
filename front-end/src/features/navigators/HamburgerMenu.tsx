@@ -124,7 +124,7 @@ const Hamburger = () => {
       </div>
 
         <Offcanvas show={showOffcanvas} onHide={handleOffcanvasClose} placement="end" style = {{direction: "rtl", width: "80%"}}>
-        <Offcanvas.Header style = {{justifyContent: "center", textAlign: "center"}}>
+        <Offcanvas.Header style={{ justifyContent: "center", textAlign: "center" }} closeButton>
         <Navbar.Brand href = "/" style = {{position: "relative"}}>
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = "250"

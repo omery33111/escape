@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AdministratorState } from '../../models/Administrator';
-import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, isUserStaff, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile } from './administratorAPI';
+import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBlacklistedShoes, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, isUserStaff, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile, shoesBlacklistedAmount } from './administratorAPI';
 
 
 
@@ -89,6 +89,16 @@ export const getPagedShoesAsync = createAsyncThunk(
   "administrator/getPagedShoes",
   async (page: number) => {
     const response = await getPagedShoes(page);
+    return response;
+  }
+);
+
+
+
+export const getBlacklistedShoesAsync = createAsyncThunk(
+  "administrator/getBlacklistedShoes",
+  async (page: number) => {
+    const response = await getBlacklistedShoes(page);
     return response;
   }
 );
@@ -277,6 +287,15 @@ export const getOrdersAmountAsync = createAsyncThunk(
 );
 
 
+export const shoesBlacklistedAmountAsync = createAsyncThunk(
+  "administrator/shoesBlacklistedAmount",
+  async () => {
+    const response = await shoesBlacklistedAmount();
+    return response;
+  }
+);
+
+
 
 export const deleteBrandAsync = createAsyncThunk(
   'administrator/deleteBrand',
@@ -328,6 +347,10 @@ export const administratorSlice = createSlice({
       })
 
       .addCase(getPagedShoesAsync.fulfilled, (state, action) => {
+        state.shoes = action.payload.data;
+      })
+
+      .addCase(getBlacklistedShoesAsync.fulfilled, (state, action) => {
         state.shoes = action.payload.data;
       })
 
@@ -395,6 +418,10 @@ export const administratorSlice = createSlice({
 
       .addCase(getBrandsAmountAsync.fulfilled, (state, action) => {
         state.brandsAmount = action.payload.data;
+      })
+
+      .addCase(shoesBlacklistedAmountAsync.fulfilled, (state, action) => {
+        state.shoesAmount = action.payload.data;
       })
 
       .addCase(getInstaRecAmountAsync.fulfilled, (state, action) => {

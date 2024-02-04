@@ -66,7 +66,8 @@ const Wall: React.FC = () => {
                   {hoveredShoe === shoe.id && (
                     <div
                       style={{
-                        width: "400px",
+                        minWidth: "100px",
+                        maxWidth: "400px",
                         fontSize: "0.7rem",
                         zIndex: 1,
                         position: 'absolute',

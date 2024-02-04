@@ -242,7 +242,6 @@ const ShoePost = () => {
           <Form.Control
             as="select"
             onChange={handleModelChange}
-            required
             value={model}
           >
             <option value="">SELECT A MODEL</option>

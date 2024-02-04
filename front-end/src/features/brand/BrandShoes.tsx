@@ -267,7 +267,7 @@ const BrandShoes = () => {
                   {...controlProps(model)}
                   type="radio"
                   className="black-radio"
-                  onClick={() => handleModelSelection(model)}
+                  onClick={() => {setPage(1); handleModelSelection(model);}}
                 />
               </div>
             ))}
@@ -276,7 +276,7 @@ const BrandShoes = () => {
 
         <div style = {{color: "white", position: "relative", top: 3}}>
         <Pagination
-        classes={{ ul: classes.paginator }} // Apply the classes to Pagination
+        classes={{ ul: classes.paginator }}
         style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
         count={totalPages}
         page={page}

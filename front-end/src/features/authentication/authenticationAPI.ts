@@ -1,11 +1,37 @@
 import axios from "axios";
 import { loginURL, logoutURL, registerURL } from "../../endpoints/endpoints";
 import { Login, Register } from "../../models/Authentication";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
+
 
 const register = async (userData: Register) => {
-    const response = await axios.post(registerURL, userData);
-    return response.data;
+  try {
+      const response = await axios.post(registerURL, userData);
+      return response.data;
+  } catch (error: any) {
+      if (error.response) {
+          if (error.response.status === 400) {
+              toast.error(".שם המשתמש כבר קיים", {
+                  position: toast.POSITION.TOP_RIGHT,
+              });
+              return { error: ".שם המשתמש כבר קיים" };
+          } else {
+              toast.error("שגיאה בהרשמה.", {
+                  position: toast.POSITION.TOP_RIGHT,
+              });
+              return { error: "שגיאה בהרשמה." };
+          }
+      } else {
+          toast.error("שגיאת רשת או במהלך הבקשה.", {
+              position: toast.POSITION.TOP_RIGHT,
+          });
+          return { error: "שגיאת רשת או במהלך הבקשה." };
+      }
+  }
 };
+
 
 const login = async (userData: Login) => {
     const response = await axios.post(loginURL, userData);

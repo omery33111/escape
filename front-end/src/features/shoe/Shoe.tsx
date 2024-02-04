@@ -516,7 +516,7 @@ const cart = useAppSelector(selectCart);
 
   <div style = {{height: "7rem"}}/>
 
-  <div className = "shoe-desc" style = {{fontSize: "1rem", height: "10rem"}}>
+  <div className = "shoe-desc" style = {{fontSize: "1rem", minHeight: "10rem", maxHeight: "15rem"}}>
     <pre>
       {shoe.description}
     </pre>

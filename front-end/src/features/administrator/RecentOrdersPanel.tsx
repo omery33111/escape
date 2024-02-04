@@ -86,18 +86,22 @@ const RecentOrdersPanel = () => {
                     <Row style = {{gap: isTablet ? "0px" : "130px"}}>
 
                     <Col className="d-flex align-items-center" style = {{width: "250px"}}>
-              <ListGroup style = {{justifyContent: "center", textAlign: "center"}}>
-                <div>
-                {order.shoe.name}
-                </div>
-                <img
-                  onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}
-              style = {{width: isTablet ? "120px" : "160px", height: isTablet ? "120px" : "160px", cursor: "pointer"}}
-                width={"100%"}
-                height={"100%"}
-                src={`${myServer}/static/images/${order.shoe.images[0]}`}
-                alt={`shoe${order.id}`}/>
-                </ListGroup>
+                    {order.shoe && (
+                                    <ListGroup style = {{direction: "rtl", maxWidth: "170px", minWidth: "120px"}}>
+                                    <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0, fontSize: "0.7rem", width: "140px"}}>
+                                      <div style = {{cursor: "pointer"}} onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}>
+                                        {order.shoe.name}
+                                        </div>
+                                    </ListGroup.Item>
+                                    <img
+                                    onClick = {() => navigate(`/brand/single_shoe/${order.shoe.id}`)}
+                                  style = {{width: "110px", height: "110px", cursor: "pointer"}}
+                                    width={"100%"}
+                                    height={"100%"}
+                                    src={`${myServer}/media/${order.shoe.images[0]}`}
+                                    alt={`shoe${order.id}`}/>
+                                    </ListGroup>
+                  )}
             </Col>
 
                       <Col className="d-flex align-items-center">

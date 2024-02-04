@@ -54,6 +54,19 @@ export function getPagedShoes(page: number) {
 }
 
 
+export function getBlacklistedShoes(page: number) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: Shoe[] }>((resolve) =>
+      axios.get(`${administratorURL}/get_blacklisted_shoes/${page}/`, config).then((res) => resolve({ data: res.data })
+      )
+    );
+}
+
+
 
 export function getSingleCoupon(id: number) {
   const myToken = JSON.parse(localStorage.getItem("token") as string)
@@ -104,6 +117,20 @@ export function getProfilesAmount() {
     }
     return new Promise<{ data: number }>((resolve =>
         axios.get(`${administratorURL}/profiles_amount/`, config).then(res => resolve({ data: res.data })
+        )
+    ))
+}
+  
+  
+  
+export function shoesBlacklistedAmount() {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+      headers: { 'Authorization': `Bearer ${accessToken}` }
+    }
+    return new Promise<{ data: number }>((resolve =>
+        axios.get(`${administratorURL}/shoes_blacklist_amount/`, config).then(res => resolve({ data: res.data })
         )
     ))
 }
@@ -166,14 +193,22 @@ export function deleteCoupon(id: number) {
 
 
 export function deleteShoe(id: number) {
-  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const myToken = JSON.parse(localStorage.getItem("token") as string);
   const accessToken = myToken ? myToken.access : "";
+
+  if (!accessToken) {
+    return Promise.reject("Access token not available");
+  }
+
   let config = {
-      headers: { 'Authorization': `Bearer ${accessToken}` }
-    }
-    return new Promise<{ data: Shoe }>((resolve) =>
-      axios.delete(`${administratorURL}/delete_shoe/${id}/`, config).then((res) => resolve({ data: res.data }))
-    );
+    headers: { Authorization: `Bearer ${accessToken}` },
+  };
+
+  return new Promise<{ data: Shoe }>((resolve) =>
+    axios.put(`${administratorURL}/delete_shoe/${id}/`, null, config).then((res) =>
+      resolve({ data: res.data })
+    )
+  );
 }
 
 

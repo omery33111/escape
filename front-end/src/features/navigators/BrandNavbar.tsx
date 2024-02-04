@@ -140,7 +140,7 @@ const BrandNavbar = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
 
-  const brandsToShow = isMobile ? 4 : 13;
+  const brandsToShow = isMobile ? 3 : 13;
 
   const [visibleBrands, setVisibleBrands] = useState(brands.slice(0, brandsToShow));
   const [startIndex, setStartIndex] = useState(0);
@@ -199,7 +199,7 @@ const BrandNavbar = () => {
 
                   <Dropdown.Toggle as={Nav.Link} style={{ color: "black" }}>
                     <Link to={`/brand/shoes/${brand.id}/`} style={{ textDecoration: 'none', color: 'white' }}>
-                      <b style={{ fontSize: "0.9rem" }}>{brand.name}</b>
+                      <b style={{ fontSize: isMobile ? "0.7rem" : "0.9rem" }}>{brand.name}</b>
                     </Link>
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
@@ -207,7 +207,7 @@ const BrandNavbar = () => {
         onMouseEnter={() => handleItemHover(-1)}
         onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
       >
-        כל הנעליים
+        כל המוצרים
       </Dropdown.Item>
       {brand.models.length > 1 ? (
         <>
@@ -263,7 +263,7 @@ const BrandNavbar = () => {
         onMouseEnter={() => handleItemHover(-1)}
         onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
       >
-        כל הנעליים
+        כל המוצרים
       </Dropdown.Item>
       {brand.models.length > 1 ? (
         <>

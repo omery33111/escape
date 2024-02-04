@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { registerAsync, reset } from "./authenticationSlice";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -40,26 +42,26 @@ const Register = () => {
 
     const onSubmit = (event: any) => {
       event.preventDefault();
-  
+    
       const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-      
+    
       if (!passwordRegex.test(password)) {
-          toast.error("Password must be at least 8 characters long and contain at least one digit, one lowercase letter and one uppercase letter.");
+        toast.error("סיסמה צריכה להכיל לפחות 8 תוים, אות גדולה, אות קטנה, ומספר");
       } else if (password !== password2) {
-          toast.error("Passwords do not match.");
+        toast.error("הסיסמאות לא זהות");
       } else {
-          const userData = {
-              username,
-              email,
-              password
-          };
-  
-          dispatch(registerAsync(userData))
-              .catch((error) => {
-                  toast.error(error.message);
-              });
+        const userData = {
+          username,
+          email,
+          password
+        };
+    
+        dispatch(registerAsync(userData))
+          .catch((error) => {
+            toast.error(error.message);
+          });
       }
-  }
+    }
 
     return (
         <div className="container d-flex justify-content-center">

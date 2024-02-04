@@ -11,6 +11,10 @@ from django.contrib.auth.models import User
 from profile_user.serializers import ProfileSerializer
 from profile_user.models import Profile
 
+from django.core.mail import send_mail
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+
 
 
 # ------------------------- HOME PAGE START ------------------------- #
@@ -32,18 +36,25 @@ def register(request):
     email = request.data["email"]
 
     if not (username and password and email):
-        return Response({"error": "Please provide all fields."})
+        return Response({"error": "אנא מלא את כל השדות"}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
-        User.objects.get(username = username)
-        return Response({"error": "Username already exists."})
+        User.objects.get(username=username)
+        return Response({"error": "שם המשתמש כבר קיים."}, status=status.HTTP_400_BAD_REQUEST)
+    
     except User.DoesNotExist:
-        user = User.objects.create_user(username = username, password = password, email = email)
+        user = User.objects.create_user(username=username, password=password, email=email)
         user.is_staff = False
         user.save()
 
-        return Response({"success": "User registered successfully."}, status = status.HTTP_201_CREATED)
-    
+        subject = 'Escape Shoes Registration'
+        message = 'Welcome to Escape Shoes!'
+        from_email = 'omery33111@gmail.com'
+
+        send_mail(subject, message, from_email, [email], fail_silently = False)
+
+        return Response({"success": "נרשמת בהצלחה!"}, status=status.HTTP_201_CREATED)
+
 
 
 # ------------- LOGIN:

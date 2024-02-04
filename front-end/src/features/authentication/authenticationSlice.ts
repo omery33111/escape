@@ -32,18 +32,14 @@ const initialState: AuthenticationState =
     message: "",
 };
 
-export const registerAsync = createAsyncThunk("authentication/register", async (user: Register, thunkAPI) =>
-{
-        try
-        {
-            return await authenticationService.register(user)
-        }
-        catch (error: any)
-        {
-            
-            return thunkAPI.rejectWithValue(error.response.data.error)
-        }
-})
+export const registerAsync = createAsyncThunk("authentication/register", async (user: Register, thunkAPI) => {
+    try {
+        const response = await authenticationService.register(user);
+        return response.data;
+    } catch (error: any) {
+        return thunkAPI.rejectWithValue(error.response.data);
+    }
+});
 
 
 

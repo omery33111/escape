@@ -1,4 +1,4 @@
-from django.core.paginator import Paginator, PageNotAnInteger
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.utils import timezone
 
 from rest_framework import status
@@ -185,17 +185,49 @@ def post_shoe(request):
 
 @api_view(["GET"])
 @permission_classes([permissions.IsAdminUser])
-def get_paged_shoes(request, page):
+def get_blacklisted_shoes(request, page):
     shoes_per_page = 10
 
-    all_shoes = Shoe.objects.order_by('time')
+    all_non_blacklisted_shoes = Shoe.objects.filter(blacklisted=True).order_by('time')
 
-    paginator = Paginator(all_shoes, shoes_per_page)
+    paginator = Paginator(all_non_blacklisted_shoes, shoes_per_page)
 
     try:
         shoes = paginator.page(page)
     except PageNotAnInteger:
         return Response({"error": "Invalid page number."}, status=400)
+    except EmptyPage:
+        return Response({"error": "Page is out of range."}, status=400)
+
+    serializer = ShoeSerializer(shoes, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAdminUser])
+def shoes_blacklist_amount(request):
+    shoes_amount = Shoe.objects.filter(blacklisted=True).count()
+    return Response({shoes_amount}, status=status.HTTP_200_OK)
+
+
+
+
+@api_view(["GET"])
+@permission_classes([permissions.IsAdminUser])
+def get_paged_shoes(request, page):
+    shoes_per_page = 10
+
+    all_non_blacklisted_shoes = Shoe.objects.filter(blacklisted=False).order_by('time')
+
+    paginator = Paginator(all_non_blacklisted_shoes, shoes_per_page)
+
+    try:
+        shoes = paginator.page(page)
+    except PageNotAnInteger:
+        return Response({"error": "Invalid page number."}, status=400)
+    except EmptyPage:
+        return Response({"error": "Page is out of range."}, status=400)
 
     serializer = ShoeSerializer(shoes, many=True)
 
@@ -207,22 +239,26 @@ def get_paged_shoes(request, page):
 @api_view(["GET"])
 @permission_classes([permissions.IsAdminUser])
 def shoes_amount(request):
-    shoes_amount = Shoe.objects.count()
+    shoes_amount = Shoe.objects.filter(blacklisted=False).count()
     return Response({shoes_amount}, status=status.HTTP_200_OK)
 
 
 
 
-@api_view(["DELETE"])
+@api_view(["PUT"])
 @permission_classes([permissions.IsAdminUser])
 def delete_shoe(request, pk = -1):
-    if request.method == "DELETE":
+    if request.method == "PUT":
         try:
-            shoe = Shoe.objects.get(pk = pk)
-            shoe.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            shoe = Shoe.objects.get(pk=pk)
+            shoe.blacklisted = True
+            shoe.save()
+            serializer = ShoeSerializer(shoe)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         except Shoe.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
 

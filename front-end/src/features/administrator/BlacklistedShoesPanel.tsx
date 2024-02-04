@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
 import { Shoe } from '../../models/Shoe';
-import { deleteShoeAsync, getPagedShoesAsync, getShoesAmountAsync, selectPagedShoes, selectShoesAmount } from './administratorSlice';
+import { deleteShoeAsync, getBlacklistedShoesAsync, getPagedShoesAsync, getShoesAmountAsync, selectPagedShoes, selectShoesAmount, shoesBlacklistedAmountAsync } from './administratorSlice';
 
-const ShoesPanel = () => {
+const BlacklistedShoesPanel = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
@@ -39,9 +39,9 @@ const ShoesPanel = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    dispatch(getPagedShoesAsync(page));
+    dispatch(getBlacklistedShoesAsync(page));
 
-    dispatch(getShoesAmountAsync());
+    dispatch(shoesBlacklistedAmountAsync());
   }, [page]);
 
   const shoesAmount = useAppSelector(selectShoesAmount);
@@ -70,18 +70,9 @@ const ShoesPanel = () => {
         <br />
         <br />
 
-        <div className="append-admin-button" style = {{transform: "translateX(47rem) translateY(-1rem)"}}>
-        <Button onClick = {() => {navigate(`/administrator/shoes_blacklist`)}} variant="danger">
-              BLACKLIST
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/coupons`)}} variant="info">
-              COUPON
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/brands`)}} variant="warning" >
-              NEW BRAND
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/post_shoe`)}} variant="warning">
-              NEW SHOE
+        <div className="append-admin-button" style = {{transform: "translateX(70rem) translateY(-1rem)"}}>
+        <Button onClick = {() => {navigate(`/administrator/shoes`)}} variant="warning" >
+              BACK TO SHOES
             </Button>
             </div>
 
@@ -94,31 +85,19 @@ const ShoesPanel = () => {
               <th>דגם</th>
               <th>תיאור</th>
               <th>מחיר</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             {shoes.slice().reverse().map((shoe) => (
-              <tr
-                key={shoe.id}
-                style={{ cursor: "pointer" }}>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>{shoe.id}</td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>
+              <tr key={shoe.id}>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>{shoe.id}</td>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>
                 <img alt="shoepic" height = {200} width = {200} src = {`${myServer}/media/${shoe.images[0]}`}/><br/>
                   </td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.name}</td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.model}</td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}><pre>{shoe.description}</pre></td>
-                <td onClick={() => navigate(`/administrator/put_shoe/${shoe.id}`)} style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.price}</td>
-                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>
-                  <Button
-                    variant="danger"
-                    style={{borderRadius: "100%"}}
-                    onClick={() => handleDeleteClick(shoe)}
-                  >
-                    <h3><BsTrashFill style={{color: "white"}} /></h3>
-                  </Button>
-                </td>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.name}</td>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.model}</td>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}><pre>{shoe.description}</pre></td>
+                <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px" }}>{shoe.price}</td>
               </tr>
             ))}
           </tbody>
@@ -146,4 +125,4 @@ const ShoesPanel = () => {
   );
 };
 
-export default ShoesPanel;
+export default BlacklistedShoesPanel;
