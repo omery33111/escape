@@ -8,6 +8,8 @@ import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBlacklistedSh
 const initialState: AdministratorState = {
   shoes: [],
 
+  blacklistShoes: [],
+
   instarecs: [],
 
   singleShoe: { id: 0, name: '', description: '', model: '', price_before: 0, price: 0, sizes: [], images: [''], time: '', brand: 0, wall: false, chosen: false, out_of: false },
@@ -351,7 +353,7 @@ export const administratorSlice = createSlice({
       })
 
       .addCase(getBlacklistedShoesAsync.fulfilled, (state, action) => {
-        state.shoes = action.payload.data;
+        state.blacklistShoes = action.payload.data;
       })
 
       .addCase(getUserOrdersAsync.fulfilled, (state, action) => {
@@ -466,6 +468,8 @@ export const administratorSlice = createSlice({
 
 
 export const { setCurrentBrand, updateSearchProfile } = administratorSlice.actions;
+
+export const selectBlacklistShoes = (state: RootState) => state.administrator.blacklistShoes;
 
 export const selectIsUserStaff = (state: RootState) => state.administrator.is_user_staff;
 

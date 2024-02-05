@@ -166,6 +166,7 @@
 
   .shoe-page-height {
     max-height: 100%;
+    overflow: hidden;
   }
 }
 
@@ -176,6 +177,7 @@
 
   .shoe-page-height {
     max-height: 310dvh;
+    overflow: hidden;
   }
 
 
@@ -201,5 +203,6 @@
 @media (min-width: 1000px) and (max-width: 1400px) {
   .shoe-page-height {
     max-height: 197dvh;
+    overflow: hidden;
   }
 }

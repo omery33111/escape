@@ -17,7 +17,7 @@ body {
 }
 
 .slide-up {
-  transform: translateY(-100vh);
+  transform: translateY(-150vh);
   transition: transform 0.8s ease-in-out;
 }
 

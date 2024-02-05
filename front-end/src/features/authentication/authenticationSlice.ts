@@ -1,7 +1,7 @@
 import {  createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store";
 import { Login, MyToken, Register } from "../../models/Authentication";
-import authenticationService from "./authenticationAPI";
+import authenticationService, { activateAccount } from "./authenticationAPI";
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -16,6 +16,8 @@ export interface AuthenticationState
     refresh: string | null,
     is_staff: Boolean,
     message: string,
+
+    userActived: boolean,
 }
 
 
@@ -30,7 +32,21 @@ const initialState: AuthenticationState =
     refresh: "",
     is_staff: false,
     message: "",
+
+    userActived: false
 };
+
+
+
+export const activateAccountAsync = createAsyncThunk(
+    "authentication/activateAccount",
+    async (token: string) => {
+      const response = await activateAccount(token);
+      return response;
+    }
+  );
+
+
 
 export const registerAsync = createAsyncThunk("authentication/register", async (user: Register, thunkAPI) => {
     try {
@@ -161,6 +177,13 @@ export const authenticationSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload as string;
+        })
+
+        .addCase(activateAccountAsync.fulfilled, (state, action) => {
+            state.userActived = true
+        })
+        .addCase(activateAccountAsync.rejected, (state, action) => {
+            state.userActived = true
         });
     }
 

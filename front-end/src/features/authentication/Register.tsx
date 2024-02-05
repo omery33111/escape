@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { AiOutlineUser } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { registerAsync, reset } from "./authenticationSlice";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAppDispatch } from "../../app/hooks";
+import { registerAsync } from "./authenticationSlice";
 
 
 
@@ -50,6 +49,7 @@ const Register = () => {
           });
           
           navigate("/authentication/login")
+          alert('לאימות החשבון, יש לבצע התחברות, ולאחר מכן ללחוץ על הקישור שנשלח למייל')
       }
     }
 

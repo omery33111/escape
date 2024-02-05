@@ -45,5 +45,7 @@ export interface AdministratorState {
     currentBrand: number;
 
     is_user_staff: boolean;
+
+    blacklistShoes: Shoe[];
 }
   

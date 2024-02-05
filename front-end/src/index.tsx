@@ -34,8 +34,8 @@ import CouponPut from './features/administrator/CouponPut';
 import ProfileManagerPanel from './features/administrator/ProfileManagerPanel';
 import UserOrderPanel from './features/administrator/UserOrderPanel';
 import ThanksPage from './features/order/ThanksPage';
-import NagishliRedirect from './features/base/NagishliRedirect';
 import BlacklistedShoesPanel from './features/administrator/BlacklistedShoesPanel';
+import ActivateAccount from './features/authentication/ActivateAccount';
 
 
 
@@ -56,11 +56,8 @@ root.render(
 
       <Route path = "/profile" element={<Profile />} />
 
-      <Route path="/accessibility/nagishli.js" element={<NagishliRedirect />} />
-      
       <Route path = "/authentication/login" element={<Login />} />
       <Route path = "/authentication/register" element={<Register />} />
-
 
       <Route path = "/administrator/menu" element={<AdminMenu />} />
       <Route path = "/administrator/shoes_blacklist" element={<BlacklistedShoesPanel />} />
@@ -107,6 +104,12 @@ root.render(
       </Route>
 
 
+      <Route path = "/activate">
+        <Route index element = {<ActivateAccount />} />
+        <Route path = ":str" element = {<ActivateAccount />} />
+      </Route>
+
+      <Route path = "/activate" element={<ActivateAccount />} />
 
       <Route path = "/cart" element={<Cart />} />
 

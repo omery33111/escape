@@ -26,6 +26,10 @@ const Profile = () => {
         dispatch(getProfileAsync());
         dispatch(getLastMonthOrdersAsync());
       }
+      else {
+        navigate('/')
+      }
+      
       }, [dispatch]);
 
     const profile = useAppSelector(selectMyProfile)

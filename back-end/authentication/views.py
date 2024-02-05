@@ -6,14 +6,17 @@ from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from django.contrib.auth.models import User
-
 from profile_user.serializers import ProfileSerializer
 from profile_user.models import Profile
 
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+
+import uuid
 
 
 
@@ -43,17 +46,41 @@ def register(request):
         return Response({"error": "שם המשתמש כבר קיים."}, status=status.HTTP_400_BAD_REQUEST)
     
     except User.DoesNotExist:
-        user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(username=username, password=password, email=email, is_active=True)
         user.is_staff = False
         user.save()
 
+        token = str(uuid.uuid4())
+
+        user.profile.activation_token = token
+        user.profile.save()
+
+        activation_link = f"{settings.FRONTEND_URL}/activate/{token}/"
+
         subject = 'Escape Shoes Registration'
-        message = 'Welcome to Escape Shoes!'
+        message = f'Welcome to Escape Shoes! Click the link to activate your account: \n{activation_link}'
         from_email = 'omery33111@gmail.com'
 
-        send_mail(subject, message, from_email, [email], fail_silently = False)
+        send_mail(subject, message, from_email, [email], fail_silently=False)
 
-        return Response({"success": "נרשמת בהצלחה!"}, status=status.HTTP_201_CREATED)
+        return Response({"success": "נרשמת בהצלחה! בדוק את האימייל שלך לקישור ההפעלה."}, status=status.HTTP_201_CREATED)
+    
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def activate_account(request, token):
+    user = request.user
+
+    profile = get_object_or_404(Profile, user=user)
+
+    if token != profile.activation_token:
+        return Response({"error": "Invalid activation token"}, status=status.HTTP_400_BAD_REQUEST)
+
+    profile.activated = True
+    profile.save()
+
+    return Response({"success": "החשבון הופעל בהצלחה!"}, status=status.HTTP_200_OK)
 
 
 

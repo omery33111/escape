@@ -13,6 +13,8 @@ export const myServer = "http://127.0.0.1:8000";
 
 
 // ------------------------- AUTHENTICATION ENDPOINTS:
+export const authenticationURL = `${myServer}/authentication`;
+
 export const loginURL = `${myServer}/authentication/login/`;
 
 export const registerURL = `${myServer}/authentication/register/`;

@@ -11,6 +11,7 @@ import { selectCart } from '../cart/cartSlice'
 import { getAddressesAsync, initGuestAddresses, selectAddress } from '../shipping/shippingSlice'
 import { selectWishList } from '../wishlist/wishListSlice'
 import HamburgerMenu from './HamburgerMenu'
+import { getProfileAsync, selectMyProfile } from '../profile/profileSlice'
 
 
 
@@ -59,9 +60,18 @@ const MyNavbar = () => {
 
   const localGuestAddress = JSON.parse(localStorage.getItem('addresses') as string);
 
+  const profile = useAppSelector(selectMyProfile)
+
+  useEffect(() => {
+    if (storedIsLogged)
+    {
+      dispatch(getProfileAsync());
+    }
+    }, [dispatch]);
+
   return (
     <div>
-        <Navbar style={{ backgroundColor: "white" }}>
+        <Navbar style={{ backgroundColor: "white", overflowX: "hidden" }}>
 
             <Container>
 
@@ -98,13 +108,56 @@ const MyNavbar = () => {
             
             
             <Navbar.Brand href = "/" style = {{justifyContent: "center", textAlign: "center", position: "relative", right: "-5px", top: "1px"}}>
+              
+            {storedIsLogged && (
+                <>
+                {profile.activated == false && (
+                    
+                    <div style = {{position: "absolute", top: -17}}>
+                    {isMobile && (
+                      <>
+                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
+                                                              נדרש אישור אימות במייל
+                                                          </b><br/>
+                      </>
+                    )}
+
+                  </div>
+
+                  )}
+                </>
+              )}
+
+
+              {storedIsLogged && (
+                <>
+                {profile.activated == false && (
+                    
+                    <>
+                    {!isMobile && (
+                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red", position: "absolute", transform: "translateX(17rem) translateY(1rem)"}}>
+                                                          נדרש אישור אימות במייל
+                                                          </b>
+                    )}
+
+                  </>
+
+                  )}
+                </>
+              )}
+              
+
+
+
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = {isSmallMobile ? 150 : 250}
                  height = {isSmallMobile ? 29 : 45} />
             </Navbar.Brand>
 
             <Nav style = {{gap: isMobile ? "0px" : "30px"}}>
+
               
+
               {localGuestAddress && (
                 <>
                 {isStaff ? ("") : (
@@ -132,6 +185,7 @@ const MyNavbar = () => {
 
                 </>
               )}
+            
             
                       <div>
                         {!isTablet && isStaff && (

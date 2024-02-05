@@ -13,6 +13,7 @@ import { getAddressesAsync, initGuestAddresses, selectAddress, selectGuestAddres
 import PaypalButton from './PaypalButton';
 import './order.css';
 import { postOrderAsync, selectSavedCoupon, selectSavedNote, updateCoupon, updateNote, updateTotal } from './orderSlice';
+import { getProfileAsync, selectMyProfile } from '../profile/profileSlice';
 
 
 const Order = () => {
@@ -247,6 +248,17 @@ const Order = () => {
  *חשוב לציין כי אין אנו יכולים לקחת אחריות על עיכובים ע”י חברות השילוח (דואר ישראל, שירות שליחים).
  *במידה וחברת השליחויות אינה מגיעה לכתובת שציינת, אנו ניצור איתך קשר למציאת פתרון חלופי.
 `;
+
+const profile = useAppSelector(selectMyProfile)
+
+useEffect(() => {
+  if (storedIsLogged)
+  {
+    dispatch(getProfileAsync());
+  }
+  }, [dispatch]);
+
+  
   return (
     <div>
         <Row>
@@ -475,6 +487,21 @@ const Order = () => {
             מדיניות המשלוח
           </a>
         </span>
+          
+        {storedIsLogged && (
+                <>
+                <br/>
+                {profile.activated == false && (
+                    
+                    <>
+                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
+                                                          להמשך הזמנה, נדרש אישור אימות במייל
+                                                          </b><br/>
+                      </>
+
+                  )}
+                </>
+              )}
 
         <Modal show={showModal6} onHide={handleClose6} animation={false} style = {{direction: "rtl"}}>
         <Modal.Header>
@@ -505,11 +532,11 @@ const Order = () => {
                       <div style = {{height: "1rem"}}/>
 
                       {storedIsLogged ? (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled={!address[0] || !isCheckboxChecked}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled={!address[0] || !isCheckboxChecked || profile.activated === false}>
                         מעבר לתשלום
                       </Button>
                       ) : (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress || !isCheckboxChecked}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress || !isCheckboxChecked || profile.activated === false}>
                         מעבר לתשלום
                       </Button>
                       )}

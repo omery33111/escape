@@ -20,6 +20,8 @@ class Profile(AbstractUser):
     username = models.CharField(max_length=40, default="UNKNOWN")
     date = models.DateTimeField(auto_now_add=True)
     objects = ProfileManager()
+    activated = models.BooleanField(default = False)
+    activation_token = models.CharField(max_length = 100, blank = True, null = True)
 
     groups = models.ManyToManyField(Group, related_name='profile_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='profile_user_permissions')

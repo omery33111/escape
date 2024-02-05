@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginAsync, reset, selectIsError, selectIsSuccess } from "./authenticationSlice"
 import { Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { getProfileAsync, selectMyProfile } from '../profile/profileSlice';
 
 
 

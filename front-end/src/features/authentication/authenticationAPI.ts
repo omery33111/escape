@@ -1,10 +1,23 @@
 import axios from "axios";
-import { loginURL, logoutURL, registerURL } from "../../endpoints/endpoints";
+import { authenticationURL, loginURL, logoutURL, registerURL } from "../../endpoints/endpoints";
 import { Login, Register } from "../../models/Authentication";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
 
+
+export function activateAccount(token: string) {
+    const myToken = JSON.parse(localStorage.getItem("token") as string)
+    const accessToken = myToken ? myToken.access : "";
+    let config = {
+        headers: { 'Authorization': `Bearer ${accessToken}` }
+      }
+    return new Promise<{ data: any }>((resolve =>
+      axios.get(`${authenticationURL}/activate/${token}`, config)
+        .then(res => resolve({ data: res.data }))));
+  }
+
+        
 
 const register = async (userData: Register) => {
   try {

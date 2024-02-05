@@ -1,18 +1,18 @@
 import { Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Button, Container, Modal, Table } from 'react-bootstrap';
-import { BsTrash, BsTrashFill } from 'react-icons/bs';
+import { BsTrash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
 import { Shoe } from '../../models/Shoe';
-import { deleteShoeAsync, getBlacklistedShoesAsync, getPagedShoesAsync, getShoesAmountAsync, selectPagedShoes, selectShoesAmount, shoesBlacklistedAmountAsync } from './administratorSlice';
+import { deleteShoeAsync, getBlacklistedShoesAsync, selectBlacklistShoes, selectShoesAmount, shoesBlacklistedAmountAsync } from './administratorSlice';
 
 const BlacklistedShoesPanel = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
-  const shoes = useAppSelector(selectPagedShoes);
+  const shoes = useAppSelector(selectBlacklistShoes);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState<Shoe | null>(null);
@@ -66,7 +66,7 @@ const BlacklistedShoesPanel = () => {
               size="small"
             />
           </div>
-        <h1 style={{ padding: "15px" }}>SHOES</h1>
+        <h1 style={{ padding: "15px" }}>BLACKLIST</h1>
         <br />
         <br />
 

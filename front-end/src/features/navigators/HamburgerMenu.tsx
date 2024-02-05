@@ -19,6 +19,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import HamburgerIcon from 'hamburger-react';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import { getProfileAsync, selectMyProfile } from '../profile/profileSlice';
 
 
 
@@ -116,7 +117,22 @@ const Hamburger = () => {
 
   const isStaff = JSON.parse(localStorage.getItem('is_staff') as string);
   
-      
+  const localGuestAddress = JSON.parse(localStorage.getItem('addresses') as string);
+
+  const profile = useAppSelector(selectMyProfile)
+
+  const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
+
+  useEffect(() => {
+    if (storedIsLogged)
+    {
+      dispatch(getProfileAsync());
+    }
+    }, [dispatch]);
+
+    const isMobile = window.innerWidth <= 768;
+
+    
   return (
     <div>
         <div onClick={showOffcanvas ? handleOffcanvasClose : handleOffcanvasShow} style={{ position: 'relative', top: '2px' }}>
@@ -128,7 +144,24 @@ const Hamburger = () => {
         <Navbar.Brand href = "/" style = {{position: "relative"}}>
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = "250"
-                 height = "45" />
+                 height = "45" /><br/>
+
+{storedIsLogged && (
+                <>
+                {profile.activated == false && (
+                    
+                    <>
+                  {isMobile && (
+                                    <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
+                                    נדרש אישור אימות במייל
+                                    </b>
+                  )}
+                  </>
+
+                  )}
+                </>
+              )}
+
             </Navbar.Brand>
         </Offcanvas.Header><br/>
         <Offcanvas.Header style = {{justifyContent: "space-evenly", textAlign: "center", display: "flex", transform: "translateY(-1.5rem)"}}>

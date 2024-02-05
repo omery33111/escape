@@ -6,7 +6,7 @@ import { getProfile } from './profileAPI';
 
 
 const initialState: ProfileState = {
-  profile: { id: 0, username: '', date: '' },
+  profile: { id: 0, username: '', date: '', activated: false, activation_token: ""},
   profiles: [],
   
   isLoading: false,

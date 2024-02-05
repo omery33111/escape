@@ -12,7 +12,3 @@ export function getProfile() {
     }
   return new Promise<{ data: Profile }>((resolve =>
       axios.get(`${profileURL}/get_profile/`, config).then(res => resolve({ data: res.data }))))}
-
-
-
-

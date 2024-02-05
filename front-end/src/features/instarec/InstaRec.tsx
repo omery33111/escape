@@ -7,6 +7,7 @@ import '../../index.css';
 import './instaRec.css';
 import { getAllInstaRecsAsync, selectInstaRecs } from './instarecSlice';
 import { Container } from 'react-bootstrap';
+import InstagramIcon from '@mui/icons-material/Instagram';
 
 
 
@@ -35,7 +36,7 @@ const InstaRec = () => {
       });
   
       const intervalId = setInterval(() => {
-        goToNextPage();
+        goToPrevPage();
       }, 2000);
   
       return () => {
@@ -83,7 +84,7 @@ const InstaRec = () => {
           
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <div className = "divider"/>
-                  <div style={{ fontSize: "1.3rem", padding: '0 30px' }}>FOLLOW US - <b>escapeil_</b></div>
+                  <div style={{ fontSize: "1.3rem", padding: '0 30px' }}>FOLLOW US - <b><InstagramIcon />escapeil_</b></div>
                   <br/>
                   <br/>
                   <div className = "divider"/>
@@ -105,7 +106,7 @@ const InstaRec = () => {
                   <br/>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div className = "divider" style = {{marginLeft: "25rem", marginRight: "1rem"}}/>
-                    <div style={{ fontSize: "1.3rem", padding: '0 10px', cursor: "pointer" }} onClick={goToPrevPage}>FOLLOW US - <b>escapeil_</b></div>
+                    <div style={{ fontSize: "1.3rem", padding: '0 10px', cursor: "pointer" }} onClick={goToPrevPage}>FOLLOW US - <b><InstagramIcon />escapeil_</b></div>
                     <div className = "divider" style = {{marginRight: "25rem", marginLeft: "1rem"}}/>
                   </div>
                   <br/>

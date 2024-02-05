@@ -115,6 +115,8 @@ TEMPLATES = [
 ]
 
 
+FRONTEND_URL = 'http://localhost:3000'
+
 
 # ~~~~~~~~~~ EMAIL CONFIGURATION
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
