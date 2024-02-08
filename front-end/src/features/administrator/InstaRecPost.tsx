@@ -25,11 +25,15 @@ const InstaRecPost = () => {
   const handleImageSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const MAX_IMAGE_SIZE_MB = 5000;
+
     if (!image) {
       console.error('No image selected');
       return;
     }
 
+    if (image && image.size <= MAX_IMAGE_SIZE_MB * 1024) {
+      alert('File size exceeds the maximum limit of 5000KB (5MB). Please select a smaller file.');
 
     const formData = new FormData();
     formData.append('image', image);
@@ -39,6 +43,11 @@ const InstaRecPost = () => {
     setTimeout(() => {
       navigate("/administrator/instagram_recs/");
     }, 150);
+
+  } else {
+    alert('File size exceeds the maximum limit of 5000KB (5MB). Please select a smaller file.');
+  }
+
   };
 
 

@@ -6,7 +6,7 @@ import { getProfile } from './profileAPI';
 
 
 const initialState: ProfileState = {
-  profile: { id: 0, username: '', date: '', activated: false, activation_token: ""},
+  profile: { id: 0, username: '', date: '', activated: false, activation_token: "", email: ""},
   profiles: [],
   
   isLoading: false,
@@ -48,6 +48,8 @@ export const profileSlice = createSlice({
 });
 
 
+
+export const selectProfile = (state: RootState) => state.profile.profile;
 
 export const selectProfileIsLoading = (state: RootState) => state.profile.isLoading;
 export const selectProfileIsError = (state: RootState) => state.profile.isError;

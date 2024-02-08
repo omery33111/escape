@@ -1,18 +1,33 @@
 import { Pagination } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Button, Container, Modal, Table } from 'react-bootstrap';
+import { Button, Container, Form, Modal, Table } from 'react-bootstrap';
 import { BsTrash, BsTrashFill } from 'react-icons/bs';
+import { GoSearch } from 'react-icons/go';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { myServer } from '../../endpoints/endpoints';
 import { Shoe } from '../../models/Shoe';
-import { deleteShoeAsync, getPagedShoesAsync, getShoesAmountAsync, selectPagedShoes, selectShoesAmount } from './administratorSlice';
+import { deleteShoeAsync, getPagedShoesAsync, getShoesAmountAsync, searchShoeAsync, selectPagedShoes, selectShoeSearch, selectShoesAmount, setShoeSearch } from './administratorSlice';
+
+
 
 const ShoesPanel = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
   const shoes = useAppSelector(selectPagedShoes);
+  const searchShoe = useAppSelector(selectShoeSearch)
+
+  const handleSearchClick = () => {
+    dispatch(searchShoeAsync({ searchQuery: searchShoe }));
+  };
+  
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    dispatch(getPagedShoesAsync(page));
+    dispatch(getShoesAmountAsync());
+  }, [dispatch, page]);
 
   const [showModal, setShowModal] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState<Shoe | null>(null);
@@ -36,13 +51,6 @@ const ShoesPanel = () => {
     }
   };
 
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    dispatch(getPagedShoesAsync(page));
-
-    dispatch(getShoesAmountAsync());
-  }, [page]);
 
   const shoesAmount = useAppSelector(selectShoesAmount);
 
@@ -54,6 +62,7 @@ const ShoesPanel = () => {
   for (let i = page; i <= totalPages && i <= page + 4; i++) {
     nextPages.push(i);
   }
+
 
   return (
     <div>
@@ -70,20 +79,44 @@ const ShoesPanel = () => {
         <br />
         <br />
 
-        <div className="append-admin-button" style = {{transform: "translateX(47rem) translateY(-1rem)"}}>
-        <Button onClick = {() => {navigate(`/administrator/shoes_blacklist`)}} variant="danger">
-              BLACKLIST
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/coupons`)}} variant="info">
-              COUPON
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/brands`)}} variant="warning" >
-              NEW BRAND
-            </Button>
-        <Button onClick = {() => {navigate(`/administrator/post_shoe`)}} variant="warning">
-              NEW SHOE
+        <div className="append-admin-button" style = {{transform: "translateX(27rem) translateY(-1rem)"}}>
+
+
+        <div style={{ position: "relative", right: "6px", display: "flex", gap: "10px" }}>
+
+        <Form style = {{display: "flex", direction: "rtl", gap: "20px"}}>
+          <div>
+            <Form.Group controlId="formProductName">
+              <Form.Control
+                placeholder = 'הזן שם דגם'
+                type="text"
+                onChange={(event) => dispatch(setShoeSearch(event.target.value))}
+                value={searchShoe}/>
+            </Form.Group>
+            </div>
+
+            <div>
+            <Button variant = "" style = {{fontSize: "1.5rem", cursor: "pointer", padding: 0}} onClick={handleSearchClick}>
+            <GoSearch/>
             </Button>
             </div>
+
+          </Form>
+
+          </div>
+          <Button onClick={() => { navigate(`/administrator/shoes_blacklist`) }} variant="danger">
+            BLACKLIST
+          </Button>
+          <Button onClick={() => { navigate(`/administrator/coupons`) }} variant="info">
+            COUPON
+          </Button>
+          <Button onClick={() => { navigate(`/administrator/brands`) }} variant="warning" >
+            NEW BRAND
+          </Button>
+          <Button onClick={() => { navigate(`/administrator/post_shoe`) }} variant="warning">
+            NEW SHOE
+          </Button>
+        </div>
 
         <Table striped bordered hover>
           <thead>

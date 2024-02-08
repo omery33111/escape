@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import BasePermission
+from rest_framework import permissions
 
 from django.contrib.auth.models import AnonymousUser
 from django.core.paginator import Paginator, PageNotAnInteger
@@ -20,6 +21,10 @@ class IsStaff(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.is_staff
 
+
+class IsEmailVerified(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.profile.activated
 
 
 @api_view(['POST'])

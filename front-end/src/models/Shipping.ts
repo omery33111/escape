@@ -4,7 +4,7 @@ export interface Address {
   last_name: string;
   city: string;
   address: string;
-  email?: string;
+  email: string | undefined;
   house_number: number;
   phone_number: number;
   postal_code: number;

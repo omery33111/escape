@@ -1,5 +1,3 @@
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
 import SearchIcon from '@mui/icons-material/Search';
 import { Autocomplete, TextField, Theme } from '@mui/material';
 import { makeStyles } from "@mui/styles";
@@ -10,7 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { myServer } from "../../endpoints/endpoints";
 import { getAllBrandsAsync, getPagedShoesOfBrandAsync, selectAllBrands, selectBrandsLoading } from "../brand/brandSlice";
-import { selectCart } from '../cart/cartSlice';
 import { searchShoeAsync, selectAllShoes, selectSearchShoe, selectSingleShoeLoading, setShoeSearch } from "../shoe/shoeSlice";
 import { selectWishList } from '../wishlist/wishListSlice';
 import './navigators.css';
@@ -143,7 +140,8 @@ const BrandNavbar = () => {
   const brandsToShow = isMobile ? 3 : 13;
 
   const [visibleBrands, setVisibleBrands] = useState(brands.slice(0, brandsToShow));
-  const [startIndex, setStartIndex] = useState(0);
+
+  const [startIndex, setStartIndex] = useState(isMobile ? 6 : 0);
 
   const scrollLeft = () => {
     if (startIndex > 0) {

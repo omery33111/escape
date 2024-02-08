@@ -38,8 +38,6 @@ const ProfileManagerPanel = () => {
       return `${year}-${month}-${day}, ${hours}:${minutes}`;
     }
 
-    const isMobile = window.innerWidth <= 768;
-
     const itemsAmount = useAppSelector(selectProfilesAmount);
 
     const itemsPerPage = 8;
@@ -110,15 +108,15 @@ const ProfileManagerPanel = () => {
 
                 <Col className="d-flex align-items-center">
                   <ListGroup style={{ direction: "rtl", maxWidth: "170px", minWidth: "120px" }}>
-                    {profile.shipping_address.map((address: any) => (
+                    {profile.shipping_address && profile.shipping_address.map((address: any) => (
                       <ListGroup.Item key={address.id}>
-                        {address.first_name} {address.last_name}
+                        {address.first_name && address.first_name} {address.last_name && address.last_name}
                         <br />
-                        {address.city}
+                        {address.city && address.city}
                         <br />
-                        {address.address} {address.house_number}
+                        {address.address && address.address} {address.house_number && address.house_number}
                         <br />
-                        0{address.phone_number}
+                        0{address.phone_number && address.phone_number}
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

@@ -159,14 +159,22 @@ const ShoePost = () => {
 
   const handleImageSubmit = async (event: any) => {
     event.preventDefault();
-
+  
+    const MAX_FILE_SIZE_KB = 5000; // Maximum file size in kilobytes (5MB)
     const formData = new FormData();
-    formData.append('image', shoeImages);
-
-    dispatch(postShoeImageAsync(formData));
-
-    setShoeImages('')
+    const file = shoeImages;
+  
+    if (file && file.size <= MAX_FILE_SIZE_KB * 1024) {
+      formData.append('image', file);
+  
+      dispatch(postShoeImageAsync(formData));
+  
+      setShoeImages('');
+    } else {
+      alert('File size exceeds the maximum limit of 5000KB (5MB). Please select a smaller file.');
+    }
   };
+  
 
   const currentBrandID = useAppSelector(selectCurrentBrand)
 

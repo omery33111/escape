@@ -13,7 +13,7 @@ export interface Order {
               images: string[];
               name: string;
               description: string; };
-    shipping_address: { first_name: string; last_name: string; address: string; city: string; house_number: number; phone_number: number; postal_code: number };
+    shipping_address: { first_name: string; last_name: string; address: string; city: string; house_number: number; phone_number: number; postal_code: number; email: string; };
     time: string;
     }
   

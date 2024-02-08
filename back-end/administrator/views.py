@@ -274,6 +274,17 @@ def update_shoe(request, pk = -1):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+    
+
+
+@api_view(['GET'])
+@permission_classes([permissions.IsAdminUser])
+def admin_search_shoe(request):
+    if request.method == "GET":
+        name = request.GET.get("name", None)
+        shoes = Shoe.objects.filter(name__icontains = name)
+        serializer = ShoeSerializer(shoes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 # ------------------------- SHOE END ------------------------- #
 
 
@@ -398,9 +409,7 @@ def search_profile(request):
     if username is None:
         return Response({'error': 'Username parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-    print(f"Searching for username: {username}")
     profiles = Profile.objects.filter(user__username__icontains=username)
-    print(f"Found profiles: {profiles}")
     serializer = GetProfileSerializer(profiles, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

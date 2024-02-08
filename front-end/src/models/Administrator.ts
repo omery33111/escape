@@ -14,6 +14,8 @@ export interface AdministratorState {
 
     profileSearch: string;
 
+    shoeSearch: string;
+
     userOrders: Order[];
 
     profilesAmount: number;

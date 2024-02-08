@@ -7,6 +7,7 @@ import './shipping.css';
 import { makeStyles } from "@mui/styles";
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import Shipping from './Shipping';
+import { getProfileAsync, selectProfile } from '../profile/profileSlice';
 
 
 
@@ -44,7 +45,6 @@ const AddressManagement = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const postalCodeRegex = /^\d{7}$/;
   const phoneNumberRegex = /^\d{7}$/;
 
@@ -55,7 +55,6 @@ const AddressManagement = () => {
   const [postalCode, setPostalCode] = useState('');
   const [houseNumber, setHouseNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
 
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [selectedStreet, setSelectedStreet] = useState<boolean>(false);
@@ -81,10 +80,6 @@ const AddressManagement = () => {
   const israelCities = useAppSelector(selectIsraelCities);
   const israelStreets = useAppSelector(selectIsraelStreets);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
-  };
 
   const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedCity(e.target.value);
@@ -136,15 +131,17 @@ const AddressManagement = () => {
     formData.append('postal_code', postalCode);
     formData.append('house_number', houseNumber);
     formData.append('phone_number', phoneNumberWithPrefix);
-    formData.append('email', email);
+
+    if (profile) {
+      formData.append('email', profile.email);
+    }
   
     // Save the address to local storage
-    const newAddress: Address = {
+    const newAddress = {
       first_name: firstName,
       last_name: lastName,
       city: searchedCity,
       address: searchedStreet,
-      email: email,
       postal_code: Number(postalCode),
       house_number: Number(houseNumber),
       phone_number: Number(phoneNumberWithPrefix),
@@ -157,24 +154,19 @@ const AddressManagement = () => {
   
     if (storedIsLogged) {
       if (!address[0]) {
-        console.log("Dispatching postAddressAsync");
         dispatch(postAddressAsync(formData));
       }
   
       if (address[0]) {
-        console.log("Dispatching patchAddressAsync");
         dispatch(patchAddressAsync({ shippingData: formData, id: Number(address[0].id) }));
-        console.log({ shippingData: formData, id: Number(address[0].id) });
       }
     }
   
     if (!storedIsLogged) {
-      console.log("Dispatching postAddressAsync (Guest)");
       localStorage.setItem('addresses', JSON.stringify(updatedAddresses));
       dispatch(postAddressAsync(formData));
     }
   
-    // Clear the form fields
     setFirstName('');
     setlastName('');
     setSearchedCity('');
@@ -185,7 +177,6 @@ const AddressManagement = () => {
     setSelectedCity(null);
     setSelectedStreet(false);
     setSelectedPrefix('');
-    setEmail('');
   
     setEditAddress(false);
   };
@@ -195,11 +186,8 @@ const AddressManagement = () => {
 
   const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
 
-  const addressesAmount = useAppSelector(selectAddressesAmount)
-
-  const allGuestAddresses = useAppSelector(selectGuestAddresses)
-
   const nextAddressID = useAppSelector(selectNextShippingID)
+
 
   useEffect(() => {
     if (storedIsLogged) {
@@ -207,6 +195,7 @@ const AddressManagement = () => {
     }
   }, [storedIsLogged]);
 
+  const profile = useAppSelector(selectProfile)
 
   useEffect(() => {
 
@@ -231,12 +220,12 @@ const AddressManagement = () => {
   const [isCity, setIsCity] = useState<boolean>(false);
 
   const handlePrefixChange = (event: any) => {
-    setSelectedPrefix(event.target.value); // Update selected prefix
+    setSelectedPrefix(event.target.value);
   };
 
   const handleCitySelection = (event: React.ChangeEvent<{}>, value: string | null) => {
     if (value) {
-      setSelectedCity(value); // Set the selected city when an option is selected
+      setSelectedCity(value);
       setIsCity(true)
     }
   };
@@ -245,13 +234,10 @@ const AddressManagement = () => {
 
   const handleSetPhoneNumber = (event: any) => {
     const input = event.target.value;
-    // Remove non-numeric characters
     const numericInput = input.replace(/\D/g, '');
 
-    // Ensure the length is not more than 7
     const truncatedInput = numericInput.slice(0, 7);
 
-    // Update state with the formatted phone number
     setPhoneNumber(truncatedInput);
   };
 
@@ -260,10 +246,9 @@ const AddressManagement = () => {
   const isMobile = window.innerWidth <= 768;
 
   const [currentAddressData, setCurrentAddressData] = useState<Address | null>(null);
-  
+
   useEffect(() => {
     if (editAddress && address[0]) {
-      // Set the state values based on the current address
       setFirstName(address[0].first_name || '');
       setlastName(address[0].last_name || '');
       setSearchedCity(address[0].city || '');
@@ -271,13 +256,10 @@ const AddressManagement = () => {
       setPostalCode(address[0].postal_code ? address[0].postal_code.toString() : '');
       setHouseNumber(address[0].house_number ? address[0].house_number.toString() : '');
       setPhoneNumber(address[0].phone_number ? address[0].phone_number.toString() : '');
-      setEmail(address[0].email || '');
 
-      // Set the selected city and street
       setSelectedCity(address[0].city || null);
-      setSelectedStreet(true); // Assuming that the street is always selected in edit mode
+      setSelectedStreet(true);
 
-      // Set the current address data for further use
       setCurrentAddressData(address[0]);
     }
   }, [editAddress, address]);
@@ -425,15 +407,6 @@ const AddressManagement = () => {
                             </div>
 
                               <div style = {{display: "flex", gap: "10px"}}>
-                              <TextField
-                                className={classes.autocompleteAddress}
-                                label="כתובת אימייל"
-                                type="email"
-                                value={email}
-                                variant="standard"
-                                onChange={handleEmailChange}
-                              />
-
 
                               <Button
                                style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)" }}
@@ -528,18 +501,6 @@ const AddressManagement = () => {
             </div>
 
              <div style = {{height: "1rem"}}/>
-              
-              {address.email && (
-                             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
-                             <div style = {{width: "30.9%", marginBottom: "10px"}}>
-                                 <div style = {{position: "absolute", marginTop: "-10px"}}>
-                                 {address.email}
-                                 </div>
-                               <hr/>
-                             </div>
-                             </div>
-              )}
-
         
           <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} variant="contained" onClick={() => setEditAddress(true)}>
             עריכה
@@ -628,17 +589,6 @@ const AddressManagement = () => {
             </div>
 
             <div style = {{height: "1rem"}}/>
-              
-              {address.email && (
-                             <div style = {{display: "flex", gap: "50px", marginBottom: "7px"}}>
-                             <div style = {{width: "30.9%", marginBottom: "10px"}}>
-                                 <div style = {{position: "absolute", marginTop: "-10px"}}>
-                                 {address.email}
-                                 </div>
-                               <hr/>
-                             </div>
-                             </div>
-              )}
 
         
           <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
@@ -784,14 +734,6 @@ freeSolo
                             </div>
                               <div style = {{height: "1rem"}}/>
                               <div style = {{display: "flex", gap: "10px"}}>
-                                <TextField
-                                    className={classes.autocompleteAddress}
-                                    label="כתובת אימייל"
-                                    type="email"
-                                    value={email}
-                                    variant="standard"
-                                    onChange={handleEmailChange}
-                                />
 
                             <Button
                                onClick={() => setEditAddress(false)}

@@ -9,10 +9,26 @@ import { ProfileManager } from '../../models/ProfileManager';
 
 
 
-export function searchProfile(searchQuery: string)
-{
+export function searchShoe(searchQuery: string) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+    headers: { 'Authorization': `Bearer ${accessToken}` }
+  };
+  return new Promise<{ data: Shoe[] }>((resolve) =>
+    axios.get(`${administratorURL}/admin_search_shoe/`, { params: { name: searchQuery }, ...config }).then((res) => resolve({ data: res.data })));
+}
+
+
+
+export function searchProfile(searchQuery: string) {
+  const myToken = JSON.parse(localStorage.getItem("token") as string)
+  const accessToken = myToken ? myToken.access : "";
+  let config = {
+    headers: { 'Authorization': `Bearer ${accessToken}` }
+  };
   return new Promise<{ data: ProfileManager[] }>((resolve) =>
-    axios.get(`${administratorURL}/search_profile/`, { params: { username: searchQuery }}).then((res) => resolve({ data: res.data })));
+    axios.get(`${administratorURL}/search_profile/`, { params: { username: searchQuery }, ...config }).then((res) => resolve({ data: res.data })));
 }
 
 

@@ -88,7 +88,7 @@ const BlacklistedShoesPanel = () => {
             </tr>
           </thead>
           <tbody>
-            {shoes.slice().reverse().map((shoe) => (
+            {shoes.slice().map((shoe) => (
               <tr key={shoe.id}>
                 <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>{shoe.id}</td>
                 <td style={{ textAlign: "center", verticalAlign: "middle", height: "100px", color: "black" }}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
@@ -10,10 +10,11 @@ import MyFooter from './features/navigators/MyFooter';
 import MyNavbar from './features/navigators/MyNavbar';
 import { initwishList } from './features/wishlist/wishListSlice';
 import './index.css';
-import { logoutAsync } from './features/authentication/authenticationSlice';
+import { deleteInactiveAsync, logoutAsync } from './features/authentication/authenticationSlice';
 import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
 import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
 import { isUserStaffAsync, selectIsUserStaff } from './features/administrator/administratorSlice';
+import { getProfileAsync, selectMyProfile } from './features/profile/profileSlice';
 
 
 function ScrollToTop() {
@@ -27,6 +28,7 @@ function ScrollToTop() {
 }
 
 function App() {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch();
 
   const [lastClickTime, setLastClickTime] = useState<string>('');
@@ -146,6 +148,57 @@ function App() {
       }
     }
   }, [isUserStaff]);
+
+  const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
+
+  const profile = useAppSelector(selectMyProfile)
+
+  useEffect(() => {
+    if (!pathname.startsWith('/profile'))
+    {
+      if (storedIsLogged)
+      {
+        dispatch(getProfileAsync());
+        if (profile.activated === false)
+        {
+          navigate('/activate')
+        }
+      }
+    }
+
+  }, [profile.activated]);
+
+
+  useEffect(() => {
+    const quarterHourFunction = () => {
+      const lastCallTime = localStorage.getItem('lastCallTime');
+      const currentTime = new Date().getTime();
+      if (!lastCallTime || (currentTime - parseInt(lastCallTime)) >= (15 * 60 * 1000)) {
+
+        if (storedIsLogged)
+        {
+          dispatch(getProfileAsync());
+          if (profile.activated === false)
+          {
+            dispatch(logoutAsync())
+          }
+        }
+
+        dispatch(deleteInactiveAsync());
+
+        localStorage.setItem('lastCallTime', currentTime.toString());
+      }
+    };
+
+    quarterHourFunction();
+
+    // Set interval to call the function every 15 minutes
+    const intervalId = setInterval(quarterHourFunction, 60 * 1000);
+
+    // Cleanup function
+    return () => clearInterval(intervalId);
+  }, []);
+
   
   return (
     <div className="App">

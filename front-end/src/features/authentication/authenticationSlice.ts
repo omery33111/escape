@@ -1,7 +1,7 @@
 import {  createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store";
 import { Login, MyToken, Register } from "../../models/Authentication";
-import authenticationService, { activateAccount } from "./authenticationAPI";
+import authenticationService, { activateAccount, deleteInactive } from "./authenticationAPI";
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -35,6 +35,16 @@ const initialState: AuthenticationState =
 
     userActived: false
 };
+
+
+
+export const deleteInactiveAsync = createAsyncThunk(
+    "authentication/deleteInactive",
+    async () => {
+      const response = await deleteInactive();
+      return response;
+    }
+  );
 
 
 

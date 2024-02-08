@@ -10,6 +10,7 @@ urlpatterns = [
     path('delete_brand/<int:pk>/', views.delete_brand),
     path('update_brand/<int:pk>/', views.update_brand),
 
+    path('admin_search_shoe/', views.admin_search_shoe),
     path('post_shoe/', views.post_shoe),
     path('get_blacklisted_shoes/<int:page>/', views.get_blacklisted_shoes),
     path('shoes_blacklist_amount/', views.shoes_blacklist_amount),

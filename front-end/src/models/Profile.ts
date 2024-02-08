@@ -8,6 +8,7 @@ export default class Profile {
     date: string = "";
     activated: boolean = false;
     activation_token: string = "";
+    email: string = "";
 }
 
 

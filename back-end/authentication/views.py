@@ -2,7 +2,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -15,6 +16,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from django.utils import timezone
 
 import uuid
 
@@ -52,6 +54,7 @@ def register(request):
 
         token = str(uuid.uuid4())
 
+        user.profile.email = email
         user.profile.activation_token = token
         user.profile.save()
 
@@ -64,7 +67,23 @@ def register(request):
         send_mail(subject, message, from_email, [email], fail_silently=False)
 
         return Response({"success": "נרשמת בהצלחה! בדוק את האימייל שלך לקישור ההפעלה."}, status=status.HTTP_201_CREATED)
+
+
+
+
+@api_view(["POST"])
+def delete_inactive_users(request):
+    validation_time = timezone.now() - timezone.timedelta(minutes=15)
     
+    profiles_to_delete = Profile.objects.filter(activated=False, date_joined__lt=validation_time)
+
+    for profile in profiles_to_delete:
+        if profile.user is not None:
+            profile.user.delete()
+
+    return Response({"message": "Inactive users deleted successfully."}, status=status.HTTP_200_OK)
+
+
 
 
 @api_view(["GET"])

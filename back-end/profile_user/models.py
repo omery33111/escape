@@ -16,7 +16,7 @@ class ProfileManager(models.Manager):
 
 
 class Profile(AbstractUser):
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     username = models.CharField(max_length=40, default="UNKNOWN")
     date = models.DateTimeField(auto_now_add=True)
     objects = ProfileManager()

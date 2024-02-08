@@ -34,6 +34,8 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
             models_list = models.split(',')
             all_shoes = all_shoes.filter(model__in=models_list)
 
+        all_shoes = all_shoes.filter(blacklisted=False)
+
         # Sorting based on the 'orderby' parameter
         if orderby == 2:
             all_shoes = all_shoes.order_by('price')

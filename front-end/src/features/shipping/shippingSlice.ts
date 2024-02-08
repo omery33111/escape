@@ -8,7 +8,7 @@ import { getAddresses, getAddressesAmount, getIsraelCities, getIsraelStreets, ge
 const initialState: AddressState = {
   addresses: [],
   guestAddress: [],
-  single_address: { id: "", first_name: '', last_name: '', address: '', city: '', house_number: 0, phone_number: 0, postal_code: 0 },
+  single_address: { id: "", first_name: '', last_name: '', address: '', city: '', house_number: 0, phone_number: 0, postal_code: 0, email: "" },
 
   addressesAmount: 0,
 

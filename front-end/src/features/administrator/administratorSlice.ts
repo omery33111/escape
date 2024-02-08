@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { AdministratorState } from '../../models/Administrator';
-import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBlacklistedShoes, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, isUserStaff, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile, shoesBlacklistedAmount } from './administratorAPI';
+import { deleteBrand, deleteCoupon, deleteInstaRec, deleteShoe, getBlacklistedShoes, getBrandsAmount, getCoupons, getInstaRecAmount, getOrdersAmount, getPagedBrands, getPagedInstaRecs, getPagedOrders, getPagedProfilesManager, getPagedShoes, getProfilesAmount, getRecentOrders, getShoesAmount, getSingleCoupon, getUserOrders, isUserStaff, postBrand, postCoupon, postInstaRec, postShoe, putBrand, putCoupon, putShoe, searchProfile, searchShoe, shoesBlacklistedAmount } from './administratorAPI';
 
 
 
@@ -42,8 +42,20 @@ const initialState: AdministratorState = {
 
   profileSearch: '',
 
+  shoeSearch: '',
+
   is_user_staff: true
 };
+
+
+
+export const searchShoeAsync = createAsyncThunk(
+  'administrator/searchShoe',
+  async (data: {searchQuery: string}) => {
+    const response = await searchShoe(data.searchQuery);
+    return response.data;
+  }
+);
 
 
 
@@ -338,6 +350,10 @@ export const administratorSlice = createSlice({
 
     updateSearchProfile: (state, action) => {
       state.profileSearch = action.payload
+    },
+
+    setShoeSearch: (state, action) => {
+      state.shoeSearch = action.payload
     }
 
   },
@@ -346,6 +362,11 @@ export const administratorSlice = createSlice({
       .addCase(searchProfileAsync.fulfilled, (state, action) =>
       {
         state.profilesManager = action.payload
+      })
+
+      .addCase(searchShoeAsync.fulfilled, (state, action) =>
+      {
+        state.shoes = action.payload
       })
 
       .addCase(getPagedShoesAsync.fulfilled, (state, action) => {
@@ -467,7 +488,7 @@ export const administratorSlice = createSlice({
 
 
 
-export const { setCurrentBrand, updateSearchProfile } = administratorSlice.actions;
+export const { setCurrentBrand, updateSearchProfile, setShoeSearch } = administratorSlice.actions;
 
 export const selectBlacklistShoes = (state: RootState) => state.administrator.blacklistShoes;
 
@@ -478,6 +499,8 @@ export const selectUserOrders = (state: RootState) => state.administrator.userOr
 export const selectProfilesAmount = (state: RootState) => state.administrator.profilesAmount;
 export const selectProfilesManager = (state: RootState) => state.administrator.profilesManager;
 export const selectProfileSearch = (state: RootState) => state.administrator.profileSearch;
+
+export const selectShoeSearch = (state: RootState) => state.administrator.shoeSearch;
 
 export const selectSingleCoupon = (state: RootState) => state.administrator.singleCoupon;
 export const selectCoupons = (state: RootState) => state.administrator.coupons;

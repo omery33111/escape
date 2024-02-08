@@ -144,6 +144,10 @@ const OrderPanel = () => {
                         <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0}}>
                         0{order.shipping_address?.phone_number}
                         </ListGroup.Item>
+                        
+                        <ListGroup.Item style = {{borderRadius: 0, borderTop: 0, borderLeft: 0, borderRight: 0, minWidth: "230px"}}>
+                        {order.shipping_address?.email && (order.shipping_address?.email)}
+                        </ListGroup.Item>
 
                       </ListGroup>
                     </Col>

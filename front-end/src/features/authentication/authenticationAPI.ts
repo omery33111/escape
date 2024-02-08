@@ -17,6 +17,14 @@ export function activateAccount(token: string) {
         .then(res => resolve({ data: res.data }))));
   }
 
+
+
+export function deleteInactive() {
+    return new Promise<{ data: any }>((resolve =>
+      axios.post(`${authenticationURL}/delete_inactive_users/`)
+        .then(res => resolve({ data: res.data }))));
+  }
+
         
 
 const register = async (userData: Register) => {
