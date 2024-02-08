@@ -17,6 +17,7 @@ from django.core.mail import send_mail
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 import uuid
 
@@ -46,27 +47,36 @@ def register(request):
     try:
         User.objects.get(username=username)
         return Response({"error": "שם המשתמש כבר קיים."}, status=status.HTTP_400_BAD_REQUEST)
-    
     except User.DoesNotExist:
+        pass
+
+    if User.objects.filter(email=email).exists():
+        return Response({"error": "כתובת האימייל כבר בשימוש."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create the user
+    try:
         user = User.objects.create_user(username=username, password=password, email=email, is_active=True)
-        user.is_staff = False
-        user.save()
+    except ValidationError as e:
+        return Response({"error": e.message}, status=status.HTTP_400_BAD_REQUEST)
 
-        token = str(uuid.uuid4())
+    user.is_staff = False
+    user.save()
 
-        user.profile.email = email
-        user.profile.activation_token = token
-        user.profile.save()
+    token = str(uuid.uuid4())
 
-        activation_link = f"{settings.FRONTEND_URL}/activate/{token}/"
+    user.profile.email = email
+    user.profile.activation_token = token
+    user.profile.save()
 
-        subject = 'Escape Shoes Registration'
-        message = f'Welcome to Escape Shoes! Click the link to activate your account: \n{activation_link}'
-        from_email = 'omery33111@gmail.com'
+    activation_link = f"{settings.FRONTEND_URL}/activate/{token}/"
 
-        send_mail(subject, message, from_email, [email], fail_silently=False)
+    subject = 'Escape Shoes Registration'
+    message = f'Welcome to Escape Shoes! Click the link to activate your account: \n{activation_link}'
+    from_email = 'omery33111@gmail.com'
 
-        return Response({"success": "נרשמת בהצלחה! בדוק את האימייל שלך לקישור ההפעלה."}, status=status.HTTP_201_CREATED)
+    send_mail(subject, message, from_email, [email], fail_silently=False)
+
+    return Response({"success": "נרשמת בהצלחה! בדוק את האימייל שלך לקישור ההפעלה."}, status=status.HTTP_201_CREATED)
 
 
 
