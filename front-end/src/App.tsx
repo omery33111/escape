@@ -10,7 +10,7 @@ import MyFooter from './features/navigators/MyFooter';
 import MyNavbar from './features/navigators/MyNavbar';
 import { initwishList } from './features/wishlist/wishListSlice';
 import './index.css';
-import { deleteInactiveAsync, logoutAsync } from './features/authentication/authenticationSlice';
+import { deleteInactiveAsync, joinedRecentlyAsync, logoutAsync, selectJoinedRecently } from './features/authentication/authenticationSlice';
 import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
 import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
 import { isUserStaffAsync, selectIsUserStaff } from './features/administrator/administratorSlice';
@@ -166,40 +166,27 @@ function App() {
       }
     }
 
-  }, [profile.activated]);
+  }, [profile.activated, pathname]);
 
 
   useEffect(() => {
-    const quarterHourFunction = () => {
-      const lastCallTime = localStorage.getItem('lastCallTime');
-      const currentTime = new Date().getTime();
-      if (!lastCallTime || (currentTime - parseInt(lastCallTime)) >= (15 * 60 * 1000)) {
+    const storedLastCallTime = localStorage.getItem('lastCall');
+    const storedLastClickTime = localStorage.getItem('lastClickTime');
 
-        if (storedIsLogged)
-        {
-          dispatch(getProfileAsync());
-          if (profile.activated === false)
-          {
-            dispatch(logoutAsync())
-          }
-        }
+    if (storedLastCallTime && storedLastClickTime) {
+      const lastCallTime = new Date(storedLastCallTime);
+      const lastClickTime = new Date(storedLastClickTime);
 
+      const timeDifference = lastClickTime.getTime() - lastCallTime.getTime();
+
+      if (timeDifference > 15 * 60 * 1000) {
         dispatch(deleteInactiveAsync());
-
-        localStorage.setItem('lastCallTime', currentTime.toString());
+        localStorage.setItem('lastCall', storedLastClickTime);
       }
-    };
+    }
+  }, [dispatch, lastClickTime]);
 
-    quarterHourFunction();
 
-    // Set interval to call the function every 15 minutes
-    const intervalId = setInterval(quarterHourFunction, 60 * 1000);
-
-    // Cleanup function
-    return () => clearInterval(intervalId);
-  }, []);
-
-  
   return (
     <div className="App">
       <ToastContainer />

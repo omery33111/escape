@@ -126,6 +126,12 @@ EMAIL_HOST_USER = 'omery33111@gmail.com'
 EMAIL_HOST_PASSWORD = 'wofo cbpm ljoh qrqx'
 
 
+# ~~~~~~~~~~ CELERY CONFIGURATION
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'rpc://'
+
+
+
 
 
 

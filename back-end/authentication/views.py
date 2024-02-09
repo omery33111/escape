@@ -53,7 +53,6 @@ def register(request):
     if User.objects.filter(email=email).exists():
         return Response({"error": "כתובת האימייל כבר בשימוש."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # Create the user
     try:
         user = User.objects.create_user(username=username, password=password, email=email, is_active=True)
     except ValidationError as e:
@@ -78,6 +77,19 @@ def register(request):
 
     return Response({"success": "נרשמת בהצלחה! בדוק את האימייל שלך לקישור ההפעלה."}, status=status.HTTP_201_CREATED)
 
+
+
+
+from django.utils import timezone
+
+@api_view(["GET"])
+def joined_recently(request):
+    one_minute_ago = timezone.now() - timezone.timedelta(minutes=1)
+    
+    if Profile.objects.filter(activated=False, date_joined__lt=one_minute_ago).exists():
+        return Response({True}, status=status.HTTP_200_OK)
+    else:
+        return Response({False}, status=status.HTTP_200_OK)
 
 
 

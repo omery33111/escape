@@ -532,11 +532,11 @@ useEffect(() => {
                       <div style = {{height: "1rem"}}/>
 
                       {storedIsLogged ? (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled={!address[0] || !isCheckboxChecked || profile.activated === false}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled={!address[0] || !isCheckboxChecked}>
                         מעבר לתשלום
                       </Button>
                       ) : (
-                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress || !isCheckboxChecked || profile.activated === false}>
+                        <Button onClick={() => setShowPaymentModal(true)} style={{ backgroundColor: "#1A002E", width: "50%", borderRadius: 0, border: 0 }} disabled = {!storedAddress || !isCheckboxChecked}>
                         מעבר לתשלום
                       </Button>
                       )}
