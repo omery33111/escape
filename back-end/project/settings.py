@@ -122,13 +122,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'omery33111@gmail.com'
-EMAIL_HOST_PASSWORD = 'wofo cbpm ljoh qrqx'
+EMAIL_HOST_USER = 'escapeilhelp@gmail.com'
+EMAIL_HOST_PASSWORD = 'vezm auux ghik syiq'
 
-
-# ~~~~~~~~~~ CELERY CONFIGURATION
-CELERY_BROKER_URL = 'amqp://localhost'
-CELERY_RESULT_BACKEND = 'rpc://'
+# EMAIL_HOST_USER = 'omery33111@gmail.com'
+# EMAIL_HOST_PASSWORD = 'wofo cbpm ljoh qrqx'
 
 
 

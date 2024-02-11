@@ -151,22 +151,22 @@ function App() {
 
   const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
 
-  const profile = useAppSelector(selectMyProfile)
+  // const profile = useAppSelector(selectMyProfile)
 
-  useEffect(() => {
-    if (!pathname.startsWith('/profile'))
-    {
-      if (storedIsLogged)
-      {
-        dispatch(getProfileAsync());
-        if (profile.activated === false)
-        {
-          navigate('/activate')
-        }
-      }
-    }
+  // useEffect(() => {
+  //   if (!pathname.startsWith('/profile'))
+  //   {
+  //     if (storedIsLogged)
+  //     {
+  //       dispatch(getProfileAsync());
+  //       if (profile.activated === false)
+  //       {
+  //         navigate('/activate')
+  //       }
+  //     }
+  //   }
 
-  }, [profile.activated, pathname]);
+  // }, [profile.activated, pathname]);
 
 
   useEffect(() => {
