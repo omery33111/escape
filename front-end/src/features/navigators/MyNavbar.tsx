@@ -109,46 +109,6 @@ const MyNavbar = () => {
             
             <Navbar.Brand href = "/" style = {{justifyContent: "center", textAlign: "center", position: "relative", right: "-5px", top: "1px"}}>
               
-            {storedIsLogged && (
-                <>
-                {profile.activated == false && (
-                    
-                    <div style = {{position: "absolute", top: -17}}>
-                    {isMobile && (
-                      <>
-                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
-                                                              נדרש אישור אימות במייל
-                                                          </b><br/>
-                      </>
-                    )}
-
-                  </div>
-
-                  )}
-                </>
-              )}
-
-
-              {storedIsLogged && (
-                <>
-                {profile.activated == false && (
-                    
-                    <>
-                    {!isMobile && (
-                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red", position: "absolute", transform: "translateX(17rem) translateY(1rem)"}}>
-                                                          נדרש אישור אימות במייל
-                                                          </b>
-                    )}
-
-                  </>
-
-                  )}
-                </>
-              )}
-              
-
-
-
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = {isSmallMobile ? 150 : 250}
                  height = {isSmallMobile ? 29 : 45} />

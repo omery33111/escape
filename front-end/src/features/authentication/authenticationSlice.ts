@@ -1,7 +1,7 @@
 import {  createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store";
 import { Login, MyToken, Register } from "../../models/Authentication";
-import authenticationService, { activateAccount, deleteInactive, joinedRecently } from "./authenticationAPI";
+import authenticationService, { activateAccount, deleteInactive } from "./authenticationAPI";
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -46,16 +46,6 @@ export const deleteInactiveAsync = createAsyncThunk(
     "authentication/deleteInactive",
     async () => {
       const response = await deleteInactive();
-      return response;
-    }
-  );
-
-
-
-export const joinedRecentlyAsync = createAsyncThunk(
-    "authentication/joinedRecently",
-    async () => {
-      const response = await joinedRecently();
       return response;
     }
   );
@@ -201,11 +191,6 @@ export const authenticationSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
             state.message = action.payload as string;
-        })
-
-        .addCase(joinedRecentlyAsync.fulfilled, (state, action) => {
-            state.joinedRecently = action.payload.data
-            console.log(action.payload.data)
         })
 
         .addCase(activateAccountAsync.fulfilled, (state, action) => {

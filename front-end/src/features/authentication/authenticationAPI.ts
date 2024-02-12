@@ -6,14 +6,6 @@ import { toast } from 'react-toastify';
 
 
 
-export function joinedRecently() {
-    return new Promise<{ data: any }>((resolve =>
-      axios.get(`${authenticationURL}/joined_recently/`)
-        .then(res => resolve({ data: res.data }))));
-  }
-
-
-
 export function activateAccount(token: string) {
     const myToken = JSON.parse(localStorage.getItem("token") as string)
     const accessToken = myToken ? myToken.access : "";

@@ -4,17 +4,17 @@ import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
+import { isUserStaffAsync, selectIsUserStaff } from './features/administrator/administratorSlice';
+import { logoutAsync } from './features/authentication/authenticationSlice';
+import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
 import { initCart } from './features/cart/cartSlice';
 import BrandNavbar from './features/navigators/BrandNavbar';
 import MyFooter from './features/navigators/MyFooter';
 import MyNavbar from './features/navigators/MyNavbar';
+import { getProfileAsync, selectMyProfile } from './features/profile/profileSlice';
+import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
 import { initwishList } from './features/wishlist/wishListSlice';
 import './index.css';
-import { deleteInactiveAsync, joinedRecentlyAsync, logoutAsync, selectJoinedRecently } from './features/authentication/authenticationSlice';
-import { getSingleBrandAsync, selectSingleBrand } from './features/brand/brandSlice';
-import { getSingleShoeAsync, selectSingleShoe } from './features/shoe/shoeSlice';
-import { isUserStaffAsync, selectIsUserStaff } from './features/administrator/administratorSlice';
-import { getProfileAsync, selectMyProfile } from './features/profile/profileSlice';
 
 
 function ScrollToTop() {
@@ -151,40 +151,23 @@ function App() {
 
   const storedIsLogged = JSON.parse(localStorage.getItem('token') as string);
 
-  // const profile = useAppSelector(selectMyProfile)
+  const profile = useAppSelector(selectMyProfile)
 
-  // useEffect(() => {
-  //   if (!pathname.startsWith('/profile'))
-  //   {
-  //     if (storedIsLogged)
-  //     {
-  //       dispatch(getProfileAsync());
-  //       if (profile.activated === false)
-  //       {
-  //         navigate('/activate')
-  //       }
-  //     }
-  //   }
-
-  // }, [profile.activated, pathname]);
-
-
+  
   useEffect(() => {
-    const storedLastCallTime = localStorage.getItem('lastCall');
-    const storedLastClickTime = localStorage.getItem('lastClickTime');
-
-    if (storedLastCallTime && storedLastClickTime) {
-      const lastCallTime = new Date(storedLastCallTime);
-      const lastClickTime = new Date(storedLastClickTime);
-
-      const timeDifference = lastClickTime.getTime() - lastCallTime.getTime();
-
-      if (timeDifference > 15 * 60 * 1000) {
-        dispatch(deleteInactiveAsync());
-        localStorage.setItem('lastCall', storedLastClickTime);
+    if (!pathname.startsWith('/profile'))
+    {
+      if (storedIsLogged)
+      {
+        dispatch(getProfileAsync());
+        if (profile.activated === false)
+        {
+          navigate('/activate')
+        }
       }
     }
-  }, [dispatch, lastClickTime]);
+
+  }, [profile.activated, pathname]);
 
 
   return (

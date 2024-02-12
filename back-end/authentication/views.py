@@ -2,8 +2,6 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -18,6 +16,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.db.models import Q
+
+from . import signals
 
 import uuid
 
@@ -44,14 +45,8 @@ def register(request):
     if not (username and password and email):
         return Response({"error": "אנא מלא את כל השדות"}, status=status.HTTP_400_BAD_REQUEST)
 
-    try:
-        User.objects.get(username=username)
-        return Response({"error": "שם המשתמש כבר קיים."}, status=status.HTTP_400_BAD_REQUEST)
-    except User.DoesNotExist:
-        pass
-
-    if User.objects.filter(email=email).exists():
-        return Response({"error": "כתובת האימייל כבר בשימוש."}, status=status.HTTP_400_BAD_REQUEST)
+    if User.objects.filter(Q(username=username) | Q(email=email)).exists():
+        return Response({"error": "שם המשתמש או כתובת האימייל כבר בשימוש."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
         user = User.objects.create_user(username=username, password=password, email=email, is_active=True)
@@ -80,21 +75,7 @@ def register(request):
 
 
 
-from django.utils import timezone
-
-@api_view(["GET"])
-def joined_recently(request):
-    one_minute_ago = timezone.now() - timezone.timedelta(minutes=1)
-    
-    if Profile.objects.filter(activated=False, date_joined__lt=one_minute_ago).exists():
-        return Response({True}, status=status.HTTP_200_OK)
-    else:
-        return Response({False}, status=status.HTTP_200_OK)
-
-
-
-@api_view(["POST"])
-def delete_inactive_users(request):
+def delete_inactive_users():
     validation_time = timezone.now() - timezone.timedelta(minutes=15)
     
     profiles_to_delete = Profile.objects.filter(activated=False, date_joined__lt=validation_time)
@@ -103,8 +84,7 @@ def delete_inactive_users(request):
         if profile.user is not None:
             profile.user.delete()
 
-    return Response({"message": "Inactive users deleted successfully."}, status=status.HTTP_200_OK)
-
+    print("Inactive users deleted successfully.")
 
 
 

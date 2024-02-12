@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const HomePageCar = () => {
   const navigate = useNavigate()
   return (
-    <Container>
+    <Container style = {{cursor: "pointer"}}>
       <Carousel className="custom-carousel">
 
       <Carousel.Item>

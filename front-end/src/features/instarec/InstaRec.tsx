@@ -8,6 +8,7 @@ import './instaRec.css';
 import { getAllInstaRecsAsync, selectInstaRecs } from './instarecSlice';
 import { Container } from 'react-bootstrap';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
 
 
@@ -22,41 +23,42 @@ const InstaRec = () => {
   }, []);
 
   const swiperRef = useRef<HTMLDivElement>(null);
-  let mySwiper: Swiper | null = null;
+  const swiperInstance = useRef<Swiper | null>(null);
 
   useEffect(() => {
     if (swiperRef.current) {
-      mySwiper = new Swiper(swiperRef.current, {
+      swiperInstance.current = new Swiper(swiperRef.current, {
         slidesPerView: isMobile ? 3 : 5,
         spaceBetween: 0,
         loop: true,
         effect: 'slide',
         speed: 1000,
-        grabCursor: true,
+        grabCursor: false,
+        allowTouchMove: false,
       });
-  
-      const intervalId = setInterval(() => {
-        goToPrevPage();
-      }, 2000);
-  
-      return () => {
-        if (mySwiper) {
-          mySwiper.destroy();
-        }
-        clearInterval(intervalId);
-      };
     }
-  }, [mySwiper]);
+
+    const intervalId = setInterval(() => {
+      goToPrevPage();
+    }, 2000);
+
+    return () => {
+      if (swiperInstance.current) {
+        swiperInstance.current.destroy();
+        clearInterval(intervalId);
+      }
+    };
+  }, []);
 
   const goToNextPage = () => {
-    if (mySwiper) {
-      mySwiper.slideNext();
+    if (swiperInstance.current) {
+      swiperInstance.current.slideNext();
     }
   };
 
   const goToPrevPage = () => {
-    if (mySwiper) {
-      mySwiper.slidePrev();
+    if (swiperInstance.current) {
+      swiperInstance.current.slidePrev();
     }
   };
 
@@ -68,6 +70,7 @@ const InstaRec = () => {
   const handleInstagramClick = () => {
     window.open('https://www.instagram.com/escapeshoesil/', '_blank');
   };
+
 
   return (
     <Container>
@@ -106,7 +109,7 @@ const InstaRec = () => {
                   <br/>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div className = "divider" style = {{marginLeft: "25rem", marginRight: "1rem"}}/>
-                    <div style={{ fontSize: "1.3rem", padding: '0 10px', cursor: "pointer" }} onClick={goToPrevPage}>FOLLOW US - <b><InstagramIcon />escapeil_</b></div>
+                    <div style={{ fontSize: "1.3rem", padding: '0 10px', cursor: "pointer" }}>FOLLOW US - <b><InstagramIcon />escapeil_</b></div>
                     <div className = "divider" style = {{marginRight: "25rem", marginLeft: "1rem"}}/>
                   </div>
                   <br/>
@@ -118,6 +121,8 @@ const InstaRec = () => {
 
 
     <div ref={swiperRef}>
+    <IoIosArrowBack className="brand-arrow1" style = {{color: "black", fontSize: "2rem", zIndex: 50, position: "absolute", transform: isMobile ? "translateY(2.1rem)" : "translateY(6.7rem)"}} onClick={goToNextPage} />
+
 
             {isComputer && (
                             <img
@@ -128,11 +133,11 @@ const InstaRec = () => {
                             height="403px"
                             width="303px"
                           />
+                          
             )}
 
 
       <div className="swiper-wrapper" style={{ display: 'flex', cursor: "pointer", justifyContent: "center", textAlign: "center" }}>
-
         {instaRecs.map((instaRec, index) => (
           <div
           onClick = {handleInstagramClick}
@@ -149,8 +154,8 @@ const InstaRec = () => {
             />
           </div>
         ))}
-
       </div>
+
 
           {isComputer && (
                   <img
