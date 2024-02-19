@@ -14,7 +14,6 @@ import PaypalButton from './PaypalButton';
 import './order.css';
 import { postOrderAsync, selectSavedCoupon, selectSavedNote, updateCoupon, updateNote, updateTotal } from './orderSlice';
 import { getProfileAsync, selectMyProfile } from '../profile/profileSlice';
-import GoogleButton from './GoogleButton';
 
 
 const Order = () => {
@@ -636,8 +635,6 @@ useEffect(() => {
 
                         <PaypalButton /><br/>
 
-                        <GoogleButton />
-                        
                       </Modal.Body>
                     </Modal>
               </form>
