@@ -284,11 +284,11 @@ const BrandShoes = () => {
         size="small"/>
         </div>
       </div>
-            <br/>
+      <div style = {{height: "23px"}}/>
 
 <div style = {{display: "flex", direction: "rtl"}}>
 
-            <br/>
+
 
             <div className="brand-map-items">
             {shoes.map((shoe, shoeIndex) => (
@@ -408,8 +408,20 @@ const BrandShoes = () => {
         ))}
       </div>
     </div>
+    
   </div>
-        
+
+  <div style = {{direction: "rtl"}}>
+  <div style = {{color: "white", position: "relative", top: "23px", width: "5.25rem", direction: "ltr"}}>
+        <Pagination
+        classes={{ ul: classes.paginator }}
+        style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
+        count={totalPages}
+        page={page}
+        onChange={(event, newPage) => setPage(newPage)}
+        size="small"/>
+        </div>
+  </div>
 
 
     </div>

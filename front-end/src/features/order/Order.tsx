@@ -14,6 +14,7 @@ import PaypalButton from './PaypalButton';
 import './order.css';
 import { postOrderAsync, selectSavedCoupon, selectSavedNote, updateCoupon, updateNote, updateTotal } from './orderSlice';
 import { getProfileAsync, selectMyProfile } from '../profile/profileSlice';
+import GoogleButton from './GoogleButton';
 
 
 const Order = () => {
@@ -502,6 +503,39 @@ useEffect(() => {
                   )}
                 </>
               )}
+          
+        {storedIsLogged ? (
+                <>
+
+                {!address[0] && (
+                    
+                    <>
+                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
+                                                          להמשך הזמנה, יש למלא כתובת ופרטים אישיים
+                                                          </b><br/>
+                      </>
+
+                  )}
+
+                </>
+              ) : (
+                <>
+
+                <br/>
+                
+                {!storedAddress && (
+                    
+                    <>
+                                                          <b style = {{direction: "rtl", fontSize: "0.8rem", color: "red"}}>
+                                                          להמשך הזמנה, יש למלא כתובת ופרטים אישיים
+                                                          </b><br/>
+                      </>
+
+                  )}
+
+                </>
+              )}
+
 
         <Modal show={showModal6} onHide={handleClose6} animation={false} style = {{direction: "rtl"}}>
         <Modal.Header>
@@ -600,7 +634,9 @@ useEffect(() => {
                       <Modal.Body style = {{justifyContent: "center", textAlign: "center"}}>
                           <div style = {{height: "1rem"}}/>
 
-                        <PaypalButton />
+                        <PaypalButton /><br/>
+
+                        <GoogleButton />
                         
                       </Modal.Body>
                     </Modal>

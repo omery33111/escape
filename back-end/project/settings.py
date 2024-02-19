@@ -1,8 +1,6 @@
 from datetime import timedelta
-from distutils import config
 from pathlib import Path
 import os
-from decouple import config
 
 
 
@@ -131,8 +129,6 @@ EMAIL_HOST_PASSWORD = 'vezm auux ghik syiq'
 
 
 
-
-
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
@@ -140,16 +136,25 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Escape',
-        'USER': 'root',
-        'PASSWORD': 'A1a2a3a4a5%%',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'Escape',
+#         'USER': 'root',
+#         'PASSWORD': 'A1a2a3a4a5%%',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
+
+
+# PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(PROJECT_DIR, 'mydatabase.db'),
+#     }
+# }
 
 
 # DATABASES = {

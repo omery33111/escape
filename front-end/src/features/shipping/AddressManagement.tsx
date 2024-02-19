@@ -1,13 +1,12 @@
-import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Select, TextField, Theme } from '@mui/material';
+import { Autocomplete, FormControl, InputLabel, MenuItem, Select, TextField, Theme } from '@mui/material';
+import { makeStyles } from "@mui/styles";
 import React, { useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Address } from '../../models/Shipping';
-import { deleteGuestAddress, getAddressesAmountAsync, getAddressesAsync, getIsraelCitiesAsync, getIsraelStreetsAsync, getNextShippingIDAsync, initGuestAddresses, patchAddressAsync, postAddressAsync, selectAddress, selectAddressesAmount, selectGuestAddresses, selectIsraelCities, selectIsraelStreets, selectNextShippingID } from '../shipping/shippingSlice';
+import { selectProfile } from '../profile/profileSlice';
+import { deleteGuestAddress, getAddressesAmountAsync, getAddressesAsync, getIsraelCitiesAsync, getIsraelStreetsAsync, getNextShippingIDAsync, initGuestAddresses, patchAddressAsync, postAddressAsync, selectAddress, selectIsraelCities, selectIsraelStreets, selectNextShippingID } from '../shipping/shippingSlice';
 import './shipping.css';
-import { makeStyles } from "@mui/styles";
-import { Col, Container, Form, Row } from 'react-bootstrap';
-import Shipping from './Shipping';
-import { getProfileAsync, selectProfile } from '../profile/profileSlice';
 
 
 
@@ -409,9 +408,8 @@ const AddressManagement = () => {
                               <div style = {{display: "flex", gap: "10px"}}>
 
                               <Button
-                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)" }}
+                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-0rem)", border: "0px solid white" }}
                                type="submit"
-                                variant="contained"
                                 disabled={
                                   firstName === '' ||
                                   lastName === '' ||
@@ -502,7 +500,7 @@ const AddressManagement = () => {
 
              <div style = {{height: "1rem"}}/>
         
-          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} variant="contained" onClick={() => setEditAddress(true)}>
+          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px", border: "0px solid white"}}  onClick={() => setEditAddress(true)}>
             עריכה
           </Button>
     
@@ -591,7 +589,7 @@ const AddressManagement = () => {
             <div style = {{height: "1rem"}}/>
 
         
-          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px"}} type="submit" variant="contained" onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
+          <Button style = {{backgroundColor: "#1A002E", color: "white", position: "relative", borderRadius: "0px", border: "0px solid white"}} type="submit"  onClick={() => dispatch(deleteGuestAddress({ item: address }))}>
             עריכה
           </Button>
     
@@ -737,9 +735,8 @@ freeSolo
 
                             <Button
                                onClick={() => setEditAddress(false)}
-                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)" }}
+                               style={{ backgroundColor: "#1A002E", position: "relative", borderRadius: "0px", transform: isMobile ? "" : "translateX(-6rem)", border: "0px solid white" }}
                                type="submit"
-                               variant="contained"
                                disabled={
                                  firstName === '' ||
                                  lastName === '' ||

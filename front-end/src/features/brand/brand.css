@@ -53,7 +53,6 @@ body {
   border-radius: 50%;
 }
 
-/* Set a fixed number of columns for larger screens */
 .brand-map-items {
   max-width: 1300px;
   width: 100%;
