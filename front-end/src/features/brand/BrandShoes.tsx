@@ -63,7 +63,7 @@ const BrandShoes = () => {
 
     const isLoading = useAppSelector(selectBrandLoading);
 
-    const itemsPerPage = 20;
+    const itemsPerPage = 32;
 
     const totalPages = Math.ceil(brandsAmount / itemsPerPage);
 
@@ -74,7 +74,6 @@ const BrandShoes = () => {
     
     const handleModelSelection = (selectedModel: string) => {
       if (selectedModel === 'בחר דגם' && selectedModels.length === 0) {
-        // If "בחר דגם" is selected and no other models are selected, keep it selected
         setSelectedModels(['בחר דגם']);
       } else {
         const index = selectedModels.indexOf(selectedModel);
