@@ -411,7 +411,7 @@ const BrandShoes = () => {
   </div>
 
   <div style = {{direction: "rtl"}}>
-  <div style = {{color: "white", position: "relative", top: "23px", width: "5.25rem", direction: "ltr"}}>
+  <div style = {{color: "white", position: "relative", top: "23px", width: "5.25rem", maxWidth: "15rem", direction: "ltr"}}>
         <Pagination
         classes={{ ul: classes.paginator }}
         style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
