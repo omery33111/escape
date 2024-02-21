@@ -564,7 +564,7 @@ const MyFooter = () => {
 
         </div>
 
-        <div style={{ height: "179px", display: "flex", alignItems: "flex-end" }}>
+        <div style={{ height: "275px", display: "flex", alignItems: "flex-end" }}>
           <p style = {{direction: "rtl", position: "absolute", transform: "translateY(-0.4rem)"}}>
             <CopyrightIcon style = {{fontSize: "1.3rem", marginBottom: "3px"}}/>&nbsp;כל הזכויות שמורות לEscape Shoes
             </p>
