@@ -12,6 +12,7 @@ import { getAddressesAsync, initGuestAddresses, selectAddress } from '../shippin
 import { selectWishList } from '../wishlist/wishListSlice'
 import HamburgerMenu from './HamburgerMenu'
 import { getProfileAsync, selectMyProfile } from '../profile/profileSlice'
+import { Link } from "react-router-dom";
 
 
 
@@ -78,7 +79,7 @@ const MyNavbar = () => {
               <Nav style = {{gap: isTablet ? "0px" : "30px"}}>
 
                 
-                  <Nav.Link href = "/cart">
+                  <Nav.Link as={Link} to = "/cart">
 
                   {cart.length > 0 && (
                     <span className="counter">{cart.length}</span>
@@ -92,7 +93,7 @@ const MyNavbar = () => {
               
 
                 {isTablet ? ("") : (
-              <Nav.Link href = "/wishlist">
+              <Nav.Link as={Link} to = "/wishlist">
 
               {wishList.length > 0 && (
                 <span className="counter">{wishList.length}</span>
@@ -107,7 +108,7 @@ const MyNavbar = () => {
 
             
             
-            <Navbar.Brand href = "/" style = {{justifyContent: "center", textAlign: "center", position: "relative", right: "-5px", top: "1px"}}>
+            <Navbar.Brand as={Link} to = "/" style = {{justifyContent: "center", textAlign: "center", position: "relative", right: "-5px", top: "1px"}}>
               
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = {isSmallMobile ? 150 : 250}
@@ -149,7 +150,7 @@ const MyNavbar = () => {
             
                       <div>
                         {!isTablet && isStaff && (
-                          <Nav.Link href = "/administrator/menu">
+                          <Nav.Link as={Link} to = "/administrator/menu">
                             <AdminPanelSettingsIcon style = {{color: "black"}}/>
                           </Nav.Link>
                         )}
@@ -164,11 +165,11 @@ const MyNavbar = () => {
                 ) : (
                   <div>
                     {isToken ? (
-                <Nav.Link href = "/profile">
+                <Nav.Link as={Link} to = "/profile">
                   <AccountCircleIcon style = {{color: "black"}}/>
                 </Nav.Link>
                 ) : (
-                <Nav.Link href = "/authentication/login">
+                <Nav.Link as={Link} to = "/authentication/login">
                   <PersonAddIcon style = {{color: "black"}}/>
                 </Nav.Link>
                 )}

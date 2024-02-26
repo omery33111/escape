@@ -141,7 +141,7 @@ const Hamburger = () => {
 
         <Offcanvas show={showOffcanvas} onHide={handleOffcanvasClose} placement="end" style = {{direction: "rtl", width: "80%"}}>
         <Offcanvas.Header style={{ justifyContent: "center", textAlign: "center" }} closeButton>
-        <Navbar.Brand href = "/" style = {{position: "relative"}}>
+        <Navbar.Brand as={Link} to = "/" style = {{position: "relative"}}>
             <img src={require('../../images/Escapelogo.png')} alt = "instagramlogo"
                  width = "250"
                  height = "45" /><br/>
@@ -168,21 +168,21 @@ const Hamburger = () => {
             
       <>
               {isStaff && (
-                 <Nav.Link href = "/administrator/menu">
+                 <Nav.Link as={Link} to = "/administrator/menu">
                     <AdminPanelSettingsIcon style = {{color: "black", fontSize: "2.3rem"}}/>
                   </Nav.Link>
                   )}
       </>
 
             <div>
-            <Nav.Link href = "/profile">
+            <Nav.Link as={Link} to = "/profile">
                   
             {isToken ? (
-                <Nav.Link href = "/profile">
+                <Nav.Link as={Link} to = "/profile">
                   <AccountCircleIcon style = {{color: "black", fontSize: "2.3rem"}}/>
                 </Nav.Link>
                 ) : (
-                <Nav.Link href = "/authentication/login">
+                <Nav.Link as={Link} to = "/authentication/login">
                   <PersonAddIcon style = {{color: "black", fontSize: "2.3rem"}}/>
                 </Nav.Link>
                 )}
@@ -192,7 +192,7 @@ const Hamburger = () => {
 
             <div>
                 
-            <Nav.Link href = "/cart">
+            <Nav.Link as={Link} to = "/cart">
 
                 {cart.length > 0 && (
                 <span className="counter-offcanva">{cart.length}</span>
@@ -203,7 +203,7 @@ const Hamburger = () => {
             </div>
 
             <div>
-            <Nav.Link href = "/wishlist">
+            <Nav.Link as={Link} to = "/wishlist">
 
                 {wishList.length > 0 && (
                 <span className="counter-offcanva">{wishList.length}</span>
