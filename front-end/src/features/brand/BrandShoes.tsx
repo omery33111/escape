@@ -411,10 +411,10 @@ const BrandShoes = () => {
   </div>
 
   <div style = {{direction: "rtl"}}>
-  <div style = {{color: "white", position: "relative", top: "23px", width: "5.25rem", maxWidth: "15rem", direction: "ltr"}}>
+  <div style = {{color: "white", position: "relative", top: "23px", minWidth: "5.25rem", maxWidth: "16rem", direction: "ltr"}}>
         <Pagination
         classes={{ ul: classes.paginator }}
-        style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
+        style={{ backgroundColor: "#1A002E"}}
         count={totalPages}
         page={page}
         onChange={(event, newPage) => setPage(newPage)}
