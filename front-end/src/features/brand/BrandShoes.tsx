@@ -77,12 +77,15 @@ const BrandShoes = () => {
         setSelectedModels(['בחר דגם']);
       } else {
         const index = selectedModels.indexOf(selectedModel);
+        setPage(1);
         if (index === -1) {
           setSelectedModels([...selectedModels, selectedModel]);
+          setPage(1);
         } else {
           const updatedModels = [...selectedModels];
           updatedModels.splice(index, 1);
           setSelectedModels(updatedModels);
+          setPage(1);
         }
       }
     };
