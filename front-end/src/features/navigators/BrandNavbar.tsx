@@ -196,14 +196,14 @@ const BrandNavbar = () => {
                 >
 
                   <Dropdown.Toggle as={Nav.Link} style={{ color: "black" }}>
-                    <Link to={`/brand/shoes/${brand.id}/`} style={{ textDecoration: 'none', color: 'white' }}>
-                      <b style={{ fontSize: isMobile ? "0.7rem" : "0.9rem" }}>{brand.name}</b>
+                  <Link to={`/brand/shoes/${brand.id}/`} onClick={() => setPage(1)} style={{ textDecoration: 'none', color: 'white' }}>
+                <b style={{ fontSize: isMobile ? "0.7rem" : "0.9rem" }}>{brand.name}</b>
                     </Link>
                   </Dropdown.Toggle>
                   <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
       <Dropdown.Item style = {{textAlign: "right"}}
         onMouseEnter={() => handleItemHover(-1)}
-        onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
+        onClick={() => { setPage(1); navigate(`/brand/shoes/${brand.id}/`);}}
       >
         כל המוצרים
       </Dropdown.Item>

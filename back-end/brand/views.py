@@ -23,20 +23,26 @@ def get_all_brands(request):
 
 @api_view(["GET"])
 def brand_shoes(request, pk, page, orderby=1, models='0'):
-    shoes_per_page = 32
+    shoes_per_page = 4
 
     try:
         brand = Brand.objects.get(pk=pk)
+        
+        if 'old_pk' in request.session and request.session['old_pk'] != pk:
+            page = 1
+            models = '0'
+            request.session['old_pk'] = pk
+        elif 'old_pk' not in request.session:
+            request.session['old_pk'] = pk
+
         all_shoes = brand.shoes.all()
 
-        # Check if models parameter is provided and not equal to '0'
         if models != '0':
             models_list = models.split(',')
             all_shoes = all_shoes.filter(model__in=models_list)
 
         all_shoes = all_shoes.filter(blacklisted=False)
 
-        # Sorting based on the 'orderby' parameter
         if orderby == 2:
             all_shoes = all_shoes.order_by('price')
         elif orderby == 3:
@@ -47,6 +53,10 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
             return Response({"error": "Invalid orderby parameter."}, status=400)
 
         paginator = Paginator(all_shoes, shoes_per_page)
+        
+        if int(page) > paginator.num_pages:
+            page = 1
+        
         try:
             shoes = paginator.page(page)
         except PageNotAnInteger:

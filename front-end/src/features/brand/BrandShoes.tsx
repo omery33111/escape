@@ -14,6 +14,7 @@ import { addProduct, removeProduct, selectCart } from "../cart/cartSlice";
 import { addWish, removeWish, selectWishList } from "../wishlist/wishListSlice";
 import './brand.css';
 import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandLoading, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
+import { Shoe } from "../../models/Shoe";
 
 
 
@@ -63,7 +64,7 @@ const BrandShoes = () => {
 
     const isLoading = useAppSelector(selectBrandLoading);
 
-    const itemsPerPage = 32;
+    const itemsPerPage = 4;
 
     const totalPages = Math.ceil(brandsAmount / itemsPerPage);
 
@@ -72,6 +73,11 @@ const BrandShoes = () => {
     const [selectedModels, setSelectedModels] = useState(['בחר דגם']);
 
     
+    useEffect(() => {
+      setSelectedModels(['בחר דגם']);
+    }, [id]);
+
+
     const handleModelSelection = (selectedModel: string) => {
       if (selectedModel === 'בחר דגם' && selectedModels.length === 0) {
         setSelectedModels(['בחר דגם']);
@@ -91,13 +97,14 @@ const BrandShoes = () => {
     };
 
 
+
     useEffect(() => {
       if (id !== undefined) {
         
         if (selectedModels.length === 1 && selectedModels[0] === 'בחר דגם') {
           dispatch(getPagedShoesOfBrandAsync({
             id, page, orderBy,
-            models: "0" 
+            models: "0"
           }));
         } else {
           dispatch(getPagedShoesOfBrandAsync({ 
@@ -176,6 +183,8 @@ const BrandShoes = () => {
 
     const [cartClicked, setCartClicked] = useState<number>(-1);
 
+
+
   return (
     <div>
         
@@ -188,7 +197,7 @@ const BrandShoes = () => {
 
         <div style = {{direction: "rtl", marginBottom: '4rem', textAlign: "right"}}>
         
-        <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px" }}>
+        <div style = {{color: "#700000", fontSize: "0.7rem", display: "flex", cursor: "pointer", margin: "10px 0px", width: "15rem" }}>
 
           <div onClick = {() => navigate("/")}>
           דף הבית
@@ -413,17 +422,27 @@ const BrandShoes = () => {
     
   </div>
 
-  <div style = {{direction: "rtl"}}>
-  <div style = {{color: "white", position: "relative", top: "23px", minWidth: "5.25rem", maxWidth: "16rem", direction: "ltr"}}>
-        <Pagination
-        classes={{ ul: classes.paginator }}
-        style={{ backgroundColor: "#1A002E"}}
-        count={totalPages}
-        page={page}
-        onChange={(event, newPage) => setPage(newPage)}
-        size="small"/>
-        </div>
+  <div style={{ direction: "rtl" }}>
+  <div style={{ color: "white", position: "relative", top: "23px" }}>
+    <Pagination
+      classes={{ ul: classes.paginator }}
+      style={{
+        backgroundColor: "#1A002E",
+        width: totalPages <= 1 ? "5.5rem" :
+               totalPages === 2 ? "7.4rem" :
+               totalPages === 3 ? "9.3rem" :
+               totalPages === 4 ? "11.1rem" :
+               totalPages === 5 ? "12.5rem" :
+               totalPages === 6 ? "14.2rem" : "16rem",
+        direction: "ltr"
+      }}
+      count={totalPages}
+      page={page}
+      onChange={(event, newPage) => setPage(newPage)}
+      size="small"
+    />
   </div>
+</div>
 
 
     </div>
