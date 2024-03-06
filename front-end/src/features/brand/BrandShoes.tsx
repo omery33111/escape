@@ -64,7 +64,7 @@ const BrandShoes = () => {
 
     const isLoading = useAppSelector(selectBrandLoading);
 
-    const itemsPerPage = 4;
+    const itemsPerPage = 32;
 
     const totalPages = Math.ceil(brandsAmount / itemsPerPage);
 

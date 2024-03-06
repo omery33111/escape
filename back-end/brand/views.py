@@ -23,7 +23,7 @@ def get_all_brands(request):
 
 @api_view(["GET"])
 def brand_shoes(request, pk, page, orderby=1, models='0'):
-    shoes_per_page = 4
+    shoes_per_page = 32
 
     try:
         brand = Brand.objects.get(pk=pk)
