@@ -171,6 +171,12 @@ const ShoePut = () => {
     dispatch(setCurrentBrand(selectedBrandId));
   };
 
+  const handleDeleteSizeInput = (index: number) => {
+    const updatedSizesArray = [...sizesArray];
+    updatedSizesArray.splice(index, 1); // Remove the element at the specified index
+    setSizesArray(updatedSizesArray);
+  };
+  
   return (
     <div>
       <Container>
@@ -245,15 +251,16 @@ const ShoePut = () => {
     <h5>Sizes</h5>
   </Form.Label>
   {sizesArray.map((size, index) => (
-    <div key={index}>
+    <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
       <Form.Control
-    
         type="text"
         value={size}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSizeInputChange(index, e)}
       />
+      &nbsp;&nbsp;<Button variant="danger" onClick={() => handleDeleteSizeInput(index)}>Delete</Button>
     </div>
-  ))}<br/>
+  ))}
+  <br/>
   <Button variant="secondary" onClick={handleAddSizeInput}>
     Add Size
   </Button>
