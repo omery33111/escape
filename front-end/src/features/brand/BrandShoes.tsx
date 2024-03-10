@@ -79,20 +79,8 @@ const BrandShoes = () => {
 
 
     const handleModelSelection = (selectedModel: string) => {
-      if (selectedModel === 'בחר דגם' && selectedModels.length === 0) {
-        setSelectedModels(['בחר דגם']);
-      } else {
-        const index = selectedModels.indexOf(selectedModel);
-        setPage(1);
-        if (index === -1) {
-          setSelectedModels([...selectedModels, selectedModel]);
-          setPage(1);
-        } else {
-          const updatedModels = [...selectedModels];
-          updatedModels.splice(index, 1);
-          setSelectedModels(updatedModels);
-          setPage(1);
-        }
+      if (selectedModels.length === 0 || selectedModels[0] !== selectedModel) {
+        setSelectedModels([selectedModel]);
       }
     };
 
@@ -127,7 +115,7 @@ const BrandShoes = () => {
 
 
     const controlProps = (size: string) => ({
-      checked: selectedModels.indexOf(size) !== -1,
+      checked: selectedModels[0] === size,
       onChange: () => handleModelSelection(size),
     });
 
@@ -275,11 +263,14 @@ const BrandShoes = () => {
               <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
                 <label className="radio-label">{model}</label>
                 <input
-                  {...controlProps(model)}
-                  type="radio"
-                  className="black-radio"
-                  onClick={() => {setPage(1); handleModelSelection(model);}}
-                />
+  {...controlProps(model)}
+  type="radio"
+  className="black-radio"
+  onClick={() => {
+    setPage(1);
+    handleModelSelection(model);
+  }}
+/>
               </div>
             ))}
           </div>

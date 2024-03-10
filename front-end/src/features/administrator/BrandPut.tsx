@@ -81,6 +81,11 @@ const BrandPut = () => {
     setModelsArray([...modelsArray, '']);
   };
   
+  const handleDeleteModelsInput = (index: number) => {
+    const updatedModelsArray = [...modelsArray];
+    updatedModelsArray.splice(index, 1);
+    setModelsArray(updatedModelsArray);
+  };
 
   return (
     <div>
@@ -104,12 +109,12 @@ const BrandPut = () => {
     <h5>Models</h5>
   </Form.Label>
   {modelsArray.map((model, index) => (
-    <div key={index}>
+    <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
       <Form.Control
         type="text"
         value={model}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleModelInputChange(index, e)}
-      />
+      /> &nbsp;&nbsp;<Button variant="danger" onClick={() => handleDeleteModelsInput(index)}>Delete</Button>
     </div>
   ))}<br/>
   <Button variant="secondary" onClick={handleAddModelInput}>
