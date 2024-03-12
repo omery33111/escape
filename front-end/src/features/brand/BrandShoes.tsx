@@ -170,8 +170,15 @@ const BrandShoes = () => {
     const [heartClicked, setHeartClicked] = useState<number>(-1);
 
     const [cartClicked, setCartClicked] = useState<number>(-1);
+    const [modelShoeCounts, setModelShoeCounts] = useState<Record<string, number>>({});
 
-
+    useEffect(() => {
+      const counts: Record<string, number> = {};
+      shoes.forEach(shoe => {
+        counts[shoe.model] = (counts[shoe.model] || 0) + 1;
+      });
+      setModelShoeCounts(counts);
+    }, [shoes]);
 
   return (
     <div>
@@ -259,20 +266,22 @@ const BrandShoes = () => {
           </div>
         ) : (
           <div style={{ flex: '1', display: 'flex', textAlign: 'center', justifyContent: 'center', position: 'relative', bottom: -3, fontSize: '0.8rem', color: 'white', flexWrap: 'wrap-reverse' }}>
-            {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
-              <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
-                <label className="radio-label">{model}</label>
-                <input
-  {...controlProps(model)}
-  type="radio"
-  className="black-radio"
-  onClick={() => {
-    setPage(1);
-    handleModelSelection(model);
-  }}
-/>
-              </div>
-            ))}
+      {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
+        <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
+            <label className="radio-label">
+              {model} {modelShoeCounts[model] > 0 && `(${modelShoeCounts[model]})`}
+            </label>
+            <input
+            {...controlProps(model)}
+            type="radio"
+            className="black-radio"
+            onClick={() => {
+              setPage(1);
+              handleModelSelection(model);
+            }}
+          />
+        </div>
+      ))}
           </div>
         )}
 
