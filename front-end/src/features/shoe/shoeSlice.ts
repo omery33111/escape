@@ -22,8 +22,8 @@ const initialState: ShoeState = {
   searchShoe: "",
   chosenIsLoading: false,
   wallIsLoading: false,
-  
-  isSearchLoading: false
+
+  isSearchLoading: false,
 };
 
 

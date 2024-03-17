@@ -54,15 +54,12 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
 
         paginator = Paginator(all_shoes, shoes_per_page)
         
-        if int(page) > paginator.num_pages:
-            page = 1
-        
         try:
             shoes = paginator.page(page)
         except PageNotAnInteger:
-            return Response({"error": "Invalid page number."}, status=400)
+            shoes = paginator.page(1)
         except EmptyPage:
-            return Response({"error": "Page is empty."}, status=404)
+            shoes = paginator.page(paginator.num_pages)
 
         serializer = ShoeSerializer(shoes, many=True)
         return Response(serializer.data)

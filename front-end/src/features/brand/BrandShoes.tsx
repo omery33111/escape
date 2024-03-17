@@ -58,15 +58,17 @@ const BrandShoes = () => {
 
     const { id } = useParams();
     
+    const isLoading = useAppSelector(selectBrandLoading);
 
 
     const brandsAmount = useAppSelector(selectshoesOfBrandAmount);
 
-    const isLoading = useAppSelector(selectBrandLoading);
+    console.log(brandsAmount)
 
     const itemsPerPage = 32;
 
     const totalPages = Math.ceil(brandsAmount / itemsPerPage);
+
 
     const [orderBy, setOrderBy] = useState(1);
 
@@ -170,15 +172,7 @@ const BrandShoes = () => {
     const [heartClicked, setHeartClicked] = useState<number>(-1);
 
     const [cartClicked, setCartClicked] = useState<number>(-1);
-    const [modelShoeCounts, setModelShoeCounts] = useState<Record<string, number>>({});
 
-    useEffect(() => {
-      const counts: Record<string, number> = {};
-      shoes.forEach(shoe => {
-        counts[shoe.model] = (counts[shoe.model] || 0) + 1;
-      });
-      setModelShoeCounts(counts);
-    }, [shoes]);
 
   return (
     <div>
@@ -269,7 +263,7 @@ const BrandShoes = () => {
       {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
         <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
             <label className="radio-label">
-              {model} {modelShoeCounts[model] > 0 && `(${modelShoeCounts[model]})`}
+              {model}
             </label>
             <input
             {...controlProps(model)}

@@ -203,7 +203,7 @@ const BrandNavbar = () => {
                   <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
       <Dropdown.Item style = {{textAlign: "right"}}
         onMouseEnter={() => handleItemHover(-1)}
-        onClick={() => { setPage(1); navigate(`/brand/shoes/${brand.id}/`);}}
+        onClick={() => { setPage(1); window.location.href = (`/brand/shoes/${brand.id}/`)}}
       >
         כל המוצרים
       </Dropdown.Item>
@@ -259,7 +259,7 @@ const BrandNavbar = () => {
     <Dropdown.Menu style={{ backgroundColor: 'white', border: "1px solid black" }}>
       <Dropdown.Item style = {{textAlign: "right"}}
         onMouseEnter={() => handleItemHover(-1)}
-        onClick={() => navigate(`/brand/shoes/${brand.id}/`)}
+        onClick={() => window.location.href = (`/brand/shoes/${brand.id}/`)}
       >
         כל המוצרים
       </Dropdown.Item>
