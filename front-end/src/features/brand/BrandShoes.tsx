@@ -80,11 +80,15 @@ const BrandShoes = () => {
     }, [id]);
 
 
-    const handleModelSelection = (selectedModel: string) => {
-      if (selectedModels.length === 0 || selectedModels[0] !== selectedModel) {
+const handleModelSelection = (selectedModel: string) => {
+    if (selectedModels.includes(selectedModel)) {
+        // If already selected, remove it
+        setSelectedModels(['0']);
+    } else {
+        // If not selected, set it as the only selected model
         setSelectedModels([selectedModel]);
-      }
-    };
+    }
+};
 
 
 
