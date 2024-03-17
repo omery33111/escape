@@ -13,7 +13,7 @@ import { myServer } from "../../endpoints/endpoints";
 import { addProduct, removeProduct, selectCart } from "../cart/cartSlice";
 import { addWish, removeWish, selectWishList } from "../wishlist/wishListSlice";
 import './brand.css';
-import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandLoading, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
+import { getPagedShoesOfBrandAsync, getShoesAmountOfBrandAsync, getSingleBrandAsync, selectBrandLoading, selectBrandPages, selectBrandShoes, selectSingleBrand, selectshoesOfBrandAmount } from "./brandSlice";
 import { Shoe } from "../../models/Shoe";
 
 
@@ -106,10 +106,14 @@ const BrandShoes = () => {
         dispatch(getShoesAmountOfBrandAsync(id));
         dispatch(getSingleBrandAsync(id));
       }
+      
     }, [id, page, orderBy, selectedModels]);
 
 
     const singleBrand = useAppSelector(selectSingleBrand);
+
+    const numberOfPages = useAppSelector(selectBrandPages);
+    console.log(numberOfPages)
 
     const handleOrderByChange = (event: any) => {
       setOrderBy(event.target.value);
@@ -283,7 +287,7 @@ const BrandShoes = () => {
         <Pagination
         classes={{ ul: classes.paginator }}
         style={{ backgroundColor: "#1A002E", width: isMobile ? "110%" : "100%" }}
-        count={totalPages}
+        count={numberOfPages}
         page={page}
         onChange={(event, newPage) => setPage(newPage)}
         size="small"/>

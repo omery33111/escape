@@ -24,4 +24,6 @@ export interface Brand {
     brandsIsLoading: boolean;
     isLoading: boolean;
     isError: boolean;
+
+    numPages: number;
   }

@@ -54,15 +54,20 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
 
         paginator = Paginator(all_shoes, shoes_per_page)
         
+        if int(page) > paginator.num_pages:
+            page = 1
+        
         try:
             shoes = paginator.page(page)
         except PageNotAnInteger:
-            shoes = paginator.page(1)
+            return Response({"error": "Invalid page number."}, status=400)
         except EmptyPage:
-            shoes = paginator.page(paginator.num_pages)
+            return Response({"error": "Page is empty."}, status=404)
 
         serializer = ShoeSerializer(shoes, many=True)
-        return Response(serializer.data)
+        return Response({
+        "shoes": serializer.data,
+        "numPages": paginator.num_pages}, status=status.HTTP_200_OK)
     except Brand.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

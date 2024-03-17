@@ -19,7 +19,9 @@ const initialState: BrandState = {
   brandsIsLoading: false,
 
   isLoading: false,
-  isError: false
+  isError: false,
+
+  numPages: 0
 };
 
 
@@ -58,7 +60,7 @@ export const getPagedShoesOfBrandAsync = createAsyncThunk(
   'brand/getPagedShoesOfBrand',
   async ({ id, page, orderBy, models }: { id: string, page: number, orderBy: number, models: string }) => {
     const response = await getPagedShoesOfBrand(id, page, orderBy, models);
-    return response.data;
+    return response;
   }
 );
 
@@ -95,7 +97,8 @@ export const brandSlice = createSlice({
       })
 
       .addCase(getPagedShoesOfBrandAsync.fulfilled, (state, action) => {
-        state.brandShoes = action.payload;
+        state.numPages = action.payload.numPages;
+        state.brandShoes = action.payload.data;
         state.isLoading = false;
       })
       .addCase(getPagedShoesOfBrandAsync.pending, (state) => {
@@ -123,6 +126,8 @@ export const brandSlice = createSlice({
 });
 
 
+
+export const selectBrandPages = (state: RootState) => state.brand.numPages;
 
 export const selectBrandsLoading = (state: RootState) => state.brand.brandsIsLoading;
 export const selectBrandLoading = (state: RootState) => state.brand.isLoading;

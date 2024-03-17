@@ -30,12 +30,13 @@ export function getSingleBrand(id: string) {
 
 
 export function getPagedShoesOfBrand(id: string, page: number, orderBy: number, models: string) {
-  return new Promise<{ data: Shoe[] }>((resolve) =>
-    axios.get(`${brandURL}/brand_shoes/${id}/${page}/${orderBy}/${models}/`).then((res) =>
-      resolve({ data: res.data })
-    )
+  return new Promise<{ data: Shoe[], numPages: number }>((resolve) =>
+    axios.get(`${brandURL}/brand_shoes/${id}/${page}/${orderBy}/${models}/`).then((res) => {
+      resolve({ data: res.data.shoes, numPages: res.data.numPages });
+    })
   );
 }
+
 
 
 
