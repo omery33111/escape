@@ -426,15 +426,15 @@ const BrandShoes = () => {
       classes={{ ul: classes.paginator }}
       style={{
         backgroundColor: "#1A002E",
-        width: totalPages <= 1 ? "5.5rem" :
-               totalPages === 2 ? "7.4rem" :
-               totalPages === 3 ? "9.3rem" :
-               totalPages === 4 ? "11.1rem" :
-               totalPages === 5 ? "12.5rem" :
-               totalPages === 6 ? "14.2rem" : "16rem",
+        width: numberOfPages <= 1 ? "5.5rem" :
+               numberOfPages === 2 ? "7.4rem" :
+               numberOfPages === 3 ? "9.3rem" :
+               numberOfPages === 4 ? "11.1rem" :
+               numberOfPages === 5 ? "12.5rem" :
+               numberOfPages === 6 ? "14.2rem" : "16rem",
         direction: "ltr"
       }}
-      count={totalPages}
+      count={numberOfPages}
       page={page}
       onChange={(event, newPage) => setPage(newPage)}
       size="small"
