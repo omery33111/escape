@@ -117,7 +117,6 @@ const handleModelSelection = (selectedModel: string) => {
     const singleBrand = useAppSelector(selectSingleBrand);
 
     const numberOfPages = useAppSelector(selectBrandPages);
-    console.log(numberOfPages)
 
     const handleOrderByChange = (event: any) => {
       setOrderBy(event.target.value);
@@ -267,12 +266,17 @@ const handleModelSelection = (selectedModel: string) => {
             </Select>
           </div>
         ) : (
+          
           <div style={{ flex: '1', display: 'flex', textAlign: 'center', justifyContent: 'center', position: 'relative', bottom: -3, fontSize: '0.8rem', color: 'white', flexWrap: 'wrap-reverse' }}>
+      
       {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
         <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
-            <label className="radio-label">
-              {model}
-            </label>
+        <label className="radio-label">
+            {model}
+            {singleBrand.model_counts && singleBrand.model_counts[model] && (
+                <span> ({singleBrand.model_counts[model]})</span>
+            )}
+        </label>
             <input
             {...controlProps(model)}
             type="radio"
@@ -284,6 +288,7 @@ const handleModelSelection = (selectedModel: string) => {
           />
         </div>
       ))}
+      
           </div>
         )}
 

@@ -74,13 +74,26 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
 
 
 @api_view(["GET"])
-def single_brand(request, pk = -1):
+def single_brand(request, pk=-1):
     try:
-        brand = Brand.objects.get(pk = pk)
-        serializer = BrandSerializer(brand)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+        brand = Brand.objects.get(pk=pk)
+        shoes = Shoe.objects.filter(brand=brand)
+        
+        model_counter = {}
+        for shoe in shoes:
+            model = shoe.model
+            if model in model_counter:
+                model_counter[model] += 1
+            else:
+                model_counter[model] = 1
+        
+        brand_data = BrandSerializer(brand).data
+        brand_data['model_counts'] = model_counter
+        
+        return Response(brand_data, status=status.HTTP_200_OK)
     except Brand.DoesNotExist:
-        return Response(status = status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 
 

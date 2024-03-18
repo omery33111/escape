@@ -7,6 +7,7 @@ export interface Brand {
   name: string;
   description?: string;
   models: [];
+  model_counts?: { [key: string]: number };
 }
 
 
