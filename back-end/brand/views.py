@@ -101,7 +101,7 @@ def single_brand(request, pk=-1):
 def brand_shoes_amount(request, pk):
     try:
         brand = Brand.objects.get(pk=pk)
-        shoes_count = brand.shoes.count()
+        shoes_count = brand.shoes.filter(blacklisted=False).count()
         return Response({shoes_count}, status=status.HTTP_200_OK)
     except Brand.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
