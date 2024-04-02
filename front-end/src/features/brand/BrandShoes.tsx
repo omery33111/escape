@@ -268,7 +268,19 @@ const handleModelSelection = (selectedModel: string) => {
         ) : (
           
           <div style={{ flex: '1', display: 'flex', textAlign: 'center', justifyContent: 'center', position: 'relative', bottom: -3, fontSize: '0.8rem', color: 'white', flexWrap: 'wrap-reverse' }}>
-      
+      {singleBrand.models.length <= 0 && (
+                <div>
+                <label className="radio-label">
+                    כל הנעליים
+                        <span> ({brandsAmount})</span>
+                </label>
+                    <input
+                    type="radio"
+                    className="black-radio"
+                  />
+                </div>
+      )}
+
       {singleBrand.models && singleBrand.models.length > 0 && singleBrand.models.map((model) => (
         <div key={model} style={{ width: String(model).length > 10 ? '210px' : '120px' }}>
         <label className="radio-label">

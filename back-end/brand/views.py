@@ -77,7 +77,7 @@ def brand_shoes(request, pk, page, orderby=1, models='0'):
 def single_brand(request, pk=-1):
     try:
         brand = Brand.objects.get(pk=pk)
-        shoes = Shoe.objects.filter(brand=brand)
+        shoes = Shoe.objects.filter(brand=brand, blacklisted=False)
         
         model_counter = {}
         for shoe in shoes:

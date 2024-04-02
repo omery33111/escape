@@ -73,7 +73,7 @@ const BrandNavbar = () => {
         models: selectedModel,
       })
     );
-  }, 100);
+  }, 300);
   
     navigate(`/brand/shoes/${brandId}/`);
   };
