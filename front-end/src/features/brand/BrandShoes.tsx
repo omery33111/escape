@@ -337,7 +337,7 @@ const handleModelSelection = (selectedModel: string) => {
                     </div>
             ) : (
               <Card.Body>
-              <div style={{ marginRight: "-0.9rem" }}>
+              <div>
               <img
                 className="image-container-brand"
                 onMouseEnter={() => handleMouseEnter(shoeIndex)}

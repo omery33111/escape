@@ -17,8 +17,8 @@ body {
 }
 
 .slide-up {
-  transform: translateY(-150vh);
-  transition: transform 0.8s ease-in-out;
+  transform: translateY(-3000vh);
+  transition: transform 4s ease-in-out;
 }
 
 .rtl-select .Mui-focused {
