@@ -55,7 +55,7 @@ const BrandNavbar = () => {
     brandTimer = setTimeout(() => {
       setSelectedBrand(null);
       setHoveredItem(null);
-    }, 300);
+    }, 400);
   };
 
   const handleItemHover = (index: any) => {
@@ -73,7 +73,7 @@ const BrandNavbar = () => {
         models: selectedModel,
       })
     );
-  }, 300);
+  }, 400);
   
     navigate(`/brand/shoes/${brandId}/`);
   };
