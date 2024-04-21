@@ -270,8 +270,10 @@ const handleModelSelection = (selectedModel: string) => {
           <div style={{ flex: '1', display: 'flex', textAlign: 'center', justifyContent: 'center', position: 'relative', bottom: -3, fontSize: '0.8rem', color: 'white', flexWrap: 'wrap-reverse' }}>
       {singleBrand.models.length <= 0 && (
                 <div>
+                  
                 <label className="radio-label">
-                    כל הנעליים
+                {Number(id) == 4 ? ("כל המוצרים") : ("כל הנעליים")}
+                    
                         <span> ({brandsAmount})</span>
                 </label>
                     <input
