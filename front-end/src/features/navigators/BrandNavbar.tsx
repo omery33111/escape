@@ -175,7 +175,7 @@ const BrandNavbar = () => {
         <Container>
 
         
-          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "15px", left: showAutocomplete ? "10px" : "10px", transform: isNavbarFixed ? `${isTablet ? "translateX(-1rem)" : "translateX(-0rem)"}` : "translateX(0px)" }}>
+          <Nav style = {{justifyContent: "center", textAlign: "center", position: "relative", gap: isMobile ? "0px" : "15px", left: showAutocomplete ? "10px" : "20px", transform: isNavbarFixed ? `${isTablet ? "translateX(-0rem)" : "translateX(-0rem)"}` : "translateX(0px)" }}>
 
           {isTablet ? (
             
