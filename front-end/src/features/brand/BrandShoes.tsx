@@ -272,7 +272,7 @@ const handleModelSelection = (selectedModel: string) => {
                 <div>
                   
                 <label className="radio-label">
-                {Number(id) == 4 ? ("כל המוצרים") : ("כל הנעליים")}
+                {Number(id) == 2 ? ("כל המוצרים") : ("כל הנעליים")}
                     
                         <span> ({brandsAmount})</span>
                 </label>
