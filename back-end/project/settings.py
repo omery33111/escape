@@ -1,7 +1,7 @@
 from datetime import timedelta
 from pathlib import Path
 import os
-
+import dj_database_url
 
 
 
@@ -155,6 +155,13 @@ DATABASES = {
         'NAME': os.path.join(PROJECT_DIR, 'mydatabase.db'),
     }
 }
+
+
+
+DATABASES = {
+   "default": dj_database_url.parse("postgresql://escape_database_user:pCj8BQJloNnuwFa3IelLCeWyJoKvJClA@dpg-cqdua588fa8c73dsl2u0-a.oregon-postgres.render.com/escape_database")
+}
+
 
 
 # DATABASES = {
