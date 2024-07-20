@@ -129,7 +129,7 @@ EMAIL_HOST_PASSWORD = 'vezm auux ghik syiq'
 
 
 
-WSGI_APPLICATION = 'project.wsgi.application'
+WSGI_APPLICATION = 'project.wsgi'
 
 
 # Database
