@@ -23,7 +23,7 @@ class Shoe(models.Model):
 
 
 class ShoeImage(models.Model):
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(blank = True, null = True)
 
     def __str__(self):
         return self
