@@ -176,6 +176,12 @@ const ShoePut = () => {
     updatedSizesArray.splice(index, 1); // Remove the element at the specified index
     setSizesArray(updatedSizesArray);
   };
+
+  const handleDeleteImageInput = (index: number) => {
+    const updatedImagesArray = [...imagesArray];
+    updatedImagesArray.splice(index, 1); // Remove the element at the specified index
+    setImagesArray(updatedImagesArray);
+  };
   
   return (
     <div>
@@ -272,12 +278,15 @@ const ShoePut = () => {
     <h5>Images</h5>
   </Form.Label>
   {imagesArray.map((image, index) => (
-    <div key={index}>
+    <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
       <Form.Control
     
         type="file"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleImageInputChange(index, e)}/>
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleImageInputChange(index, e)}
+        /> &nbsp;&nbsp;<Button variant="danger" onClick={() => handleDeleteImageInput(index)}>Delete</Button>
+        
       {/* {image && <p>{image.name}</p>} */}
+
     </div>
   ))}<br/>
   <Button variant="secondary" onClick={handleAddImageInput}>
